@@ -30,7 +30,18 @@ function tofu(args, cwd) {
   const r = spawnSync("tofu", args, {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, TF_PLUGIN_CACHE_DIR: cachePlugins, TF_IN_AUTOMATION: "1" },
+    env: {
+      ...process.env,
+      // Todo servicio va al emulador, también los que no están en la lista de endpoints.
+      AWS_ENDPOINT_URL: endpoint,
+      AWS_ACCESS_KEY_ID: "test",
+      AWS_SECRET_ACCESS_KEY: "test",
+      AWS_SESSION_TOKEN: "",
+      AWS_PROFILE: "",
+      AWS_EC2_METADATA_DISABLED: "true",
+      TF_PLUGIN_CACHE_DIR: cachePlugins,
+      TF_IN_AUTOMATION: "1",
+    },
   });
   if (r.error) throw new Error(`No se pudo ejecutar tofu: ${r.error.message}. ¿Está instalado y en el PATH?`);
   return { codigo: r.status, salida: (r.stdout || "") + (r.stderr || "") };

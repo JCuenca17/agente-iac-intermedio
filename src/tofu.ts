@@ -11,6 +11,24 @@ export interface SalidaTofu {
 }
 
 /**
+ * Variables que obligan a OpenTofu a hablar solo con el emulador. AWS_ENDPOINT_URL lo
+ * respeta el proveedor AWS para todos los servicios, también los que no están en la lista
+ * de endpoints de main.tf.json: sin esto, un servicio no listado iría a AWS real.
+ * Las credenciales son de prueba y se anulan los perfiles locales.
+ */
+export function entornoEmulador(): NodeJS.ProcessEnv {
+  const endpoint = process.env.AWS_ENDPOINT || "http://localhost:4566";
+  return {
+    AWS_ENDPOINT_URL: endpoint,
+    AWS_ACCESS_KEY_ID: "test",
+    AWS_SECRET_ACCESS_KEY: "test",
+    AWS_SESSION_TOKEN: "",
+    AWS_PROFILE: "",
+    AWS_EC2_METADATA_DISABLED: "true",
+  };
+}
+
+/**
  * Ejecuta OpenTofu en `dir` sin bloquear el proceso (un apply en el emulador puede tardar
  * minutos). Los proveedores se guardan una sola vez en .cache/plugins.
  */
@@ -19,7 +37,7 @@ export function ejecutarTofu(args: string[], dir: string): Promise<SalidaTofu> {
   return new Promise((resolver, rechazar) => {
     const p = spawn("tofu", args, {
       cwd: dir,
-      env: { ...process.env, TF_PLUGIN_CACHE_DIR: CACHE_PLUGINS, TF_IN_AUTOMATION: "1" },
+      env: { ...process.env, ...entornoEmulador(), TF_PLUGIN_CACHE_DIR: CACHE_PLUGINS, TF_IN_AUTOMATION: "1" },
     });
     const salida: Buffer[] = [];
     const error: Buffer[] = [];
