@@ -109,6 +109,7 @@ export class ProveedorClaudeCode implements ProveedorModelo {
       costoUsd: estimarCosto(this.modelo, uso),
       duracionMs: Number(datos.duration_ms ?? Date.now() - inicio),
       modelo: this.modelo,
+      modeloExacto: Object.keys((datos.modelUsage ?? {}) as Record<string, unknown>)[0] ?? this.modelo,
       motivoParada: String(datos.stop_reason ?? "desconocido"),
     };
   }

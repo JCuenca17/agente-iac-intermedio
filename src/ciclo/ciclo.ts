@@ -173,7 +173,7 @@ export async function ejecutarCiclo(requerimiento: string, o: OpcionesCiclo): Pr
       uso.salida += ll.uso.salida;
       uso.cacheEscritura += ll.uso.cacheEscritura;
       uso.cacheLectura += ll.uso.cacheLectura;
-      o.registro.anotar("llamada", { iteracion, modelo: ll.modelo, uso: ll.uso, costoUsd: ll.costoUsd, duracionMs: ll.duracionMs, motivoParada: ll.motivoParada });
+      o.registro.anotar("llamada", { iteracion, modelo: ll.modelo, modeloExacto: ll.modeloExacto, uso: ll.uso, costoUsd: ll.costoUsd, duracionMs: ll.duracionMs, motivoParada: ll.motivoParada });
     }
     consultasEsquema += gen.consultas.length;
     for (const tipos of gen.consultas) o.registro.anotar("consulta-esquema", { iteracion, tipos });

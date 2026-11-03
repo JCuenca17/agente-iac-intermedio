@@ -18,7 +18,10 @@ export interface RespuestaModelo {
   /** Costo estimado a precio de lista de la API (USD). Con claude-code no se cobra: es una medida. */
   costoUsd: number;
   duracionMs: number;
+  /** Modelo configurado (el que se usa para el precio). */
   modelo: string;
+  /** Identificador exacto que informa el proveedor (por ejemplo, con la fecha de la versión). */
+  modeloExacto?: string;
   /** Motivo de parada que informa el proveedor (end_turn, max_tokens, refusal...). */
   motivoParada: string;
 }

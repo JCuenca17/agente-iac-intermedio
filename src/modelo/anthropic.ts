@@ -49,6 +49,7 @@ export class ProveedorAnthropic implements ProveedorModelo {
       costoUsd: estimarCosto(this.modelo, uso),
       duracionMs: Date.now() - inicio,
       modelo: this.modelo,
+      modeloExacto: respuesta.model ?? this.modelo,
       motivoParada: respuesta.stop_reason ?? "desconocido",
     };
   }

@@ -241,6 +241,7 @@ th { color: var(--text-secondary); font-weight: 600; }
 <body>
 <main>
 <h1>${escapar(titulo)}</h1>
+<p class="resumen">Modelos: ${escapar(r.modelos.length ? r.modelos.join(", ") : "sin registrar")}${r.fechas ? ` · corridas entre ${escapar(r.fechas.desde.slice(0, 10))} y ${escapar(r.fechas.hasta.slice(0, 10))}` : ""}.</p>
 <p class="resumen">${r.corridas} corridas con resultado · ${r.intentosConError} intentos con error de infraestructura (fuera de n, M1 y M4; su costo se suma al total).</p>
 ${secciones.join("\n")}
 ${comparaciones}

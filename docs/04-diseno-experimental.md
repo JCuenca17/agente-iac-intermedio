@@ -101,10 +101,25 @@ Decisiones de medición (ADR-019), iguales para todas las configuraciones:
 
 Comandos: `npm run experimento` y `npm run resumen`.
 
+### 7.1 Procedimiento de ejecución
+
+La corrida se hace por etapas, siempre con la misma carpeta de salida (`--salida`), para poder reanudar si se interrumpe:
+
+1. Comprobación del entorno: `npm run doctor` sin problemas y `npm run prueba-minima` con 12 de 12 casos.
+2. Ensayo obligatorio: `npm run experimento -- --casos C01 --repeticiones 1`, con las 6 configuraciones. Se revisa que todas terminen sin error de infraestructura y que el costo por corrida esté cerca del estimado en la sección 10. Si algo falla, se corrige antes de seguir; las corridas del ensayo no entran en el análisis.
+3. Casos propios: las 6 configuraciones, 12 casos y 3 repeticiones.
+4. Proyectos grandes: `--casos grandes --config T,B0,B1`.
+5. IaC-Eval: `--casos iaceval --config T,B0,B1 --repeticiones 1`.
+6. Resumen: `npm run resumen -- <carpeta>`, que genera el informe, las comparaciones y `resumen.html`.
+
+Cada fila de resultados guarda la fecha de la corrida y el identificador exacto del modelo que respondió, tal como lo informa el proveedor, y el resumen los lista. Así se puede saber con qué versión del modelo se obtuvo cada resultado aunque el proveedor la actualice después.
+
 ## 8. Estudios complementarios sin costo de API
 
 - Réplica en MiniStack: se repite el experimento cambiando `EMULADOR` y `AWS_ENDPOINT`, para comprobar que los resultados no dependen de Floci.
 - Prueba del validador (`npm run banco-errores`): 43 artefactos con un solo error insertado a mano, al menos 5 por tipo (estructura, atributo inexistente, atributo deprecado, referencia rota, dependencia circular, tipo inválido, violación de política y valor fuera de rango), a partir de los artefactos válidos de C01, C03 y C07. Las 8 violaciones de política cubren los siete requisitos de seguridad. Se valida con las capas reales, sin modelo. Resultado (2026-11-03, Floci): 42 de 43 errores (98 %) se detectan antes del despliegue, todos en la capa esperada (C1: 5, C2: 25, C3: 8, C4: 4). El que no se detecta es `batch_size = 0` en el disparador de la cola: el proveedor no valida ese rango en `validate` ni en `plan`, de modo que solo fallaría al desplegar. Resultados en `experimento/banco-errores/`.
+
+- Análisis de sensibilidad con un segundo modelo (opcional, aún no programado): repetir T y B1 en los 12 casos propios, una vez, con otro modelo a través del proveedor `openai-compatible` (ADR-020), por ejemplo uno gratuito de OpenRouter. No responde una pregunta nueva: comprueba si la diferencia entre T y B1 se mantiene con otro modelo. Serían 24 corridas, sin costo con un modelo gratuito. Si no se hace, la dependencia del modelo queda declarada como amenaza a la validez externa.
 
 ## 9. Prueba piloto
 
@@ -131,6 +146,6 @@ Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para l
 | Interna | Revisión humana automática en el experimento | Se declara; la revisión humana no forma parte de las preguntas |
 | Constructo | M4 depende de cómo se escribió cada lista | Las listas aceptan formas alternativas válidas y se documentan las decisiones (ADR-019) |
 | Externa | El emulador no reproduce la consistencia eventual ni las cuotas de AWS (S08), y Floci y MiniStack son de 2026 | Dos emuladores; las conclusiones se limitan al entorno emulado |
-| Externa | Un solo modelo, de gama baja | Se declara; la réplica con Sonnet 5.5 queda como opción |
+| Externa | Un solo modelo, de gama baja | El proveedor del modelo es configurable (ADR-020), de modo que el estudio se puede replicar con otros modelos; el análisis de sensibilidad de la sección 8 lo comprobaría con un segundo modelo. Mientras no se haga, se declara |
 | Conclusión | Muestras pequeñas por configuración | Intervalos de confianza y tamaño del efecto junto al valor p |
 | Conclusión | Las 3 repeticiones de un caso no son del todo independientes y T se compara con cinco configuraciones | Pares por caso y repetición, como en S08; valores p ajustados con Holm |

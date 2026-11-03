@@ -189,3 +189,19 @@ describe("ejecutor: M1, errores y reanudación (revisión de código)", () => {
     expect(d.llamadas.filter((x) => x.startsWith("ciclo"))).toEqual([]);
   });
 });
+
+describe("ejecutor: modelo exacto y fecha de cada corrida", () => {
+  it("cada fila guarda los modelos que respondieron y la fecha", async () => {
+    const d = falsas();
+    const original = d.ejecutarCiclo;
+    d.ejecutarCiclo = async (req, opc) => {
+      opc.registro.anotar("llamada", { modelo: "claude-haiku-5-5", modeloExacto: "claude-haiku-5-5-20261015", costoUsd: 0 });
+      return original(req, opc);
+    };
+    const o = opciones(d, { casos: ["C01"], configuraciones: ["T"] });
+    await ejecutarExperimento(o);
+    const f = filas(o)[0];
+    expect(f.modelos).toEqual(["claude-haiku-5-5-20261015"]);
+    expect(f.fecha).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+  });
+});

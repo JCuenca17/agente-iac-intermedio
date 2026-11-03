@@ -81,6 +81,18 @@ describe("resumen del experimento", () => {
   });
 });
 
+describe("resumen: modelos y fechas", () => {
+  it("informa los modelos exactos y el rango de fechas", () => {
+    const r = resumir([
+      fila("C01", "N1", "T", 1, true, { modelos: ["claude-haiku-5-5-20261015"], fecha: "2026-11-05T10:00:00.000Z" }),
+      fila("C02", "N1", "T", 1, true, { modelos: ["claude-haiku-5-5-20261015"], fecha: "2026-11-06T09:00:00.000Z" }),
+    ]);
+    expect(r.modelos).toEqual(["claude-haiku-5-5-20261015"]);
+    expect(r.fechas).toEqual({ desde: "2026-11-05T10:00:00.000Z", hasta: "2026-11-06T09:00:00.000Z" });
+    expect(informeMarkdown(r)).toContain("Modelos: claude-haiku-5-5-20261015. Corridas entre 2026-11-05 y 2026-11-06.");
+  });
+});
+
 describe("resumen: errores de infraestructura, M4 e IaC-Eval, Holm", () => {
   it("si una corrida se repitió tras un error vale el último resultado, y el costo del error se suma", () => {
     const fs = [

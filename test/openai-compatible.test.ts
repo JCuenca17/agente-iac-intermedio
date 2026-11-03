@@ -65,6 +65,11 @@ describe("proveedor openai-compatible (OpenRouter, NVIDIA, Groq, Ollama)", () =>
     });
   });
 
+  it("informa el modelo exacto que devuelve el proveedor", async () => {
+    const r = await crear(fetchFalso([exito("x")])).completar("S", [{ rol: "usuario", texto: "hola" }]);
+    expect(r.modeloExacto).toBe("meta-llama/llama-3.3-70b-instruct");
+  });
+
   it("traduce finish_reason length a max_tokens para que la respuesta cortada se informe", async () => {
     const r = await crear(fetchFalso([exito('{"accion":', "length")])).completar("S", [{ rol: "usuario", texto: "hola" }]);
     expect(r.motivoParada).toBe("max_tokens");

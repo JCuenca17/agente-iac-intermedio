@@ -96,7 +96,7 @@ export async function ejecutarDirecta(requerimiento: string, o: OpcionesDirecta)
     uso.salida += r.uso.salida;
     uso.cacheEscritura += r.uso.cacheEscritura;
     uso.cacheLectura += r.uso.cacheLectura;
-    o.registro.anotar("llamada", { iteracion, modelo: r.modelo, uso: r.uso, costoUsd: r.costoUsd, duracionMs: r.duracionMs, motivoParada: r.motivoParada });
+    o.registro.anotar("llamada", { iteracion, modelo: r.modelo, modeloExacto: r.modeloExacto, uso: r.uso, costoUsd: r.costoUsd, duracionMs: r.duracionMs, motivoParada: r.motivoParada });
     mensajes.push({ rol: "asistente", texto: r.texto.trim() ? r.texto : "(respuesta vacía)" });
 
     const dir = join(o.dirTrabajo, `iter-${iteracion}`);

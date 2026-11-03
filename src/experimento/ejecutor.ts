@@ -43,6 +43,10 @@ export interface FilaResultado {
   nivel: string;
   configuracion: Configuracion;
   repeticion: number;
+  /** Fecha y hora de inicio de la corrida (ISO 8601). */
+  fecha?: string;
+  /** Identificadores exactos de los modelos que respondieron en la corrida. */
+  modelos?: string[];
   /** El ciclo terminó con código listo para desplegar. */
   listo: boolean;
   motivo: string;
@@ -159,6 +163,12 @@ class ErrorCorrida extends Error {
   }
 }
 
+/** Modelos (identificador exacto, o el configurado) de las llamadas anotadas en el registro. */
+function modelosRegistrados(registro: Registro): string[] {
+  const modelos = registro.eventos.filter((e) => e.evento === "llamada").map((e) => String(e.modeloExacto ?? e.modelo ?? ""));
+  return [...new Set(modelos.filter(Boolean))].sort();
+}
+
 /** Suma las llamadas al modelo anotadas en el registro de la corrida. */
 function gastoRegistrado(registro: Registro): ErrorCorrida["gasto"] {
   const uso = { entrada: 0, salida: 0, cacheEscritura: 0, cacheLectura: 0 };
@@ -211,7 +221,8 @@ async function medirCorrida(
   registro: Registro,
 ): Promise<FilaResultado> {
   const d = o.dependencias;
-  registro.anotar("corrida-inicio", { caso: caso.id, configuracion, repeticion });
+  const fecha = new Date().toISOString();
+  registro.anotar("corrida-inicio", { caso: caso.id, configuracion, repeticion, fecha });
   const inicio = Date.now();
   const proveedor = o.crearProveedor(caso.id, configuracion, repeticion);
   const comun = {
@@ -296,6 +307,8 @@ async function medirCorrida(
   // En IaC-Eval, M4 es la corrección de su política (sobre el plan), para resumir igual.
   if (fila.iaceval) fila.m4 = fila.iaceval.correcto ? 1 : 0;
   fila.duracionMs = Date.now() - inicio;
+  fila.fecha = fecha;
+  fila.modelos = modelosRegistrados(registro);
   registro.anotar("corrida-fin", { m1: fila.m1, m3: fila.m3, m4: fila.m4, costoUsd: fila.costoUsd });
   return fila;
 }

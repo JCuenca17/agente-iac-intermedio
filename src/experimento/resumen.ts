@@ -54,6 +54,9 @@ export interface Resumen {
   corridas: number;
   /** Intentos que terminaron con error de infraestructura; se informan aparte. */
   intentosConError: number;
+  /** Identificadores exactos de los modelos que respondieron y rango de fechas de las corridas. */
+  modelos: string[];
+  fechas: { desde: string; hasta: string } | null;
   /** Solo si hay tareas de IaC-Eval: métricas de S12 por configuración. */
   iaceval: ResumenIaCEval[];
   porConfiguracion: ResumenConfiguracion[];
@@ -174,6 +177,11 @@ export function resumir(todas: FilaResultado[], base = "T"): Resumen {
   return {
     corridas: filas.length,
     intentosConError: errores.length,
+    modelos: [...new Set(filas.flatMap((f) => f.modelos ?? []))].sort(),
+    fechas: (() => {
+      const fs = filas.map((f) => f.fecha).filter((x): x is string => Boolean(x)).sort();
+      return fs.length ? { desde: fs[0], hasta: fs[fs.length - 1] } : null;
+    })(),
     iaceval,
     porConfiguracion: configuraciones.map((c) =>
       resumirConfiguracion(
@@ -199,6 +207,8 @@ export function informeMarkdown(r: Resumen): string {
     `# Resumen del experimento`,
     "",
     `Corridas con resultado: ${r.corridas}. Intentos con error de infraestructura: ${r.intentosConError} (no entran en n, M1 ni M4; su costo sí se suma al total).`,
+    "",
+    `Modelos: ${r.modelos.length ? r.modelos.join(", ") : "sin registrar"}.${r.fechas ? ` Corridas entre ${r.fechas.desde.slice(0, 10)} y ${r.fechas.hasta.slice(0, 10)}.` : ""}`,
     "",
   ];
 

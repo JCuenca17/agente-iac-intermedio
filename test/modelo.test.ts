@@ -180,3 +180,32 @@ describe("precios de modelos que no están en precios.json", () => {
     expect(estimarCosto("claude-haiku-5-5", { entrada: 1_000_000, salida: 0, cacheEscritura: 0, cacheLectura: 0 })).toBeCloseTo(0.1, 10);
   });
 });
+
+describe("identificador exacto del modelo que respondió", () => {
+  it("anthropic informa el modelo que devuelve la API", async () => {
+    const cliente: ClienteMensajes = {
+      messages: {
+        create: async () =>
+          ({
+            model: "claude-haiku-5-5-20261015",
+            content: [{ type: "text", text: "x" }],
+            stop_reason: "end_turn",
+            usage: { input_tokens: 1, output_tokens: 1, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 },
+          }) as never,
+      },
+    };
+    const r = await new ProveedorAnthropic("sk", "claude-haiku-5-5", cliente).completar("S", [{ rol: "usuario", texto: "a" }]);
+    expect(r.modeloExacto).toBe("claude-haiku-5-5-20261015");
+    expect(r.modelo).toBe("claude-haiku-5-5");
+  });
+
+  it("claude-code toma el modelo de modelUsage", async () => {
+    const salida = JSON.stringify({
+      type: "result", is_error: false, stop_reason: "end_turn", result: "x", duration_ms: 1,
+      usage: { input_tokens: 1, output_tokens: 1, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 },
+      modelUsage: { "claude-haiku-5-5-20261015": { inputTokens: 1 } },
+    });
+    const r = await new ProveedorClaudeCode("claude-haiku-5-5", () => ({ codigo: 0, salida, error: "" })).completar("S", [{ rol: "usuario", texto: "a" }]);
+    expect(r.modeloExacto).toBe("claude-haiku-5-5-20261015");
+  });
+});

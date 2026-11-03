@@ -63,6 +63,7 @@ export class ProveedorOpenAI implements ProveedorModelo {
       costoUsd: (this.o.costo ?? estimarCosto)(this.o.modelo, uso),
       duracionMs: Date.now() - inicio,
       modelo: this.o.modelo,
+      modeloExacto: typeof datos.model === "string" ? datos.model : this.o.modelo,
       // "length" es el equivalente de max_tokens: así el agente informa la respuesta cortada.
       motivoParada: finish === "length" ? "max_tokens" : finish,
     };
@@ -92,6 +93,7 @@ export class ProveedorOpenAI implements ProveedorModelo {
 }
 
 interface RespuestaChat {
+  model?: string;
   choices?: { message?: { content?: unknown }; finish_reason?: string }[];
   usage?: { prompt_tokens?: number; completion_tokens?: number; prompt_tokens_details?: { cached_tokens?: number } };
 }
