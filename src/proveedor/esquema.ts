@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
+import { enRaiz } from "../rutas.js";
 
 /** Atributo de un recurso, tal como lo resume scripts/esquema-proveedor.mjs. */
 export interface AtributoEsquema {
@@ -28,7 +29,7 @@ export interface EsquemaProveedor {
 }
 
 /** Carga el índice compacto generado con `npm run esquema-proveedor`. */
-export function cargarEsquemaProveedor(ruta = ".cache/esquema-aws.json"): EsquemaProveedor {
+export function cargarEsquemaProveedor(ruta = enRaiz(".cache", "esquema-aws.json")): EsquemaProveedor {
   if (!existsSync(ruta)) {
     throw new Error(`No existe ${ruta}. Genéralo con: npm run esquema-proveedor`);
   }

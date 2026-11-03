@@ -1,15 +1,14 @@
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { escaparPuntero, type Artefacto } from "../artefacto/tipos.js";
 import { ZIP_LAMBDA, type ResultadoTraduccion } from "../traductor/opentofu.js";
 import type { ErrorValidacion, ResultadoValidacion } from "./tipos.js";
+import { enRaiz } from "../rutas.js";
 
-const RAIZ = fileURLToPath(new URL("../../", import.meta.url));
-const LOCK = join(RAIZ, "prueba-minima", ".terraform.lock.hcl");
-const ZIP = join(RAIZ, "recursos", "lambda", "minima.zip");
-const CACHE_PLUGINS = join(RAIZ, ".cache", "plugins");
+const LOCK = enRaiz("prueba-minima", ".terraform.lock.hcl");
+const ZIP = enRaiz("recursos", "lambda", "minima.zip");
+const CACHE_PLUGINS = enRaiz(".cache", "plugins");
 
 interface Diagnostico {
   severity: string;

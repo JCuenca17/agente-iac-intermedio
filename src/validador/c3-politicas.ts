@@ -1,8 +1,8 @@
 import { spawnSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { enRaiz } from "../rutas.js";
 import type { ErrorValidacion, ResultadoValidacion } from "./tipos.js";
 
-const DIR_POLITICAS = fileURLToPath(new URL("../../politicas/artefacto", import.meta.url));
+const DIR_POLITICAS = enRaiz("politicas", "artefacto");
 const CONSULTA = "data.artefacto.politicas.deny";
 
 interface Violacion {

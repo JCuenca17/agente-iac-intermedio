@@ -1,8 +1,9 @@
 import { readFileSync } from "node:fs";
 import { Ajv, type ErrorObject } from "ajv";
+import { enRaiz } from "../rutas.js";
 import type { ErrorValidacion, ResultadoValidacion } from "./tipos.js";
 
-const rutaEsquema = new URL("../../esquema/artefacto.schema.json", import.meta.url);
+const rutaEsquema = enRaiz("esquema", "artefacto.schema.json");
 export const esquemaArtefacto = JSON.parse(readFileSync(rutaEsquema, "utf8"));
 
 const ajv = new Ajv({ allErrors: true, strict: true });
