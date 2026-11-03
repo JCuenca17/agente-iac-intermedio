@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run && opa test politicas",
     "doctor": "node scripts/doctor.mjs",
     "prueba-minima": "node scripts/prueba-minima.mjs",
     "esquema-proveedor": "node scripts/esquema-proveedor.mjs"
