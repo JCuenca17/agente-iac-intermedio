@@ -1,0 +1,1 @@
+Cuando alguien sube un archivo a un bucket de S3, el sistema debe enviar un aviso a una cola de SQS para que otro proceso lo atienda. La cola debe estar cifrada y solo el bucket debe poder enviarle mensajes.

@@ -1,0 +1,1 @@
+Necesito una función Lambda en Python que procese los mensajes de una cola de SQS a medida que llegan. La función debe tener un rol con permisos mínimos: solo lo necesario para leer y borrar mensajes de esa cola.

@@ -1,0 +1,1 @@
+Necesito un reporte diario: todos los días a las 8:00 (UTC) una regla programada ejecuta una función Lambda que publica un aviso en un tema de SNS. Los logs de la función deben guardarse 14 días y la función solo debe poder publicar en ese tema y escribir sus logs.

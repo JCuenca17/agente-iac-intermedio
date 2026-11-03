@@ -63,8 +63,10 @@ export interface ResultadoDespliegue {
   sinCambios: boolean;
   cambiosPendientes: CambioRecurso[];
   cosmeticosIgnorados: CambioRecurso[];
-  /** Plan posterior en JSON, para medir políticas sobre lo desplegado. */
+  /** Plan posterior en JSON (incluye la configuración, con las referencias entre recursos). */
   planPosterior?: unknown;
+  /** Estado después del apply (`tofu show -json`): valores reales de lo desplegado. */
+  estado?: unknown;
 }
 
 /**
@@ -94,7 +96,8 @@ export async function desplegar(dir: string): Promise<ResultadoDespliegue> {
   }
   const planPosterior = JSON.parse((await tofu(["show", "-json", "posterior.tfplan"], dir)).salida);
   const { reales, cosmeticos } = clasificarCambios(planPosterior);
-  return { aplicado: true, errores: [], sinCambios: reales.length === 0, cambiosPendientes: reales, cosmeticosIgnorados: cosmeticos, planPosterior };
+  const estado = JSON.parse((await tofu(["show", "-json"], dir)).salida);
+  return { aplicado: true, errores: [], sinCambios: reales.length === 0, cambiosPendientes: reales, cosmeticosIgnorados: cosmeticos, planPosterior, estado };
 }
 
 /** Destruye lo desplegado en `dir`, para dejar el emulador limpio. */

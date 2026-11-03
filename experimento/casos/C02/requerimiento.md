@@ -1,0 +1,1 @@
+Necesito una tabla de DynamoDB para los pedidos de una tienda. Cada pedido se identifica por el cliente y la fecha del pedido. La tabla debe cobrar solo por uso, borrar automáticamente los registros vencidos usando un atributo de expiración y permitir recuperar datos borrados por error.

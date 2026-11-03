@@ -1,0 +1,1 @@
+Necesito la red para una aplicación web: una VPC con una subred pública y una privada, salida a internet para la subred pública, un grupo de seguridad para los servidores web que solo acepte HTTP y HTTPS desde internet, y otro para la base de datos PostgreSQL que solo acepte conexiones desde los servidores web.

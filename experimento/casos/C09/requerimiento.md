@@ -1,0 +1,1 @@
+Necesito el backend de registro de usuarios: una API HTTP con una ruta POST /usuarios que invoque una función Lambda, y la función guarda cada usuario en una tabla de DynamoDB identificada por usuario_id. La función solo debe poder escribir y leer en esa tabla, y la tabla debe permitir recuperar datos borrados por error.

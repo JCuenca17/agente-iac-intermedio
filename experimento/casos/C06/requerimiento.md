@@ -1,0 +1,1 @@
+Necesito un tema de SNS para los eventos de pedidos que reparta cada mensaje a dos colas de SQS: una para facturación y otra para inventario. Las colas deben estar cifradas y aceptar mensajes solo de ese tema.

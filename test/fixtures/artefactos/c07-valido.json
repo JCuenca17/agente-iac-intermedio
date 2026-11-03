@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "resumen": "Función Lambda en Python que procesa los mensajes de una cola SQS cifrada, con un rol de permisos mínimos sobre esa cola.",
+  "recursos": [
+    {
+      "id": "cola_trabajos",
+      "tipo": "aws_sqs_queue",
+      "proposito": "Recibe los mensajes por procesar.",
+      "requisito": "cola de SQS",
+      "atributos": { "name": "c07-trabajos", "sqs_managed_sse_enabled": true, "visibility_timeout_seconds": 60 }
+    },
+    {
+      "id": "rol_procesador",
+      "tipo": "aws_iam_role",
+      "proposito": "Identidad de la función.",
+      "requisito": "rol con permisos mínimos",
+      "atributos": {
+        "name": "c07-procesador",
+        "assume_role_policy": {
+          "Version": "2012-10-17",
+          "Statement": [{ "Effect": "Allow", "Principal": { "Service": "lambda.amazonaws.com" }, "Action": "sts:AssumeRole" }]
+        }
+      }
+    },
+    {
+      "id": "permisos_cola",
+      "tipo": "aws_iam_role_policy",
+      "proposito": "Permite leer y borrar mensajes solo de la cola de trabajos.",
+      "requisito": "solo lo necesario para leer y borrar mensajes",
+      "atributos": {
+        "name": "c07-leer-cola",
+        "role": "${ref:rol_procesador.id}",
+        "policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"],
+              "Resource": "${ref:cola_trabajos.arn}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "procesador",
+      "tipo": "aws_lambda_function",
+      "proposito": "Procesa cada mensaje de la cola.",
+      "requisito": "función Lambda en Python",
+      "atributos": {
+        "function_name": "c07-procesador",
+        "role": "${ref:rol_procesador.arn}",
+        "runtime": "python3.12",
+        "handler": "index.handler",
+        "timeout": 30
+      }
+    },
+    {
+      "id": "disparador",
+      "tipo": "aws_lambda_event_source_mapping",
+      "proposito": "Entrega los mensajes de la cola a la función.",
+      "requisito": "procese los mensajes a medida que llegan",
+      "atributos": { "event_source_arn": "${ref:cola_trabajos.arn}", "function_name": "${ref:procesador.arn}", "batch_size": 10 }
+    }
+  ],
+  "relaciones": [
+    { "origen": "procesador", "destino": "cola_trabajos", "tipo": "lee_de" },
+    { "origen": "procesador", "destino": "rol_procesador", "tipo": "asume_rol" },
+    { "origen": "permisos_cola", "destino": "rol_procesador", "tipo": "otorga_permiso" },
+    { "origen": "disparador", "destino": "procesador", "tipo": "invoca" }
+  ]
+}

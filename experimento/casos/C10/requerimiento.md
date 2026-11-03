@@ -1,0 +1,1 @@
+Necesito procesar las cargas de archivos: cada vez que se sube un archivo a un bucket de S3, una función Lambda debe ejecutarse y guardar los metadatos del archivo en una tabla de DynamoDB. Si la función falla, el evento debe ir a una cola de SQS de fallidos. Cada componente debe tener solo los permisos que necesita.
