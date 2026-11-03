@@ -1,0 +1,121 @@
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterAll, describe, expect, it } from "vitest";
+import { cargarCaso, ejecutarExperimento, type Dependencias, type FilaResultado, type OpcionesExperimento } from "../src/experimento/ejecutor.js";
+import { ProveedorGrabado } from "../src/modelo/grabado.js";
+import type { EsquemaProveedor } from "../src/proveedor/esquema.js";
+
+// El ejecutor se prueba con dependencias falsas: no usa modelo, OpenTofu, OPA ni emulador.
+const esquema: EsquemaProveedor = JSON.parse(readFileSync(new URL("./fixtures/esquema-aws-mini.json", import.meta.url), "utf8"));
+const dirs: string[] = [];
+afterAll(() => dirs.forEach((d) => rmSync(d, { recursive: true, force: true })));
+
+const usoCero = { entrada: 0, salida: 0, cacheEscritura: 0, cacheLectura: 0 };
+const error = { capa: "C2" as const, ruta: "/r", regla: "atributo-deprecado", mensaje: "x" };
+
+function falsas(opc: { destruye?: boolean; costo?: number } = {}): Dependencias & { llamadas: string[] } {
+  const llamadas: string[] = [];
+  return {
+    llamadas,
+    ejecutarCiclo: async (_req, o) => {
+      llamadas.push(`ciclo:${o.conValidador ? "V" : "-"}${o.conRetroalimentacion ? "R" : "-"}${o.conRag ? "G" : "-"}`);
+      return {
+        listo: true, motivo: "valido", iteraciones: 2, dirFinal: "dir", erroresPorIteracion: [[error], []],
+        uso: { ...usoCero, entrada: 100 }, costoUsd: opc.costo ?? 0.01, llamadas: 2, consultasEsquema: 1,
+      };
+    },
+    ejecutarDirecta: async (_req, o) => {
+      llamadas.push(`directa:${o.conRetroalimentacion ? "R" : "-"}`);
+      return { listo: true, motivo: "sin-validacion", iteraciones: 1, dirFinal: "dir", erroresPorIteracion: [[]], uso: usoCero, costoUsd: opc.costo ?? 0.01, llamadas: 1 };
+    },
+    desplegar: async () => ({ aplicado: true, sinCambios: true, errores: [], cambiosPendientes: [], cosmeticosIgnorados: [], estado: {}, planPosterior: {} }),
+    destruir: async () => opc.destruye ?? true,
+    evaluarIntencion: (caso) => ({ caso, requisitos: { a: "", b: "" }, cumplidos: ["a"], faltantes: ["b"], proporcion: 0.5 }),
+    violaciones: () => [{ regla: "s3-cifrado", recurso: "aws_s3_bucket.x" }],
+    reiniciarEmulador: async () => {
+      llamadas.push("reinicio");
+    },
+  };
+}
+
+function opciones(dependencias: Dependencias, extra: Partial<OpcionesExperimento> = {}): OpcionesExperimento {
+  const salida = mkdtempSync(join(tmpdir(), "experimento-"));
+  dirs.push(salida);
+  return {
+    casos: ["C01", "C03"],
+    configuraciones: ["T", "B0"],
+    repeticiones: 1,
+    salida,
+    crearProveedor: () => new ProveedorGrabado([]),
+    esquema,
+    endpoint: "http://localhost:4566",
+    region: "us-east-1",
+    versionProveedor: "6.71.0",
+    maxIteraciones: 3,
+    limiteGastoCorridaUsd: 5,
+    limiteGastoTotalUsd: 10,
+    dependencias,
+    ...extra,
+  };
+}
+const filas = (o: OpcionesExperimento): FilaResultado[] =>
+  readFileSync(join(o.salida, "resultados.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l));
+
+describe("ejecutor del experimento", () => {
+  it("lee el requerimiento y el nivel de un caso", () => {
+    const c = cargarCaso("C10");
+    expect(c.nivel).toBe("N3");
+    expect(c.requerimiento).toMatch(/DynamoDB/);
+  });
+
+  it("ejecuta cada caso con cada configuración y guarda una fila con las métricas", async () => {
+    const o = opciones(falsas());
+    const r = await ejecutarExperimento(o);
+    expect(r).toMatchObject({ hechas: 4, omitidas: 0, detenidoPorGasto: false });
+    const t = filas(o).find((f) => f.caso === "C01" && f.configuracion === "T")!;
+    expect(t).toMatchObject({
+      nivel: "N1", m1: true, m3: 1, m4: 0.5, faltantes: ["b"], iteraciones: 2, llamadas: 2, consultasEsquema: 1,
+      erroresPorCapa: { C2: 1 }, reglasDetectadas: ["atributo-deprecado"],
+    });
+  });
+
+  it("activa las ablaciones y las líneas base según la configuración", async () => {
+    const d = falsas();
+    await ejecutarExperimento(opciones(d, { casos: ["C01"], configuraciones: ["T", "A1", "A2", "A3", "B0", "B1"] }));
+    expect(d.llamadas).toEqual(["ciclo:VRG", "ciclo:-RG", "ciclo:V-G", "ciclo:VR-", "directa:-", "directa:R"]);
+  });
+
+  it("al reanudar no repite las corridas hechas", async () => {
+    const d = falsas();
+    const o = opciones(d);
+    await ejecutarExperimento(o);
+    const r = await ejecutarExperimento({ ...o, repeticiones: 2 });
+    expect(r).toMatchObject({ hechas: 4, omitidas: 4 });
+    expect(filas(o)).toHaveLength(8);
+  });
+
+  it("se detiene antes de pasar el límite de gasto total", async () => {
+    const r = await ejecutarExperimento(opciones(falsas({ costo: 4 }), { limiteGastoTotalUsd: 10 }));
+    expect(r).toMatchObject({ hechas: 3, detenidoPorGasto: true });
+  });
+
+  it("reinicia el emulador si la destrucción falla", async () => {
+    const d = falsas({ destruye: false });
+    await ejecutarExperimento(opciones(d, { casos: ["C01"], configuraciones: ["T"] }));
+    expect(d.llamadas).toContain("reinicio");
+  });
+
+  it("registra el error de una corrida y sigue con la siguiente", async () => {
+    const d = falsas();
+    d.ejecutarCiclo = async () => {
+      throw new Error("el modelo no respondió");
+    };
+    const o = opciones(d);
+    await ejecutarExperimento(o);
+    const f = filas(o);
+    expect(f).toHaveLength(4);
+    expect(f.find((x) => x.configuracion === "T")).toMatchObject({ motivo: "error", m1: false, error: "el modelo no respondió" });
+    expect(f.find((x) => x.configuracion === "B0")).toMatchObject({ m1: true });
+  });
+});

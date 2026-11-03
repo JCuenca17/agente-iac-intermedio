@@ -11,6 +11,8 @@ describe("cargarConfiguracion", () => {
     expect(config.emulador).toBe("floci");
     expect(config.maxIteraciones).toBe(3);
     expect(config.limiteGastoUsd).toBe(5);
+    expect(config.limiteGastoExperimentoUsd).toBe(10);
+    expect(config.flociContenedor).toBe("floci");
   });
 
   it("lee los valores del entorno", () => {

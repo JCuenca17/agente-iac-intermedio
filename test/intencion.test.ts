@@ -30,6 +30,12 @@ describe("M4: listas de verificación de los casos", () => {
     expect(r.proporcion).toBe(0.75);
   });
 
+  it("C01 acepta el versionado escrito con el bloque antiguo dentro del bucket", () => {
+    const p = sinTipo(plan("C01"), "aws_s3_bucket_versioning");
+    valores(p, "aws_s3_bucket.respaldos").versioning = [{ enabled: true, mfa_delete: false }];
+    expect(evaluarIntencion("C01", p).faltantes).toEqual([]);
+  });
+
   it("C02 sin recuperación ante borrado lo detecta", () => {
     const p = plan("C02");
     valores(p, "aws_dynamodb_table.pedidos").point_in_time_recovery[0].enabled = false;

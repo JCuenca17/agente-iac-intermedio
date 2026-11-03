@@ -16,7 +16,9 @@
     "esquema-proveedor": "node scripts/esquema-proveedor.mjs",
     "test:integracion": "vitest run --config vitest.integracion.config.ts",
     "preagente": "tsc",
-    "agente": "node dist/src/cli.js"
+    "agente": "node dist/src/cli.js",
+    "preexperimento": "tsc",
+    "experimento": "node dist/src/experimento/cli.js"
   },
   "license": "UNLICENSED",
   "devDependencies": {

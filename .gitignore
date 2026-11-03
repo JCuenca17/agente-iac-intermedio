@@ -28,3 +28,6 @@ prueba-minima/.cache-plugins/
 
 # Caché local (esquema del proveedor generado en cada PC)
 .cache/
+
+# Resultados de los experimentos
+/resultados/

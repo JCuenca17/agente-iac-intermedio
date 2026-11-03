@@ -64,6 +64,7 @@ npm run doctor              # revisa que todo esté listo
 |---|---|
 | `npm run agente -- "<requerimiento>"` | Genera el diseño, lo valida, abre la revisión y despliega en el emulador (`--ayuda` para ver las opciones) |
 | `npm run doctor` | Revisa herramientas, configuración y emulador |
+| `npm run experimento -- --casos C01,C02 --config T,B0 --repeticiones 3` | Ejecuta el experimento y guarda una fila por corrida en `resultados/<fecha>/resultados.jsonl`; se puede reanudar (`--ayuda` para ver las opciones) |
 | `npm run esquema-proveedor` | Genera el índice del esquema del proveedor AWS que usan el RAG y la capa C2 |
 | `npm run prueba-minima` | Despliega las 12 soluciones de referencia en el emulador (ver `prueba-minima/README.md`) |
 | `npm test` | Pruebas automáticas (TypeScript y políticas Rego); no usan el emulador ni ningún modelo |

@@ -18,6 +18,10 @@ export interface Configuracion {
   emulador: Emulador;
   maxIteraciones: number;
   limiteGastoUsd: number;
+  /** Tope de gasto de todo un experimento (USD). */
+  limiteGastoExperimentoUsd: number;
+  /** Contenedor de Docker de Floci, para reiniciarlo si una corrida deja recursos. */
+  flociContenedor: string;
 }
 
 type Entorno = Record<string, string | undefined>;
@@ -72,6 +76,8 @@ export function cargarConfiguracion(entorno: Entorno = process.env): Configuraci
     emulador: emulador as Emulador,
     maxIteraciones: numero(entorno, "MAX_ITERACIONES", 3, { entero: true, minimo: 1 }),
     limiteGastoUsd: numero(entorno, "LIMITE_GASTO_USD", 5, { entero: false, minimo: 0 }),
+    limiteGastoExperimentoUsd: numero(entorno, "LIMITE_GASTO_EXPERIMENTO_USD", 10, { entero: false, minimo: 0 }),
+    flociContenedor: texto(entorno, "FLOCI_CONTENEDOR", "floci"),
   };
 }
 

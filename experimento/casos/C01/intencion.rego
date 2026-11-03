@@ -23,7 +23,19 @@ cumple contains "versionado" if {
 	comun.conecta("aws_s3_bucket_versioning", "bucket", "aws_s3_bucket")
 }
 
+# También vale la forma antigua (deprecada) dentro del bucket: el requisito es que el
+# versionado y el cifrado estén activos, no la forma de escribirlo (eso lo mide M2).
+cumple contains "versionado" if {
+	some b in comun.recursos("aws_s3_bucket")
+	b.values.versioning[0].enabled == true
+}
+
 cumple contains "cifrado" if comun.conecta("aws_s3_bucket_server_side_encryption_configuration", "bucket", "aws_s3_bucket")
+
+cumple contains "cifrado" if {
+	some b in comun.recursos("aws_s3_bucket")
+	count(b.values.server_side_encryption_configuration) > 0
+}
 
 cumple contains "privado" if {
 	some b in comun.recursos("aws_s3_bucket_public_access_block")
