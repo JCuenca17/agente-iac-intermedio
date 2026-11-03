@@ -64,6 +64,7 @@ npm run doctor              # revisa que todo esté listo
 |---|---|
 | `npm run agente -- "<requerimiento>"` | Genera el diseño, lo valida, abre la revisión y despliega en el emulador (`--ayuda` para ver las opciones) |
 | `npm run doctor` | Revisa herramientas, configuración y emulador |
+| `npm run iaceval:preparar` | Descarga IaC-Eval (versión fijada) y selecciona las tareas cuya referencia funciona en el emulador; las deja en `experimento/iaceval/` |
 | `npm run resumen -- resultados/<fecha>` | Resume un experimento: métricas por configuración y nivel, intervalos de confianza y comparaciones pareadas (escribe `resumen.md` y `resumen.json`) |
 | `npm run experimento -- --casos C01,C02 --config T,B0 --repeticiones 3` | Ejecuta el experimento y guarda una fila por corrida en `resultados/<fecha>/resultados.jsonl`; se puede reanudar (`--ayuda` para ver las opciones) |
 | `npm run esquema-proveedor` | Genera el índice del esquema del proveedor AWS que usan el RAG y la capa C2 |

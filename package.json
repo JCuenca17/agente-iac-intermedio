@@ -20,7 +20,9 @@
     "preexperimento": "tsc",
     "experimento": "node dist/src/experimento/cli.js",
     "preresumen": "tsc",
-    "resumen": "node dist/src/experimento/resumen-cli.js"
+    "resumen": "node dist/src/experimento/resumen-cli.js",
+    "preiaceval:preparar": "tsc",
+    "iaceval:preparar": "node scripts/iaceval-preparar.mjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {

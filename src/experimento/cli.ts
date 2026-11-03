@@ -17,7 +17,8 @@ despliega en el emulador, mide M1-M6 y destruye. Se puede interrumpir y reanudar
 misma --salida: las corridas hechas no se repiten.
 
 Opciones:
-  --casos C01,C02        Casos (por defecto, todos los de experimento/casos)
+  --casos C01,C02        Casos (por defecto, C01-C12). "iaceval" agrega todas las tareas
+                         seleccionadas de IaC-Eval; también se pueden listar (IE264,...)
   --config T,B0,B1       Configuraciones: ${CONFIGURACIONES.join(", ")} (por defecto, todas)
   --repeticiones 3       Repeticiones de cada combinación (por defecto 3)
   --salida <carpeta>     Carpeta de resultados (por defecto resultados/<fecha-hora>)
@@ -71,10 +72,14 @@ async function main(): Promise<number> {
   const config = cargarConfiguracion();
   const versiones = JSON.parse(readFileSync(enRaiz("versiones.json"), "utf8"));
   const todos = readdirSync(enRaiz("experimento", "casos")).filter((c) => /^C\d+$/.test(c)).sort();
-  const casos = values.casos ? values.casos.split(",").map((c) => c.trim().toUpperCase()) : todos;
+  const dirIaCEval = enRaiz("experimento", "iaceval");
+  const tareasIaCEval = existsSync(dirIaCEval) ? readdirSync(dirIaCEval).filter((c) => /^IE\d+$/.test(c)).sort() : [];
+  const casos = values.casos
+    ? values.casos.split(",").map((c) => c.trim()).flatMap((c) => (c.toLowerCase() === "iaceval" ? tareasIaCEval : [c.toUpperCase()]))
+    : todos;
   const configuraciones = (values.config ? values.config.split(",").map((c) => c.trim().toUpperCase()) : [...CONFIGURACIONES]) as Configuracion[];
   for (const c of configuraciones) if (!(CONFIGURACIONES as readonly string[]).includes(c)) throw new Error(`Configuración desconocida: ${c}`);
-  for (const c of casos) if (!todos.includes(c)) throw new Error(`Caso desconocido: ${c}`);
+  for (const c of casos) if (!todos.includes(c) && !tareasIaCEval.includes(c)) throw new Error(`Caso desconocido: ${c}`);
   const repeticiones = Number(values.repeticiones);
   const sello = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const salida = resolve(values.salida ?? join(enRaiz("resultados"), sello));

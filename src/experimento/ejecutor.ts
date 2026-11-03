@@ -8,6 +8,7 @@ import type { EsquemaProveedor } from "../proveedor/esquema.js";
 import { enRaiz } from "../rutas.js";
 import { Registro } from "../trazas/registro.js";
 import type { ErrorValidacion } from "../validador/tipos.js";
+import { medirIaCEval, politicaTarea, type MedicionIaCEval } from "./iaceval.js";
 import { entradaDesplegada, evaluarIntencion, type ResultadoIntencion } from "./intencion.js";
 import { violacionesDesplegado, type Violacion } from "./politicas-desplegado.js";
 
@@ -19,14 +20,21 @@ export interface Caso {
   id: string;
   nivel: string;
   requerimiento: string;
+  /** "propio": casos C01-C12; "iaceval": tareas IEnnn de IaC-Eval. */
+  fuente: "propio" | "iaceval";
 }
 
-/** Lee un caso de experimento/casos/<id>/. */
+/** Lee un caso de experimento/casos/<id>/ o una tarea de experimento/iaceval/<id>/. */
 export function cargarCaso(id: string): Caso {
+  if (id.startsWith("IE")) {
+    const dir = enRaiz("experimento", "iaceval", id);
+    const tarea = JSON.parse(readFileSync(join(dir, "tarea.json"), "utf8")) as { dificultad: number };
+    return { id, nivel: `D${tarea.dificultad}`, requerimiento: readFileSync(join(dir, "requerimiento.md"), "utf8").trim(), fuente: "iaceval" };
+  }
   const dir = enRaiz("experimento", "casos", id);
   const requerimiento = readFileSync(join(dir, "requerimiento.md"), "utf8").trim();
   const nivel = readFileSync(join(dir, "intencion.rego"), "utf8").match(/^nivel := "(N\d)"/m)?.[1] ?? "?";
-  return { id, nivel, requerimiento };
+  return { id, nivel, requerimiento, fuente: "propio" };
 }
 
 /** Una fila de resultados: una corrida de un caso con una configuración. */
@@ -60,6 +68,8 @@ export interface FilaResultado {
   costoUsd: number;
   duracionMs: number;
   cosmeticosIgnorados: number;
+  /** Solo en tareas de IaC-Eval: métricas de S12 con el protocolo de IaC-Eval (sobre el plan). */
+  iaceval?: MedicionIaCEval;
   error?: string;
 }
 
@@ -72,6 +82,8 @@ export interface Dependencias {
   violaciones: (estado: unknown) => Violacion[];
   /** Deja el emulador limpio cuando una destrucción falla. */
   reiniciarEmulador: () => Promise<void>;
+  medirIaCEval: (dir: string, politica: string) => Promise<MedicionIaCEval>;
+  politicaTarea: (id: string) => string;
 }
 
 export const DEPENDENCIAS_REALES: Omit<Dependencias, "reiniciarEmulador"> = {
@@ -81,6 +93,8 @@ export const DEPENDENCIAS_REALES: Omit<Dependencias, "reiniciarEmulador"> = {
   destruir,
   evaluarIntencion,
   violaciones: violacionesDesplegado,
+  medirIaCEval,
+  politicaTarea,
 };
 
 export interface OpcionesExperimento {
@@ -100,6 +114,8 @@ export interface OpcionesExperimento {
   /** El experimento se detiene antes de una corrida si el gasto acumulado lo supera. */
   limiteGastoTotalUsd: number;
   dependencias: Dependencias;
+  /** Para pruebas: reemplaza la lectura de casos desde experimento/. */
+  cargarCaso?: (id: string) => Caso;
   alAvanzar?: (fila: FilaResultado, hechas: number, total: number) => void;
 }
 
@@ -192,6 +208,14 @@ async function ejecutarCorrida(caso: Caso, configuracion: Configuracion, repetic
     cosmeticosIgnorados: 0,
   };
 
+  if (caso.fuente === "iaceval") {
+    // Si la configuración no entrega código (el ciclo no terminó), la tarea cuenta como fallida.
+    fila.iaceval = { compila: false, desplegable: false, correcto: false };
+    if (resultado.listo && resultado.dirFinal) {
+      fila.iaceval = await registro.medir("iaceval", () => d.medirIaCEval(resultado.dirFinal!, d.politicaTarea(caso.id)));
+    }
+  }
+
   if (resultado.listo && resultado.dirFinal) {
     const desp = await registro.medir("despliegue", () => d.desplegar(resultado.dirFinal!));
     fila.aplicado = desp.aplicado;
@@ -202,9 +226,11 @@ async function ejecutarCorrida(caso: Caso, configuracion: Configuracion, repetic
     if (desp.aplicado && desp.estado) {
       fila.violaciones = d.violaciones(desp.estado);
       fila.m3 = fila.violaciones.length;
-      const m4 = d.evaluarIntencion(caso.id, entradaDesplegada(desp.estado, desp.planPosterior));
-      fila.m4 = m4.proporcion;
-      fila.faltantes = m4.faltantes;
+      if (caso.fuente === "propio") {
+        const m4 = d.evaluarIntencion(caso.id, entradaDesplegada(desp.estado, desp.planPosterior));
+        fila.m4 = m4.proporcion;
+        fila.faltantes = m4.faltantes;
+      }
     }
     registro.anotar("despliegue", { aplicado: desp.aplicado, sinCambios: desp.sinCambios, errores: desp.errores.length });
     const destruido = await d.destruir(resultado.dirFinal);
@@ -212,6 +238,8 @@ async function ejecutarCorrida(caso: Caso, configuracion: Configuracion, repetic
     if (!destruido) await d.reiniciarEmulador();
   }
 
+  // En IaC-Eval, M4 es la corrección de su política (sobre el plan), para resumir igual.
+  if (fila.iaceval) fila.m4 = fila.iaceval.correcto ? 1 : 0;
   fila.duracionMs = Date.now() - inicio;
   registro.anotar("corrida-fin", { m1: fila.m1, m3: fila.m3, m4: fila.m4, costoUsd: fila.costoUsd });
   return fila;
@@ -233,7 +261,7 @@ export async function ejecutarExperimento(o: OpcionesExperimento): Promise<Resum
 
   for (let repeticion = 1; repeticion <= o.repeticiones; repeticion++) {
     for (const id of o.casos) {
-      const caso = cargarCaso(id);
+      const caso = (o.cargarCaso ?? cargarCaso)(id);
       for (const configuracion of o.configuraciones) {
         if (hechas.has(clave(id, configuracion, repeticion))) {
           omitidas++;

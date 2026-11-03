@@ -10,7 +10,8 @@ export interface ResultadoIntencion {
   proporcion: number;
 }
 
-const DIR_INTENCION = enRaiz("experimento");
+// Solo las listas propias: experimento/iaceval tiene políticas de IaC-Eval con otra sintaxis.
+const DIRS_INTENCION = [enRaiz("experimento", "casos"), enRaiz("experimento", "intencion")];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Json = any;
@@ -35,7 +36,7 @@ export function entradaDesplegada(estado: Json, planPosterior: Json): Json {
 export function evaluarIntencion(caso: string, plan: unknown): ResultadoIntencion {
   const paquete = `data.intencion.${caso.toLowerCase()}`;
   const consulta = `x := {"requisitos": ${paquete}.requisitos, "cumplidos": [k | some k in ${paquete}.cumple]}`;
-  const r = spawnSync("opa", ["eval", "--stdin-input", "--format", "json", "-d", DIR_INTENCION, consulta], {
+  const r = spawnSync("opa", ["eval", "--stdin-input", "--format", "json", ...DIRS_INTENCION.flatMap((d) => ["-d", d]), consulta], {
     input: JSON.stringify(plan),
     encoding: "utf8",
     maxBuffer: 256 * 1024 * 1024,

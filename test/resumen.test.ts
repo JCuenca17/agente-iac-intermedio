@@ -55,6 +55,19 @@ describe("resumen del experimento", () => {
     expect(c.diferenciaM4).toBe(0.75);
   });
 
+  it("resume IaC-Eval con las métricas de S12", () => {
+    const ie = [
+      fila("IE001", "D1", "T", 1, true, { iaceval: { compila: true, desplegable: true, correcto: true } }),
+      fila("IE002", "D2", "T", 1, false, { iaceval: { compila: true, desplegable: false, correcto: false } }),
+      fila("IE001", "D1", "B0", 1, true, { iaceval: { compila: false, desplegable: false, correcto: false } }),
+    ];
+    const r2 = resumir(ie);
+    expect(r2.iaceval.find((x) => x.configuracion === "T")).toMatchObject({ n: 2, compilabilidad: 1, desplegabilidad: 0.5 });
+    expect(r2.iaceval.find((x) => x.configuracion === "T")!.correccion.p).toBe(0.5);
+    expect(informeMarkdown(r2)).toContain("## IaC-Eval: métricas de S12");
+    expect(resumir(filas).iaceval).toEqual([]);
+  });
+
   it("el informe en Markdown incluye las tablas", () => {
     const md = informeMarkdown(r);
     expect(md).toContain("| T | 4 | 100.0 % [");

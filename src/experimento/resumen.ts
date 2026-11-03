@@ -34,8 +34,19 @@ export interface Comparacion {
   pCosto: number;
 }
 
+export interface ResumenIaCEval {
+  configuracion: string;
+  n: number;
+  compilabilidad: number;
+  desplegabilidad: number;
+  correccion: { p: number; inferior: number; superior: number };
+  m1: number;
+}
+
 export interface Resumen {
   corridas: number;
+  /** Solo si hay tareas de IaC-Eval: métricas de S12 por configuración. */
+  iaceval: ResumenIaCEval[];
   porConfiguracion: ResumenConfiguracion[];
   porNivel: { configuracion: string; nivel: string; n: number; m1: number; m4Media: number }[];
   comparaciones: Comparacion[];
@@ -106,8 +117,24 @@ export function resumir(filas: FilaResultado[], base = "T"): Resumen {
   const reglas = new Map<string, number>();
   for (const f of filas) for (const r of f.reglasDetectadas) reglas.set(r, (reglas.get(r) ?? 0) + 1);
 
+  const deIaCEval = filas.filter((f) => f.iaceval);
+  const iaceval = configuraciones
+    .map((configuracion) => {
+      const fs = deIaCEval.filter((f) => f.configuracion === configuracion);
+      return {
+        configuracion,
+        n: fs.length,
+        compilabilidad: media(fs.map((f) => (f.iaceval!.compila ? 1 : 0))),
+        desplegabilidad: media(fs.map((f) => (f.iaceval!.desplegable ? 1 : 0))),
+        correccion: wilson(fs.filter((f) => f.iaceval!.correcto).length, fs.length),
+        m1: media(fs.map((f) => (f.m1 ? 1 : 0))),
+      };
+    })
+    .filter((x) => x.n > 0);
+
   return {
     corridas: filas.length,
+    iaceval,
     porConfiguracion: configuraciones.map((c) => resumirConfiguracion(c, filas.filter((f) => f.configuracion === c))),
     porNivel,
     comparaciones: filas.some((f) => f.configuracion === base)
@@ -150,6 +177,15 @@ export function informeMarkdown(r: Resumen): string {
   if (r.reglasMasFrecuentes.length) {
     l.push("", "Reglas detectadas con más frecuencia (número de corridas en que aparecen):", "");
     for (const x of r.reglasMasFrecuentes) l.push(`- ${x.regla}: ${x.corridas}`);
+  }
+
+  if (r.iaceval.length) {
+    l.push("", "## IaC-Eval: métricas de S12 (protocolo de IaC-Eval, sobre el plan)", "");
+    l.push("| Config. | Tareas | Compilabilidad | Desplegabilidad | Corrección [IC 95 %] | M1 en el emulador |", "|---|---|---|---|---|---|");
+    for (const x of r.iaceval) {
+      l.push(`| ${x.configuracion} | ${x.n} | ${pct(x.compilabilidad)} | ${pct(x.desplegabilidad)} | ${pct(x.correccion.p)} [${pct(x.correccion.inferior)}, ${pct(x.correccion.superior)}] | ${pct(x.m1)} |`);
+    }
+    l.push("", "Referencia publicada (S12, Tabla 2, otros modelos y AWS real para el plan): Claude Sonnet 3.7 35.37 % de corrección y 70.09 % de desplegabilidad; GPT-4.1 25.98 % y 56.99 %; TerraFormer 14B 31.44 % y 72.93 %.");
   }
 
   if (r.comparaciones.length) {

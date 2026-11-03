@@ -36,6 +36,8 @@ function falsas(opc: { destruye?: boolean; costo?: number } = {}): Dependencias 
     reiniciarEmulador: async () => {
       llamadas.push("reinicio");
     },
+    medirIaCEval: async () => ({ compila: true, desplegable: true, correcto: false }),
+    politicaTarea: () => "package terraform.validation",
   };
 }
 
@@ -104,6 +106,19 @@ describe("ejecutor del experimento", () => {
     const d = falsas({ destruye: false });
     await ejecutarExperimento(opciones(d, { casos: ["C01"], configuraciones: ["T"] }));
     expect(d.llamadas).toContain("reinicio");
+  });
+
+  it("en tareas de IaC-Eval mide compilabilidad, desplegabilidad y corrección antes de desplegar", async () => {
+    const d = falsas();
+    d.medirIaCEval = async () => ({ compila: true, desplegable: true, correcto: true });
+    const o = opciones(d, {
+      casos: ["IE264"],
+      configuraciones: ["T", "B0"],
+      cargarCaso: (id) => ({ id, nivel: "D1", requerimiento: "Create an S3 bucket", fuente: "iaceval" }),
+    });
+    await ejecutarExperimento(o);
+    const f = filas(o);
+    expect(f[0]).toMatchObject({ caso: "IE264", nivel: "D1", iaceval: { compila: true, desplegable: true, correcto: true }, m4: 1, faltantes: [] });
   });
 
   it("registra el error de una corrida y sigue con la siguiente", async () => {
