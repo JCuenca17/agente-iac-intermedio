@@ -77,6 +77,10 @@ export class ProveedorClaudeCode implements ProveedorModelo {
       "--output-format", "json",
       "--tools", "",
       "--no-session-persistence",
+      // Sin servidores MCP (conectores de claude.ai) ni skills: el contexto debe ser solo el
+      // prompt de la herramienta, como con la API, para medir los mismos tokens.
+      "--strict-mcp-config",
+      "--disable-slash-commands",
       "--system-prompt", sistema,
     ];
     const inicio = Date.now();

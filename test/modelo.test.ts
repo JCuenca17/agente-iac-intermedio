@@ -54,7 +54,7 @@ describe("proveedor claude-code", () => {
     const p = new ProveedorClaudeCode("claude-haiku-5-5", ejecutar);
     const r = await p.completar("SISTEMA", [{ rol: "usuario", texto: "hola" }]);
 
-    expect(llamada!.args).toEqual(expect.arrayContaining(["-p", "--output-format", "json", "--no-session-persistence"]));
+    expect(llamada!.args).toEqual(expect.arrayContaining(["-p", "--output-format", "json", "--no-session-persistence", "--strict-mcp-config", "--disable-slash-commands"]));
     expect(llamada!.args.join(" ")).toContain("--model claude-haiku-5-5");
     expect(llamada!.args.join(" ")).toContain('--tools ');
     expect(llamada!.args[llamada!.args.indexOf("--tools") + 1]).toBe("");
