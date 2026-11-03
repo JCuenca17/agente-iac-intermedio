@@ -1,0 +1,8 @@
+{
+  "indice": 266,
+  "dificultad": 1,
+  "recursos": [
+    "aws_iam_virtual_mfa_device"
+  ],
+  "intencion": "Has one \"aws_iam_virtual_mfa_device\" resource\nwith one \"virtual_mfa_device_name\" with any string"
+}

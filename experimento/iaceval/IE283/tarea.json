@@ -1,0 +1,9 @@
+{
+  "indice": 283,
+  "dificultad": 2,
+  "recursos": [
+    "aws_s3_bucket",
+    "aws_s3_bucket_cors_configuration"
+  ],
+  "intencion": "Has an aws_s3_bucket\n\nHas an aws_s3_bucket_cors_configuration\nwith bucket = bucket id OR name\nwith cors rule {\n    allowed_headers = [\"*\"]\n    allowed_methods = [\"GET\", \"POST\"]\n    allowed_origins = [\"https://domain.com\"]\n  }"
+}

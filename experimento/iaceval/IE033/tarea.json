@@ -1,0 +1,9 @@
+{
+  "indice": 33,
+  "dificultad": 4,
+  "recursos": [
+    "aws_codebuild_project",
+    "aws_iam_role"
+  ],
+  "intencion": "Has one \"aws_iam_role\" resource and one \"aws_codebuild_project\" resource with the \"type\" argument within the \"source\" block equal to \"GITHUB\""
+}

@@ -1,0 +1,8 @@
+{
+  "indice": 56,
+  "dificultad": 2,
+  "recursos": [
+    "aws_kinesis_stream"
+  ],
+  "intencion": "Has one \"aws_kinesis_stream\" resource"
+}

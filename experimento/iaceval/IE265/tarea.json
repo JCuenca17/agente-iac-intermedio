@@ -1,0 +1,8 @@
+{
+  "indice": 265,
+  "dificultad": 1,
+  "recursos": [
+    "aws_iam_user"
+  ],
+  "intencion": "Has one \"aws_iam_user\" resource\nwith one \"name\" with any value"
+}

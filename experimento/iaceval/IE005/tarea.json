@@ -1,0 +1,13 @@
+{
+  "indice": 5,
+  "dificultad": 4,
+  "recursos": [
+    "aws_db_instance",
+    "aws_db_instance",
+    "aws_db_instance",
+    "aws_route53_record",
+    "aws_route53_record",
+    "aws_route53_zone"
+  ],
+  "intencion": "Has one \"aws_route53_zone\" resource\n    with \"name\"\n\nHas a \"aws_db_instance\" resource\n    with \"identifier\" set to \"primary\"\n    with \"instance_class\"\n    with \"allocated_storage\"\n    with \"engine\"\n    with \"username\"\n    with \"password\"\n    with \"backup_retention_period\" set to a non-zero number\n\nHas multiple \"aws_db_instance\" resources\n    with \"identifier\"\n    with \"replicate_source_db\" referencing the main \"aws_db_instance\" resource\n    with \"instance_class\"\n\nHas multiple \"aws_route53_record\" resources\n    with \"name\"\n    with \"type\"\n    with \"ttl\"\n    with \"zone_id\" referencing the \"aws_route53_zone\" resource\n    with \"weighted_routing_policy\" block that contains \"weight\" as a non-zero number\n    with \"records\" containing an endpoint of a corresponding replica of the main \"aws_db_instance\"\n"
+}

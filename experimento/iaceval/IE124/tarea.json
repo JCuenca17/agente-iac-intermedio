@@ -1,0 +1,8 @@
+{
+  "indice": 124,
+  "dificultad": 2,
+  "recursos": [
+    "aws_ami"
+  ],
+  "intencion": "create aws_ami resource with name = any"
+}

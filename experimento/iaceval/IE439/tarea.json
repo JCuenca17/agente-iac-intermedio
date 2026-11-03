@@ -1,0 +1,16 @@
+{
+  "indice": 439,
+  "dificultad": 6,
+  "recursos": [
+    "aws_db_subnet_group",
+    "aws_internet_gateway",
+    "aws_route_table",
+    "aws_route_table_association",
+    "aws_route_table_association",
+    "aws_security_group",
+    "aws_subnet",
+    "aws_subnet",
+    "aws_vpc"
+  ],
+  "intencion": "Has one \"aws_vpc\" resource:\nIncludes a \"cidr_block\" for network configuration\n\nHas two \"aws_subnet\" resources:\nBoth subnets are part of the \"aws_vpc\" resource\nEach subnet is located in a different availability zone\n\nHas one \"aws_internet_gateway\" resource:\nAttached to the \"aws_vpc\" resource\n\nHas one \"aws_route_table\" resource:\nAssociated with the \"aws_vpc\"\nContains a default route that directs traffic to the \"aws_internet_gateway\"\nApplied to both subnets to enable internet access\n\nHas one \"aws_security_group\" resource:\nAssociated with the \"aws_vpc\"\nConfigured to allow inbound traffic on the default ports for MySQL (TCP 3306) and PostgreSQL (TCP 5432) from any IP address\n\nHas one \"aws_db_subnet_group\" resource:\nIncludes both \"aws_subnet\" resources\nFacilitates the placement of databases in the specified subnets"
+}

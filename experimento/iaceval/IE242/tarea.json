@@ -1,0 +1,11 @@
+{
+  "indice": 242,
+  "dificultad": 3,
+  "recursos": [
+    "aws_neptune_subnet_group",
+    "aws_subnet",
+    "aws_subnet",
+    "aws_vpc"
+  ],
+  "intencion": "Has \"aws_vpc\"\n\nHas two \"aws_subnet\"\n\nHas \"aws_neptune_subnet_group\"\nwith subnet_ids = array with both \"aws_subnet\""
+}

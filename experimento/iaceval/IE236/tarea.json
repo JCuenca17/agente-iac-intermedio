@@ -1,0 +1,10 @@
+{
+  "indice": 236,
+  "dificultad": 2,
+  "recursos": [
+    "aws_subnet",
+    "aws_subnet",
+    "aws_vpc"
+  ],
+  "intencion": "Has one resource \"aws_vpc\"\n\nHas one resource \"aws_subnet\"\nwith one \"vpc_id\" with value \"aws_vpc.{VPC NAME}.id\"\n\nHas another resource \"aws_subnet\"\nwith one \"vpc_id\" with value \"aws_vpc.{VPC NAME}.id\""
+}

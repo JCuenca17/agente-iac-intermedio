@@ -1,0 +1,13 @@
+{
+  "indice": 95,
+  "dificultad": 4,
+  "recursos": [
+    "aws_eks_cluster",
+    "aws_eks_fargate_profile",
+    "aws_iam_role",
+    "aws_subnet",
+    "aws_subnet",
+    "aws_vpc"
+  ],
+  "intencion": "has one \"aws_eks_fargate_profile\" resource\nwith one \"cluster_name\"\nwith one \"fargate_profile_name\"\nwith one \"pod_execution_role_arn\"\nwith one \"subnet_ids\"\nwith one \"selector\" containing \"namespace\""
+}

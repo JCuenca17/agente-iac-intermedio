@@ -1,0 +1,9 @@
+{
+  "indice": 291,
+  "dificultad": 2,
+  "recursos": [
+    "aws_s3_bucket",
+    "aws_s3_bucket_versioning"
+  ],
+  "intencion": "Has an aws_s3_bucket\n\nHas an aws_s3_bucket_versioning\nwith bucket = bucket id OR name\nwith versioning_configuration = { status = \"Disabled\" } "
+}

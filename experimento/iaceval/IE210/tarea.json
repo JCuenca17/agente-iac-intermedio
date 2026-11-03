@@ -1,0 +1,14 @@
+{
+  "indice": 210,
+  "dificultad": 5,
+  "recursos": [
+    "aws_msk_serverless_cluster",
+    "aws_security_group",
+    "aws_subnet",
+    "aws_subnet",
+    "aws_subnet",
+    "aws_vpc",
+    "aws_availability_zones"
+  ],
+  "intencion": "Has one \"aws_msk_serverless_cluster\" resource\nwith one \"vpc_config\"\nwith one \"subnet_ids\" with 6 references (3 subnets)\nRequires aws provider with alias of \"aws\" with a region of us-east-1"
+}

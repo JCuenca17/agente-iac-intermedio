@@ -1,0 +1,8 @@
+{
+  "indice": 352,
+  "dificultad": 3,
+  "recursos": [
+    "aws_db_option_group"
+  ],
+  "intencion": "Has one \"aws_db_option_group\" resource\n    with one \"engine_name\" = \"sqlserver-ee\"\n    with one \"major_engine_version\" = \"11.00\"\n    with options for \"SQLSERVER_AUDIT\" and \"TDE\"\n    with specific settings for \"IAM_ROLE_ARN\" and \"S3_BUCKET_ARN\""
+}

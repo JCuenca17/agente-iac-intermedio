@@ -1,0 +1,10 @@
+{
+  "indice": 270,
+  "dificultad": 2,
+  "recursos": [
+    "aws_s3_bucket",
+    "aws_s3_bucket_acl",
+    "aws_s3_bucket_ownership_controls"
+  ],
+  "intencion": "Has an aws_s3_bucket resource\n\nHas an aws_s3_bucket_ownership_controls\nwith bucket = bucket id\nand rule with object_ownership = \"BucketOwnerPreferred\"\n\nHas an aws_s3_bucket_acl"
+}

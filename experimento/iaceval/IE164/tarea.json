@@ -1,0 +1,10 @@
+{
+  "indice": 164,
+  "dificultad": 2,
+  "recursos": [
+    "aws_dynamodb_kinesis_streaming_destination",
+    "aws_dynamodb_table",
+    "aws_kinesis_stream"
+  ],
+  "intencion": "create a stream_arn (name), dynamodb table(hash_key, name, attribute (name, type)), create the kineses streaming"
+}

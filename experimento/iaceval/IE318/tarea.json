@@ -1,0 +1,12 @@
+{
+  "indice": 318,
+  "dificultad": 4,
+  "recursos": [
+    "aws_cloudfront_distribution",
+    "aws_cloudfront_origin_access_control",
+    "aws_route53_record",
+    "aws_route53_zone",
+    "aws_s3_bucket"
+  ],
+  "intencion": "have one \"aws_cloudfront_origin_access_control\" resource\n    with \"name\" argument\n    with \"origin_access_control_origin_type\" with value \"s3\"\n    with \"signing_behavior\" argument\n    with \"signing_protocol\" argument\nhave one \"aws_cloudfront_distribution\" resource\n    with \"origin.domain_name\" argument linking to \"aws_s3_bucket\" resource\n    with \"origin.origin_access_control_id\" argument linking to \"aws_cloudfront_origin_access_control\" resource\n    with \"origin.origin_id\" argument\n    with \"default_cache_behavior.allowed_methods\" argument with value [\"GET\", \"HEAD\"]\n    with \"default_cache_behavior.cached_methods\" argument with value [\"GET\", \"HEAD\"]\n    with \"default_cache_behavior.target_origin_id\" argument having the same value as \"origin.origin_id\" argument\n    with \"default_cache_behavior.viewer_protocol_policy\" argument with value \"allow-all\"\n    with \"restrictions.geo_restriction.restriction_type\" argument\n    with \"restrictions.geo_restriction.locations\" argument\n    with \"viewer_certificate.cloudfront_default_certificate\" argument\nhave one \"aws_s3_bucket\" resource\nhave one \"aws_route53_zone\" resource\n    with \"name\" argument\nhave one \"aws_route53_record\" resource\n    with \"type\" argument\n    with \"name\" argument\n    with \"zone_id\" argument linking to \"aws_route53_zone\" resource\n    with \"alias.name\" argument linking to \"aws_cloudfront_distribution\" resource\n    with \"alias.zone_id\" argument linking to \"aws_cloudfront_distribution\" resource\n    with \"alias.evaluate_target_health\" argument"
+}

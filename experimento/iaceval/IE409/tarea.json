@@ -1,0 +1,8 @@
+{
+  "indice": 409,
+  "dificultad": 1,
+  "recursos": [
+    "aws_db_instance"
+  ],
+  "intencion": "Has one \"aws_db_instance\" resource\nwith one \"allocated_storage\" minimun value is 20\nwith one \"engine\" with value \"postgres\"\nwith one \"instance_class\" with valid memory-optimized class\nwith one \"password\"\nwith one \"username\""
+}

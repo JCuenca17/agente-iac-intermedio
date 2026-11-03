@@ -1,0 +1,8 @@
+{
+  "indice": 364,
+  "dificultad": 1,
+  "recursos": [
+    "aws_lightsail_instance"
+  ],
+  "intencion": "have one \"aws_lightsail_instance\" resource\n    with \"name\" argument\n    with \"availability_zone\" argument\n    with \"blueprint_id\" argument\n    with \"bundle_id\" argument\n    with \"ip_address_type\" = \"dualstack\""
+}

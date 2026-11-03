@@ -1,0 +1,8 @@
+{
+  "indice": 362,
+  "dificultad": 1,
+  "recursos": [
+    "aws_lightsail_instance"
+  ],
+  "intencion": "have one \"aws_lightsail_instance\" resource\nwith \"name\" argument\nwith \"availability_zone\" argument\nwith \"blueprint_id\" = wordpress\nwith \"bundle_id\" argument"
+}

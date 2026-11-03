@@ -1,0 +1,8 @@
+{
+  "indice": 133,
+  "dificultad": 1,
+  "recursos": [
+    "aws_elasticache_cluster"
+  ],
+  "intencion": "requires cluster id, engine=redis, node_type, num_cache_nodes, parameter_group_name"
+}

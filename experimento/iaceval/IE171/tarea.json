@@ -1,0 +1,8 @@
+{
+  "indice": 171,
+  "dificultad": 1,
+  "recursos": [
+    "aws_dynamodb_table"
+  ],
+  "intencion": "dynamodb table -> hash_key, name, attribute (name, type), billing mode pay per read"
+}

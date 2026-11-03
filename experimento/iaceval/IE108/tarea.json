@@ -1,0 +1,12 @@
+{
+  "indice": 108,
+  "dificultad": 5,
+  "recursos": [
+    "aws_dynamodb_table",
+    "aws_s3_bucket",
+    "aws_s3_bucket_public_access_block",
+    "aws_s3_bucket_server_side_encryption_configuration",
+    "aws_s3_bucket_versioning"
+  ],
+  "intencion": "has one aws_s3_bucket_versioning resource\nwith bucket    \nwith status\n\nhas one aws_dynamodb_table resource\nwith name\nwith hash_key\n\nhas one aws_s3_bucket_lifecycle_configuration resource\nwith bucket \nwith rule\n    with id\n    with status\n    with action\n    with transition\n        with days\n        with storage_class\n\nhas one aws_s3_bucket_server_side_encryption_configuration resource\nwith bucket\nwith rule\n    with apply_server_side_encryption_by_default\n    with sse_algorithm\n\nhas one aws_s3_bucket_public_access_block resource\nwith bucket\nwith block_public_acls (boolean)\nwith block_public_policy (boolean)\nwith ignore_public_acls (boolean)\nwith restrict_public_buckets(boolean)\n\nhas one aws_dynamodb_table resource\nwith name  \nwith hash_key  \nwith attribute\n    with name\n    with type"
+}

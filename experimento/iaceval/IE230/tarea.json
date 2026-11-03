@@ -1,0 +1,8 @@
+{
+  "indice": 230,
+  "dificultad": 2,
+  "recursos": [
+    "aws_dynamodb_table"
+  ],
+  "intencion": "Has one \"aws_dynamodb_table\" resource\nwith one \"ttl\"\nwith one \"attribute_name\" = \"custom_ttl_attribute\"\nwith one \"enabled\" = true"
+}

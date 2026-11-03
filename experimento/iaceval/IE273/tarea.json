@@ -1,0 +1,10 @@
+{
+  "indice": 273,
+  "dificultad": 3,
+  "recursos": [
+    "aws_s3_bucket",
+    "aws_s3_bucket",
+    "aws_s3_bucket_inventory"
+  ],
+  "intencion": "Has two resources \"aws_s3_bucket\"\n\nHas one resource \"aws_s3_bucket_inventory\"\nwith bucket = first bucket id OR name\nwith schedule with frequency = \"Daily\""
+}

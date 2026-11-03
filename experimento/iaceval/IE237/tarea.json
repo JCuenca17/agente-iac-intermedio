@@ -1,0 +1,10 @@
+{
+  "indice": 237,
+  "dificultad": 3,
+  "recursos": [
+    "aws_network_acl",
+    "aws_subnet",
+    "aws_vpc"
+  ],
+  "intencion": "Has one resource \"aws_vpc\"\n\nHas one resource \"aws_subnet\"\nwith one \"vpc_id\" with value \"aws_vpc.{VPC NAME}.id\"\n\nHas one resource \"aws_network_acl\"\nwith one \"vpc_id\" with value \"aws_vpc.{VPC NAME}.id\"\nwith one \"egress\" with correct parameters\nwith one \"ingress\" with correct parameters"
+}

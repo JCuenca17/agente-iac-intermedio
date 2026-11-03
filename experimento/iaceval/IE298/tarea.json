@@ -1,0 +1,17 @@
+{
+  "indice": 298,
+  "dificultad": 6,
+  "recursos": [
+    "aws_codebuild_project",
+    "aws_iam_policy",
+    "aws_iam_role",
+    "aws_iam_role_policy_attachment",
+    "aws_s3_bucket",
+    "aws_security_group",
+    "aws_subnet",
+    "aws_vpc",
+    "aws_iam_policy_document",
+    "aws_iam_policy_document"
+  ],
+  "intencion": "have one \"aws_codebuild_project\" resource\n  with \"artifacts\" argument block\n    with \"type\" argument with value \"S3\"\n    with \"location\" argument\n    with \"name\" argument\n  with \"environment\" argument block\n    with \"computer_type\" argument\n    with \"image\" argument\n    with \"type\" argument\n  with \"source\" argument block\n    with \"type\" argument with value \"GITHUB\"\n    with \"location\" argument\n  with \"vpc_config\" argument block\n    with \"vpc_id\" argument\n    with \"subnets\" argument\n    with \"security_group_ids\" argument\nhave one \"aws_vpc\" resource\n  with \"cidr_block\" argument\nhave one \"aws_subnet\" argument\n  with \"vpc_id\" argument\n  with \"cidr_block\" argument\nwith one \"aws_security_group\" resource\n  with \"vpc_id\" argument"
+}
