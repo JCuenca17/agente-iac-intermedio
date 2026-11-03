@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/JCuenca17/agente-iac-intermedio/esquema/artefacto.schema.json",
+  "title": "Artefacto intermedio de infraestructura",
+  "description": "Describe una sola vez la infraestructura pedida. De este objeto se derivan el diagrama Mermaid y el código OpenTofu. Para referirse a otro recurso dentro de un texto se usa ${ref:id_recurso.atributo}, por ejemplo ${ref:cola_fallidos.arn}.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "resumen", "recursos", "relaciones"],
+  "properties": {
+    "version": {
+      "description": "Versión del formato del artefacto.",
+      "const": "1.0"
+    },
+    "resumen": {
+      "description": "Una o dos frases que resumen la arquitectura propuesta.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "recursos": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 60,
+      "items": { "$ref": "#/definitions/recurso" }
+    },
+    "relaciones": {
+      "description": "Conexiones lógicas entre recursos. Alimentan el diagrama y la revisión de dependencias.",
+      "type": "array",
+      "maxItems": 120,
+      "items": { "$ref": "#/definitions/relacion" }
+    },
+    "supuestos": {
+      "description": "Decisiones que el requerimiento no especifica y que el modelo tomó por su cuenta.",
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string", "minLength": 1, "maxLength": 300 }
+    }
+  },
+  "definitions": {
+    "idRecurso": {
+      "description": "Identificador único del recurso dentro del artefacto, en snake_case.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,62}$"
+    },
+    "recurso": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "tipo", "proposito", "atributos"],
+      "properties": {
+        "id": { "$ref": "#/definitions/idRecurso" },
+        "tipo": {
+          "description": "Tipo de recurso del proveedor AWS de OpenTofu, por ejemplo aws_sqs_queue.",
+          "type": "string",
+          "pattern": "^aws_[a-z0-9_]+$"
+        },
+        "proposito": {
+          "description": "Para qué sirve este recurso en la arquitectura.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "requisito": {
+          "description": "Parte del requerimiento que este recurso atiende.",
+          "type": "string",
+          "maxLength": 300
+        },
+        "atributos": {
+          "description": "Argumentos del recurso con los mismos nombres que en OpenTofu. Los bloques anidados se escriben como objetos o listas de objetos.",
+          "type": "object"
+        },
+        "depende_de": {
+          "description": "Recursos que deben existir antes que este, cuando la dependencia no se deduce de una referencia.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/idRecurso" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "relacion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origen", "destino", "tipo"],
+      "properties": {
+        "origen": { "$ref": "#/definitions/idRecurso" },
+        "destino": { "$ref": "#/definitions/idRecurso" },
+        "tipo": {
+          "type": "string",
+          "enum": [
+            "invoca",
+            "lee_de",
+            "escribe_en",
+            "notifica_a",
+            "publica_en",
+            "suscribe_a",
+            "asume_rol",
+            "otorga_permiso",
+            "contiene",
+            "enruta_a",
+            "protege"
+          ]
+        },
+        "descripcion": { "type": "string", "maxLength": 200 }
+      }
+    }
+  }
+}

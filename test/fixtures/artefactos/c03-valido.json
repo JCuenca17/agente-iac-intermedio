@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "resumen": "Cola de trabajos cifrada que envía a una cola de fallidos los mensajes que no se procesan tras 3 intentos.",
+  "recursos": [
+    {
+      "id": "cola_fallidos",
+      "tipo": "aws_sqs_queue",
+      "proposito": "Guarda los mensajes que fallaron 3 veces para revisarlos después.",
+      "requisito": "cola de mensajes fallidos",
+      "atributos": {
+        "name": "c03-trabajos-fallidos",
+        "sqs_managed_sse_enabled": true
+      }
+    },
+    {
+      "id": "cola_trabajos",
+      "tipo": "aws_sqs_queue",
+      "proposito": "Recibe los trabajos pendientes.",
+      "requisito": "cola de trabajos",
+      "atributos": {
+        "name": "c03-trabajos",
+        "sqs_managed_sse_enabled": true,
+        "redrive_policy": {
+          "deadLetterTargetArn": "${ref:cola_fallidos.arn}",
+          "maxReceiveCount": 3
+        }
+      }
+    }
+  ],
+  "relaciones": [
+    {
+      "origen": "cola_trabajos",
+      "destino": "cola_fallidos",
+      "tipo": "escribe_en",
+      "descripcion": "Tras 3 intentos fallidos, el mensaje pasa a la cola de fallidos."
+    }
+  ],
+  "supuestos": ["Cifrado administrado por SQS, sin clave KMS propia."]
+}
