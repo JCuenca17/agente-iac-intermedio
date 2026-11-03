@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { estimarCosto } from "./precios.js";
 import type { MensajeModelo, ProveedorModelo, RespuestaModelo } from "./tipos.js";
@@ -31,9 +32,16 @@ export function resolverClaude(): string {
 }
 
 const ejecutarReal: EjecutarClaude = (args, entrada, env) => {
-  const r = spawnSync(resolverClaude(), args, { input: entrada, env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
-  if (r.error) throw new Error(`No se pudo ejecutar claude: ${r.error.message}. Indica la ruta con CLAUDE_BIN`);
-  return { codigo: r.status ?? 1, salida: r.stdout ?? "", error: r.stderr ?? "" };
+  // Desde una carpeta temporal vacía, para que Claude Code no cargue los CLAUDE.md del
+  // proyecto ni su memoria: el contexto debe ser solo el prompt de la herramienta.
+  const cwd = mkdtempSync(join(tmpdir(), "agente-iac-claude-"));
+  try {
+    const r = spawnSync(resolverClaude(), args, { cwd, input: entrada, env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    if (r.error) throw new Error(`No se pudo ejecutar claude: ${r.error.message}. Indica la ruta con CLAUDE_BIN`);
+    return { codigo: r.status ?? 1, salida: r.stdout ?? "", error: r.stderr ?? "" };
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
 };
 
 /** Junta los turnos en un solo texto, porque `claude -p` recibe un único mensaje. */
