@@ -17,11 +17,11 @@ Dentro de la actividad de diseño y desarrollo se aplican prácticas de ingenier
 | 5. Evaluación | Experimento con casos propios, líneas base, ablaciones, proyectos grandes y el benchmark IaC-Eval; métricas M1-M6 y pruebas estadísticas | Resultados y análisis | `04-diseno-experimental.md`, `npm run experimento`, `npm run resumen` |
 | 6. Comunicación | Artículo en formato IEEE | Artículo | Fase 4 del proyecto |
 
-El proceso de DSRM es iterativo: la demostración y la evaluación pueden devolver el trabajo a la actividad de diseño. Así ocurrió en este proyecto. La prueba mínima en los emuladores cambió la configuración del proveedor y la selección del emulador principal, y el piloto ajustó la forma de ejecutar el modelo (ver los ADR correspondientes).
+El proceso de DSRM es iterativo: la demostración y la evaluación pueden devolver el trabajo a la actividad de diseño. En este proyecto, la prueba mínima en los emuladores cambió la configuración del proveedor y la elección del emulador principal (ADR-002, ADR-018), y el piloto ajustó la forma de ejecutar el modelo (ADR-014).
 
 ## 3. Puntos de entrada
 
-Peffers et al. [1] distinguen el punto de entrada de una investigación según dónde empieza. Este estudio tiene un punto de entrada centrado en el problema: parte de las brechas que identificó la revisión del Hito 1.
+Según Peffers et al. [1], una investigación puede empezar en distintas actividades del proceso. Esta empieza por el problema: parte de las brechas que identificó la revisión del Hito 1.
 
 ## 4. Prácticas de ingeniería de software dentro del diseño y desarrollo
 

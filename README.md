@@ -14,6 +14,8 @@ En desarrollo.
 |---|---|
 | [`docs/00-metodologia.md`](docs/00-metodologia.md) | Metodología (Design Science Research) y evidencia de cada actividad |
 | [`docs/01-requisitos.md`](docs/01-requisitos.md) | Especificación de requisitos con su origen en la revisión sistemática |
+| [`docs/02-arquitectura.md`](docs/02-arquitectura.md) | Arquitectura (arc42 resumido): contexto, contenedores, componentes, ejecución, despliegue y riesgos |
+| [`docs/adr/`](docs/adr/) | Una ficha por decisión técnica (ADR-000 a ADR-019) con alternativas y consecuencias |
 
 ## Requisitos
 
