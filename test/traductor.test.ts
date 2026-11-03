@@ -54,6 +54,12 @@ describe("traductor a OpenTofu (main.tf.json)", () => {
     expect(traducir(a, esquema, opciones).codigo.resource.aws_sqs_queue.cola_fallidos.name).toBe("cola-%%{x}");
   });
 
+  it("escapa ${ que no es una referencia, para que OpenTofu lo deje literal", () => {
+    const a = structuredClone(c03);
+    a.recursos[0].atributos.name = "cola-${x}";
+    expect(traducir(a, esquema, opciones).codigo.resource.aws_sqs_queue.cola_fallidos.name).toBe("cola-$${x}");
+  });
+
   it("traduce depende_de a depends_on", () => {
     const a = structuredClone(c03);
     a.recursos[1].depende_de = ["cola_fallidos"];

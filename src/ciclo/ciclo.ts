@@ -9,6 +9,7 @@ import { Registro } from "../trazas/registro.js";
 import { validarEstructura } from "../validador/c1-estructura.js";
 import { validarSemantica } from "../validador/c2-semantica.js";
 import { validarPoliticas } from "../validador/c3-politicas.js";
+import { revisarTfJson } from "../validador/seguridad-codigo.js";
 import { prepararDirectorio, validarConOpenTofu, type ResultadoC4, type ResumenPlan } from "../validador/c4-opentofu.js";
 import type { Capa, ErrorValidacion } from "../validador/tipos.js";
 
@@ -59,7 +60,21 @@ export const validarPorCapas: Validador = async (artefacto, dir, ctx) => {
   anotar("C3", c3.errores);
   if (!c3.valido) return { valido: false, capaFallida: "C3", errores: c3.errores };
 
-  const traduccion = traducir(a, ctx.esquema, ctx);
+  // La traducción no debería fallar con un artefacto que pasó C1-C3; si falla, el error
+  // se devuelve al modelo como cualquier otro en lugar de abortar la corrida.
+  let traduccion: ResultadoTraduccion;
+  try {
+    traduccion = traducir(a, ctx.esquema, ctx);
+  } catch (e) {
+    const errores: ErrorValidacion[] = [{ capa: "C4", ruta: "/", regla: "traduccion-fallida", mensaje: (e as Error).message }];
+    anotar("C4", errores);
+    return { valido: false, capaFallida: "C4", errores };
+  }
+  const prohibidas = revisarTfJson(traduccion.codigo as Parameters<typeof revisarTfJson>[0]);
+  if (prohibidas.length) {
+    anotar("C4", prohibidas);
+    return { valido: false, capaFallida: "C4", errores: prohibidas, traduccion };
+  }
   prepararDirectorio(dir, traduccion);
   const c4 = await ctx.registro.medir("C4", () => validarConOpenTofu(dir, a), { iteracion: ctx.iteracion });
   anotar("C4", c4.errores);
@@ -88,7 +103,14 @@ export interface OpcionesCiclo {
   validar?: Validador;
 }
 
-export type MotivoFin = "valido" | "sin-validacion" | "iteraciones-agotadas" | "sin-retroalimentacion" | "limite-gasto" | "traduccion-fallida";
+export type MotivoFin =
+  | "valido"
+  | "sin-validacion"
+  | "iteraciones-agotadas"
+  | "sin-retroalimentacion"
+  | "limite-gasto"
+  | "traduccion-fallida"
+  | "construccion-no-permitida";
 
 export interface ResultadoCiclo {
   /** true si el artefacto pasó todas las capas (o, sin validador, si se pudo traducir). */
@@ -135,7 +157,13 @@ export async function ejecutarCiclo(requerimiento: string, o: OpcionesCiclo): Pr
 
   for (let iteracion = 1; iteracion <= o.maxIteraciones; iteracion++) {
     const gen = await o.registro.medir("generacion", () =>
-      generarArtefacto(mensaje, previos, { proveedor: o.proveedor, esquema: o.esquema, conRag: o.conRag, versionProveedor: o.versionProveedor }),
+      generarArtefacto(mensaje, previos, {
+        proveedor: o.proveedor,
+        esquema: o.esquema,
+        conRag: o.conRag,
+        versionProveedor: o.versionProveedor,
+        presupuestoUsd: o.limiteGastoUsd - costoUsd,
+      }),
       { iteracion },
     );
     for (const ll of gen.llamadas) {
@@ -160,6 +188,13 @@ export async function ejecutarCiclo(requerimiento: string, o: OpcionesCiclo): Pr
       // A1: se traduce y se entrega sin validar nada antes del despliegue.
       try {
         const traduccion = traducir(gen.artefacto as Artefacto, o.esquema, o);
+        // Aun sin validador, nada que ejecute comandos o salga del emulador llega a OpenTofu.
+        const prohibidas = revisarTfJson(traduccion.codigo as Parameters<typeof revisarTfJson>[0]);
+        if (prohibidas.length) {
+          erroresPorIteracion.push(prohibidas);
+          o.registro.anotar("ciclo-fin", { motivo: "construccion-no-permitida", iteraciones: iteracion, costoUsd });
+          return { ...base(), listo: false, motivo: "construccion-no-permitida", iteraciones: iteracion };
+        }
         prepararDirectorio(dir, traduccion);
         erroresPorIteracion.push([]);
         o.registro.anotar("ciclo-fin", { motivo: "sin-validacion", iteraciones: iteracion, costoUsd });

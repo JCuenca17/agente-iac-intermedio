@@ -121,9 +121,15 @@ function revisarBloque(valores: Record<string, unknown>, bloque: BloqueEsquema, 
   }
 }
 
+/**
+ * `${...}` que no es una referencia del artefacto. Se exceptúan las variables de política
+ * IAM (${aws:username}, ${s3:prefix}...), que el traductor escapa para que lleguen literales.
+ */
+const INTERPOLACION_AJENA = /\$\{(?!ref:)(?![A-Za-z0-9]+:[A-Za-z0-9_.\/-]+\})/g;
+
 function revisarInterpolaciones(valor: unknown, ruta: string, agregar: Agregar): void {
   if (typeof valor === "string") {
-    for (const m of valor.matchAll(/\$\{(?!ref:)/g)) {
+    for (const m of valor.matchAll(INTERPOLACION_AJENA)) {
       agregar(ruta, "interpolacion-no-permitida", `usa \${ref:id_recurso.atributo} para referirte a otro recurso, no sintaxis de OpenTofu ("${valor.slice(m.index, m.index + 40)}")`);
       return;
     }

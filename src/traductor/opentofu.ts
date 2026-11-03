@@ -72,7 +72,8 @@ export function traducir(artefacto: Artefacto, esquema: EsquemaProveedor, opcion
     texto
       // Escapa lo que OpenTofu interpretaría como plantilla y no sea una referencia del artefacto.
       .replaceAll("%{", "%%{")
-      .replace(/\$\{(?!ref:)/g, "$${")
+      // En el texto de reemplazo "$$" vale un "$", así que "$$$${" escribe "$${".
+      .replace(/\$\{(?!ref:)/g, "$$$${")
       .replace(PATRON_REFERENCIA, (_, id: string, atributo: string) => `\${${tipoPorId.get(id) ?? "desconocido"}.${id}.${atributo}}`);
 
   const convertirValor = (valor: Json): Json => {

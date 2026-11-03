@@ -17,7 +17,7 @@ export interface SalidaTofu {
  * Las credenciales son de prueba y se anulan los perfiles locales.
  */
 export function entornoEmulador(): NodeJS.ProcessEnv {
-  const endpoint = process.env.AWS_ENDPOINT || "http://localhost:4566";
+  const endpoint = process.env.AWS_ENDPOINT?.trim() || "http://localhost:4566";
   return {
     AWS_ENDPOINT_URL: endpoint,
     AWS_ACCESS_KEY_ID: "test",
@@ -29,6 +29,20 @@ export function entornoEmulador(): NodeJS.ProcessEnv {
 }
 
 /**
+ * Entorno completo para OpenTofu: el del proceso sin claves de API ni variables que
+ * desvíen el proveedor AWS (endpoints por servicio, archivos de credenciales o de
+ * configuración propios), más las variables del emulador.
+ */
+export function entornoTofu(): NodeJS.ProcessEnv {
+  const base: NodeJS.ProcessEnv = {};
+  for (const [clave, valor] of Object.entries(process.env)) {
+    if (/^(ANTHROPIC_|CLAUDE_CODE_OAUTH|AWS_)/.test(clave)) continue;
+    base[clave] = valor;
+  }
+  return { ...base, ...entornoEmulador() };
+}
+
+/**
  * Ejecuta OpenTofu en `dir` sin bloquear el proceso (un apply en el emulador puede tardar
  * minutos). Los proveedores se guardan una sola vez en .cache/plugins.
  */
@@ -37,7 +51,7 @@ export function ejecutarTofu(args: string[], dir: string): Promise<SalidaTofu> {
   return new Promise((resolver, rechazar) => {
     const p = spawn("tofu", args, {
       cwd: dir,
-      env: { ...process.env, ...entornoEmulador(), TF_PLUGIN_CACHE_DIR: CACHE_PLUGINS, TF_IN_AUTOMATION: "1" },
+      env: { ...entornoTofu(), TF_PLUGIN_CACHE_DIR: CACHE_PLUGINS, TF_IN_AUTOMATION: "1" },
     });
     const salida: Buffer[] = [];
     const error: Buffer[] = [];

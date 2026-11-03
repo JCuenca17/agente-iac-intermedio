@@ -103,6 +103,12 @@ describe("C2: validación semántica contra el esquema del proveedor", () => {
     expect(reglas(a)).toContain("interpolacion-no-permitida");
   });
 
+  it("acepta variables de política IAM como ${aws:username}", () => {
+    const a = copia();
+    a.recursos[1].atributos.redrive_policy.deadLetterTargetArn = "arn:aws:sqs:us-east-1:000000000000:${aws:username}";
+    expect(reglas(a)).not.toContain("interpolacion-no-permitida");
+  });
+
   it("detecta relaciones y dependencias que apuntan a recursos inexistentes", () => {
     const a = copia();
     a.relaciones.push({ origen: "cola_trabajos", destino: "funcion_fantasma", tipo: "invoca" });

@@ -5,6 +5,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { construirSistemaDirecto, ejecutarDirecta, extraerCodigo } from "../src/linea-base/directa.js";
 import { ProveedorGrabado } from "../src/modelo/grabado.js";
 import { Registro } from "../src/trazas/registro.js";
+import { ProveedorFalso } from "./ayudas/proveedor-falso.js";
 
 const dirs: string[] = [];
 afterAll(() => dirs.forEach((d) => rmSync(d, { recursive: true, force: true })));
@@ -45,5 +46,66 @@ describe("línea base: generación directa de OpenTofu", () => {
     expect(proveedor.provider.aws.endpoints.sqs).toBe("http://localhost:4566");
     expect(proveedor.terraform.required_providers.aws.version).toBe("6.71.0");
     expect(existsSync(join(r.dirFinal!, "lambda_minima.zip"))).toBe(true);
+  });
+});
+
+describe("línea base: B0 y B1 (revisión de código)", () => {
+  const otro = 'resource "aws_sns_topic" "avisos" {\n  name = "avisos"\n}';
+  const comunes = (dir: string) => ({
+    endpoint: "http://localhost:4566",
+    region: "us-east-1",
+    versionProveedor: "6.71.0",
+    dirTrabajo: dir,
+    registro: new Registro(),
+    maxIteraciones: 3,
+    limiteGastoUsd: 5,
+  });
+  const nuevoDir = () => {
+    const d = mkdtempSync(join(tmpdir(), "b1-"));
+    dirs.push(d);
+    return d;
+  };
+  const errorC4 = { capa: "C4" as const, ruta: "aws_sqs_queue.trabajos", regla: "tofu-validate", mensaje: "argumento inválido" };
+
+  it("junta todos los bloques de código de la respuesta", () => {
+    const texto = "Primero:\n```hcl\n" + codigo + "\n```\nY luego:\n```hcl\n" + otro + "\n```\n";
+    expect(extraerCodigo(texto)).toBe(codigo + "\n\n" + otro + "\n");
+  });
+
+  it("B0 no escribe ni despliega código con un provisioner", async () => {
+    const malo = 'resource "aws_sqs_queue" "q" {\n  provisioner "local-exec" {\n    command = "id"\n  }\n}';
+    const dir = nuevoDir();
+    const r = await ejecutarDirecta("una cola", { ...comunes(dir), proveedor: new ProveedorFalso(["```hcl\n" + malo + "\n```"]), conRetroalimentacion: false });
+    expect(r).toMatchObject({ listo: false, motivo: "construccion-no-permitida", iteraciones: 1 });
+    expect(existsSync(join(dir, "iter-1", "main.tf"))).toBe(false);
+  });
+
+  it("B1 devuelve los errores de OpenTofu al modelo y acepta la corrección", async () => {
+    const proveedor = new ProveedorFalso(["```hcl\n" + codigo + "\n```"]);
+    let n = 0;
+    const validar = async () => (++n === 1 ? { valido: false, errores: [errorC4] } : { valido: true, errores: [] });
+    const r = await ejecutarDirecta("una cola", { ...comunes(nuevoDir()), proveedor, conRetroalimentacion: true, validar });
+    expect(r).toMatchObject({ listo: true, motivo: "valido", iteraciones: 2, llamadas: 2 });
+    const ultimo = proveedor.recibidos[1].at(-1)!;
+    expect(ultimo.rol).toBe("usuario");
+    expect(ultimo.texto).toContain("aws_sqs_queue.trabajos (tofu-validate): argumento inválido");
+  });
+
+  it("B1 devuelve como error un provisioner, sin ejecutar OpenTofu", async () => {
+    const malo = 'resource "null_resource" "x" {}';
+    const proveedor = new ProveedorFalso(["```hcl\n" + malo + "\n```", "```hcl\n" + codigo + "\n```"]);
+    let llamadasValidar = 0;
+    const validar = async () => (llamadasValidar++, { valido: true, errores: [] });
+    const r = await ejecutarDirecta("una cola", { ...comunes(nuevoDir()), proveedor, conRetroalimentacion: true, validar });
+    expect(r).toMatchObject({ listo: true, iteraciones: 2 });
+    expect(llamadasValidar).toBe(1);
+    expect(r.erroresPorIteracion[0][0].regla).toBe("construccion-no-permitida");
+  });
+
+  it("B1 se detiene por límite de gasto", async () => {
+    const proveedor = new ProveedorFalso(["```hcl\n" + codigo + "\n```"], 3);
+    const validar = async () => ({ valido: false, errores: [errorC4] });
+    const r = await ejecutarDirecta("una cola", { ...comunes(nuevoDir()), proveedor, conRetroalimentacion: true, validar });
+    expect(r).toMatchObject({ listo: false, motivo: "limite-gasto", iteraciones: 2, llamadas: 2 });
   });
 });

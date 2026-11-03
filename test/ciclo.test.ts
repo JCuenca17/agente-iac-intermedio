@@ -7,6 +7,7 @@ import { ProveedorGrabado } from "../src/modelo/grabado.js";
 import type { EsquemaProveedor } from "../src/proveedor/esquema.js";
 import { Registro } from "../src/trazas/registro.js";
 import type { ErrorValidacion } from "../src/validador/tipos.js";
+import { ProveedorFalso } from "./ayudas/proveedor-falso.js";
 
 // Pruebas del ciclo con un validador falso: no usan OpenTofu, OPA, el emulador ni un modelo.
 const esquema: EsquemaProveedor = JSON.parse(readFileSync(new URL("./fixtures/esquema-aws-mini.json", import.meta.url), "utf8"));
@@ -96,5 +97,53 @@ describe("ciclo de generación, validación y retroalimentación", () => {
     expect(eventos[0]).toBe("ciclo-inicio");
     expect(eventos.filter((e) => e === "llamada")).toHaveLength(2);
     expect(eventos.at(-1)).toBe("ciclo-fin");
+  });
+});
+
+describe("ciclo: retroalimentación, límites y A1 (revisión de código)", () => {
+  it("la segunda llamada recibe la conversación anterior y la lista de errores", async () => {
+    const proveedor = new ProveedorFalso([entregar(c03), entregar(c03)]);
+    const r = await ejecutarCiclo("una cola", opciones([], { proveedor, validar: validadorQueFalla(1) }));
+    expect(r.listo).toBe(true);
+    const segunda = proveedor.recibidos[1];
+    expect(segunda.length).toBe(3);
+    expect(segunda[0].texto).toContain("una cola");
+    expect(segunda[1].rol).toBe("asistente");
+    expect(segunda[2].texto).toContain("/recursos/0/atributos/x");
+    expect(segunda[2].texto).toContain("atributo-inexistente");
+  });
+
+  it("se detiene por límite de gasto sin hacer más llamadas", async () => {
+    const proveedor = new ProveedorFalso([entregar(c03)], 3);
+    const r = await ejecutarCiclo("una cola", opciones([], { proveedor, validar: validadorQueFalla(99), limiteGastoUsd: 5 }));
+    expect(r).toMatchObject({ listo: false, motivo: "limite-gasto", iteraciones: 2, llamadas: 2, costoUsd: 6 });
+  });
+
+  it("A1 informa traduccion-fallida y cuenta la llamada si el artefacto no se puede traducir", async () => {
+    const r = await ejecutarCiclo("una cola", opciones([entregar({ version: "1.0" })], { conValidador: false }));
+    expect(r).toMatchObject({ listo: false, motivo: "traduccion-fallida", iteraciones: 1, llamadas: 1 });
+    expect(r.erroresPorIteracion[0][0]).toMatchObject({ capa: "C0", regla: "traduccion-fallida" });
+  });
+
+  it("A1 no entrega a OpenTofu un recurso con provisioner", async () => {
+    const a = structuredClone(c03);
+    a.recursos[0].atributos.provisioner = { "local-exec": { command: "id" } };
+    const r = await ejecutarCiclo("una cola", opciones([entregar(a)], { conValidador: false }));
+    expect(r).toMatchObject({ listo: false, motivo: "construccion-no-permitida" });
+    expect(r.dirFinal).toBeUndefined();
+  });
+
+  it("una respuesta cortada por max_tokens se informa como tal en C0", async () => {
+    const proveedor = new ProveedorFalso(['{"accion":"entregar","artefacto":{"version"'], 0, "max_tokens");
+    const r = await ejecutarCiclo("una cola", opciones([], { proveedor, conRetroalimentacion: false }));
+    expect(r.erroresPorIteracion[0][0]).toMatchObject({ capa: "C0", regla: "formato-respuesta" });
+    expect(r.erroresPorIteracion[0][0].mensaje).toMatch(/límite de tokens/);
+  });
+
+  it("una respuesta vacía no deja un turno vacío en la conversación", async () => {
+    const proveedor = new ProveedorFalso(["", entregar(c03)]);
+    const r = await ejecutarCiclo("una cola", opciones([], { proveedor }));
+    expect(r.listo).toBe(true);
+    expect(proveedor.recibidos[1].every((m) => m.texto.trim().length > 0)).toBe(true);
   });
 });

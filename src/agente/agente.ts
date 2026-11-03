@@ -25,7 +25,8 @@ export function interpretarRespuesta(texto: string): Interpretacion {
     }
     return { tipo: "artefacto", artefacto: datos.artefacto };
   }
-  if (datos.accion === "consultar_esquema" && Array.isArray(datos.tipos)) {
+  if (datos.accion === "consultar_esquema") {
+    if (!Array.isArray(datos.tipos)) return { tipo: "invalida", error: 'la acción "consultar_esquema" necesita el campo "tipos" con una lista de tipos de recurso' };
     return { tipo: "consulta", tipos: datos.tipos.map(String).slice(0, 10) };
   }
   return { tipo: "invalida", error: `acción desconocida: ${JSON.stringify(datos.accion)}` };
@@ -39,6 +40,18 @@ export interface OpcionesAgente {
   /** Consultas permitidas antes de exigir la entrega. */
   maxConsultas?: number;
   versionProveedor?: string;
+  /** Gasto que queda en la corrida (USD); al alcanzarlo no se hacen más consultas. */
+  presupuestoUsd?: number;
+}
+
+/**
+ * Problema de la respuesta que no depende de su contenido: vacía (el proveedor no devolvió
+ * texto) o cortada por el límite de tokens de salida. Se informa tal cual en C0.
+ */
+export function problemaRespuesta(r: { texto: string; motivoParada: string }): string | undefined {
+  if (r.motivoParada === "max_tokens") return "la respuesta se cortó por el límite de tokens de salida; entrega una respuesta más compacta";
+  if (!r.texto.trim()) return `la respuesta llegó vacía (motivo de parada: ${r.motivoParada || "desconocido"})`;
+  return undefined;
 }
 
 export interface ResultadoAgente {
@@ -73,12 +86,19 @@ export async function generarArtefacto(
   for (let vuelta = 0; vuelta < maxConsultas + 2; vuelta++) {
     const respuesta = await opciones.proveedor.completar(sistema, mensajes);
     llamadas.push(respuesta);
-    mensajes.push({ rol: "asistente", texto: respuesta.texto });
+    // La API no acepta turnos vacíos: si la respuesta vino vacía se deja constancia en el turno.
+    mensajes.push({ rol: "asistente", texto: respuesta.texto.trim() ? respuesta.texto : "(respuesta vacía)" });
 
+    const problema = problemaRespuesta(respuesta);
+    if (problema) return { artefacto: null, errorFormato: problema, mensajes, llamadas, consultas };
     const r = interpretarRespuesta(respuesta.texto);
     if (r.tipo === "artefacto") return { artefacto: r.artefacto, mensajes, llamadas, consultas };
     if (r.tipo === "invalida") return { artefacto: null, errorFormato: r.error, mensajes, llamadas, consultas };
 
+    const gastado = llamadas.reduce((s, l) => s + l.costoUsd, 0);
+    if (opciones.presupuestoUsd !== undefined && gastado > opciones.presupuestoUsd) {
+      return { artefacto: null, errorFormato: "se alcanzó el límite de gasto de la corrida", mensajes, llamadas, consultas };
+    }
     if (!opciones.conRag) {
       mensajes.push({ rol: "usuario", texto: "La consulta al esquema no está disponible. Entrega el artefacto." });
     } else if (consultas.length >= maxConsultas) {

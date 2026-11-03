@@ -1,11 +1,13 @@
 import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { problemaRespuesta } from "../agente/agente.js";
 import { REQUISITOS_SEGURIDAD } from "../agente/prompt.js";
 import type { MensajeModelo, ProveedorModelo, UsoTokens } from "../modelo/tipos.js";
 import { enRaiz } from "../rutas.js";
 import { configuracionProveedor, ZIP_LAMBDA } from "../traductor/opentofu.js";
 import type { Registro } from "../trazas/registro.js";
-import { validarConOpenTofu, type ResumenPlan } from "../validador/c4-opentofu.js";
+import { validarConOpenTofu, type ResultadoC4, type ResumenPlan } from "../validador/c4-opentofu.js";
+import { revisarHcl } from "../validador/seguridad-codigo.js";
 import type { ErrorValidacion } from "../validador/tipos.js";
 
 /** Prompt de la generación directa: el modelo escribe OpenTofu sin artefacto intermedio. */
@@ -24,10 +26,13 @@ export function construirSistemaDirecto(versionProveedor: string): string {
 ${REQUISITOS_SEGURIDAD}`;
 }
 
-/** Extrae el código HCL de la respuesta (bloque ```hcl o ```terraform, o el texto completo). */
+/**
+ * Extrae el código HCL de la respuesta: todos los bloques ```hcl, ```terraform o ```tf
+ * (el modelo a veces parte la configuración en varios), o el texto completo si no hay bloques.
+ */
 export function extraerCodigo(texto: string): string {
-  const m = texto.match(/```(?:hcl|terraform|tf)?\s*\n([\s\S]*?)```/);
-  return (m ? m[1] : texto).trim() + "\n";
+  const bloques = [...texto.matchAll(/```(?:hcl|terraform|tf)?[ \t]*\r?\n([\s\S]*?)```/g)].map((m) => m[1].trim());
+  return (bloques.length ? bloques.join("\n\n") : texto.trim()) + "\n";
 }
 
 export interface OpcionesDirecta {
@@ -41,11 +46,13 @@ export interface OpcionesDirecta {
   conRetroalimentacion: boolean;
   maxIteraciones: number;
   limiteGastoUsd: number;
+  /** Para pruebas: reemplaza tofu validate + plan. */
+  validar?: (dir: string) => Promise<ResultadoC4>;
 }
 
 export interface ResultadoDirecta {
   listo: boolean;
-  motivo: "valido" | "sin-validacion" | "iteraciones-agotadas" | "limite-gasto";
+  motivo: "valido" | "sin-validacion" | "iteraciones-agotadas" | "limite-gasto" | "construccion-no-permitida";
   iteraciones: number;
   dirFinal?: string;
   plan?: unknown;
@@ -90,19 +97,33 @@ export async function ejecutarDirecta(requerimiento: string, o: OpcionesDirecta)
     uso.cacheEscritura += r.uso.cacheEscritura;
     uso.cacheLectura += r.uso.cacheLectura;
     o.registro.anotar("llamada", { iteracion, modelo: r.modelo, uso: r.uso, costoUsd: r.costoUsd, duracionMs: r.duracionMs, motivoParada: r.motivoParada });
-    mensajes.push({ rol: "asistente", texto: r.texto });
+    mensajes.push({ rol: "asistente", texto: r.texto.trim() ? r.texto : "(respuesta vacía)" });
 
     const dir = join(o.dirTrabajo, `iter-${iteracion}`);
-    prepararDirecto(dir, extraerCodigo(r.texto), o);
+    const codigo = extraerCodigo(r.texto);
+    const problema = problemaRespuesta(r);
+    // Lo que no puede llegar a OpenTofu (provisioners, otros proveedores...) se revisa antes
+    // de escribir nada; en B0 la corrida termina, en B1 se devuelve como error.
+    const previos: ErrorValidacion[] = problema
+      ? [{ capa: "C0", ruta: "/", regla: "formato-respuesta", mensaje: problema }]
+      : revisarHcl(codigo);
+    if (!previos.length) prepararDirecto(dir, codigo, o);
 
     if (!o.conRetroalimentacion) {
-      erroresPorIteracion.push([]);
+      erroresPorIteracion.push(previos);
+      if (previos.length) {
+        const motivo = problema ? "iteraciones-agotadas" : "construccion-no-permitida";
+        o.registro.anotar("ciclo-fin", { motivo, iteraciones: 1, costoUsd });
+        return { ...base(), listo: false, motivo, iteraciones: 1 };
+      }
       o.registro.anotar("ciclo-fin", { motivo: "sin-validacion", iteraciones: 1, costoUsd });
       return { ...base(), listo: true, motivo: "sin-validacion", iteraciones: 1, dirFinal: dir };
     }
 
-    const c4 = await o.registro.medir("C4", () => validarConOpenTofu(dir), { iteracion });
-    o.registro.anotar("validacion", { iteracion, capa: "C4", valido: c4.valido, errores: c4.errores.length, reglas: [...new Set(c4.errores.map((e) => e.regla))] });
+    const c4: ResultadoC4 = previos.length
+      ? { valido: false, errores: previos }
+      : await o.registro.medir("C4", () => (o.validar ?? validarConOpenTofu)(dir), { iteracion });
+    o.registro.anotar("validacion", { iteracion, capa: problema ? "C0" : "C4", valido: c4.valido, errores: c4.errores.length, reglas: [...new Set(c4.errores.map((e) => e.regla))] });
     erroresPorIteracion.push(c4.errores);
     if (c4.valido) {
       o.registro.anotar("ciclo-fin", { motivo: "valido", iteraciones: iteracion, costoUsd });
@@ -113,7 +134,7 @@ export async function ejecutarDirecta(requerimiento: string, o: OpcionesDirecta)
       return { ...base(), listo: false, motivo: "limite-gasto", iteraciones: iteracion };
     }
     const lista = c4.errores.map((e) => `- ${e.ruta} (${e.regla}): ${e.mensaje}`).join("\n");
-    mensajes.push({ rol: "usuario", texto: `La configuración no pasó la validación de OpenTofu. Errores:\n\n${lista}\n\nCorrige todos los errores y entrega otra vez la configuración completa.` });
+    mensajes.push({ rol: "usuario", texto: `La configuración no pasó la validación. Errores:\n\n${lista}\n\nCorrige todos los errores y entrega otra vez la configuración completa.` });
   }
 
   o.registro.anotar("ciclo-fin", { motivo: "iteraciones-agotadas", iteraciones: maxIteraciones, costoUsd });
