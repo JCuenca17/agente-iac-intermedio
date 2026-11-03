@@ -1,0 +1,3728 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_iam_policy_document.confianza_ec2",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_ec2",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "2851119427",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sts:AssumeRole"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "ec2.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": []
+       }
+      ]
+     }
+    },
+    {
+     "address": "data.aws_iam_policy_document.confianza_flujo",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_flujo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "2717921857",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"vpc-flow-logs.amazonaws.com\"\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"vpc-flow-logs.amazonaws.com\"}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sts:AssumeRole"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "vpc-flow-logs.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": []
+       }
+      ]
+     }
+    },
+    {
+     "address": "aws_autoscaling_group.web",
+     "mode": "managed",
+     "type": "aws_autoscaling_group",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:autoscaling:us-east-1:000000000000:autoScalingGroup:p2-web",
+      "availability_zone_distribution": [
+       {
+        "capacity_distribution_strategy": null
+       }
+      ],
+      "availability_zones": [],
+      "capacity_rebalance": false,
+      "capacity_reservation_specification": [
+       {
+        "capacity_reservation_preference": null,
+        "capacity_reservation_target": null
+       }
+      ],
+      "context": "",
+      "default_cooldown": 300,
+      "default_instance_warmup": 0,
+      "desired_capacity": 2,
+      "desired_capacity_type": "",
+      "enabled_metrics": null,
+      "force_delete": false,
+      "force_delete_warm_pool": false,
+      "health_check_grace_period": 300,
+      "health_check_type": "EC2",
+      "id": "p2-web",
+      "ignore_failed_scaling_activities": false,
+      "initial_lifecycle_hook": [],
+      "instance_lifecycle_policy": [],
+      "instance_maintenance_policy": [],
+      "instance_refresh": [],
+      "launch_configuration": "",
+      "launch_template": [
+       {
+        "id": "lt-ef9410bfc41145737",
+        "name": "",
+        "version": "$Latest"
+       }
+      ],
+      "load_balancers": [],
+      "max_instance_lifetime": 0,
+      "max_size": 4,
+      "metrics_granularity": "1Minute",
+      "min_elb_capacity": null,
+      "min_size": 2,
+      "mixed_instances_policy": [],
+      "name": "p2-web",
+      "name_prefix": "",
+      "placement_group": "",
+      "predicted_capacity": 0,
+      "protect_from_scale_in": false,
+      "region": "us-east-1",
+      "service_linked_role_arn": "",
+      "suspended_processes": null,
+      "tag": [],
+      "target_group_arns": [
+       "arn:aws:elasticloadbalancing:us-east-1:000000000000:targetgroup/p2-web/a16c690b6aa44bed"
+      ],
+      "termination_policies": null,
+      "timeouts": null,
+      "traffic_source": [],
+      "vpc_zone_identifier": [
+       "subnet-093f294a",
+       "subnet-42c746a0"
+      ],
+      "wait_for_capacity_timeout": "10m",
+      "wait_for_elb_capacity": null,
+      "warm_pool": [],
+      "warm_pool_size": 0
+     },
+     "sensitive_values": {
+      "availability_zone_distribution": [
+       {}
+      ],
+      "availability_zones": [],
+      "capacity_reservation_specification": [
+       {}
+      ],
+      "initial_lifecycle_hook": [],
+      "instance_lifecycle_policy": [],
+      "instance_maintenance_policy": [],
+      "instance_refresh": [],
+      "launch_template": [
+       {}
+      ],
+      "load_balancers": [],
+      "mixed_instances_policy": [],
+      "tag": [],
+      "target_group_arns": [
+       false
+      ],
+      "traffic_source": [],
+      "vpc_zone_identifier": [
+       false,
+       false
+      ],
+      "warm_pool": []
+     },
+     "depends_on": [
+      "aws_iam_instance_profile.web",
+      "aws_iam_role.web",
+      "aws_launch_template.web",
+      "aws_lb_target_group.web",
+      "aws_security_group.balanceador",
+      "aws_security_group.web",
+      "aws_subnet.privada",
+      "aws_vpc.principal",
+      "data.aws_iam_policy_document.confianza_ec2"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-web",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_autoscaling_policy.cpu",
+     "mode": "managed",
+     "type": "aws_autoscaling_policy",
+     "name": "cpu",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "adjustment_type": "",
+      "arn": "arn:aws:autoscaling:us-east-1:000000000000:scalingPolicy:p2-web:p2-web-cpu",
+      "autoscaling_group_name": "p2-web",
+      "cooldown": 300,
+      "enabled": false,
+      "estimated_instance_warmup": 0,
+      "id": "p2-web-cpu",
+      "metric_aggregation_type": "",
+      "min_adjustment_magnitude": 0,
+      "name": "p2-web-cpu",
+      "policy_type": "TargetTrackingScaling",
+      "predictive_scaling_configuration": [],
+      "region": "us-east-1",
+      "scaling_adjustment": 0,
+      "step_adjustment": [],
+      "target_tracking_configuration": [
+       {
+        "customized_metric_specification": [],
+        "disable_scale_in": false,
+        "predefined_metric_specification": [
+         {
+          "predefined_metric_type": "ASGAverageCPUUtilization",
+          "resource_label": ""
+         }
+        ],
+        "target_value": 60
+       }
+      ]
+     },
+     "sensitive_values": {
+      "predictive_scaling_configuration": [],
+      "step_adjustment": [],
+      "target_tracking_configuration": [
+       {
+        "customized_metric_specification": [],
+        "predefined_metric_specification": [
+         {}
+        ]
+       }
+      ]
+     },
+     "depends_on": [
+      "aws_autoscaling_group.web",
+      "aws_iam_instance_profile.web",
+      "aws_iam_role.web",
+      "aws_launch_template.web",
+      "aws_lb_target_group.web",
+      "aws_security_group.balanceador",
+      "aws_security_group.web",
+      "aws_subnet.privada",
+      "aws_vpc.principal",
+      "data.aws_iam_policy_document.confianza_ec2"
+     ],
+     "identity": {
+      "account_id": "",
+      "autoscaling_group_name": "p2-web",
+      "name": "p2-web-cpu",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.aplicacion",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "aplicacion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/p2/aplicacion",
+      "deletion_protection_enabled": false,
+      "id": "/p2/aplicacion",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/p2/aplicacion",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/p2/aplicacion",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.flujo_red",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "flujo_red",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/p2/flujo-red",
+      "deletion_protection_enabled": false,
+      "id": "/p2/flujo-red",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/p2/flujo-red",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/p2/flujo-red",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_metric_alarm.cpu_base_datos",
+     "mode": "managed",
+     "type": "aws_cloudwatch_metric_alarm",
+     "name": "cpu_base_datos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "actions_enabled": true,
+      "alarm_actions": [
+       "arn:aws:sns:us-east-1:000000000000:p2-alertas"
+      ],
+      "alarm_description": "",
+      "alarm_name": "p2-cpu-base-datos",
+      "arn": "arn:aws:cloudwatch:us-east-1:000000000000:alarm:p2-cpu-base-datos",
+      "comparison_operator": "GreaterThanThreshold",
+      "datapoints_to_alarm": 0,
+      "dimensions": {
+       "DBInstanceIdentifier": "p2-base-datos"
+      },
+      "evaluate_low_sample_count_percentiles": "",
+      "evaluation_criteria": [],
+      "evaluation_interval": 0,
+      "evaluation_periods": 2,
+      "evaluation_window": [],
+      "extended_statistic": "",
+      "id": "p2-cpu-base-datos",
+      "insufficient_data_actions": null,
+      "metric_name": "CPUUtilization",
+      "metric_query": [],
+      "namespace": "AWS/RDS",
+      "ok_actions": null,
+      "period": 300,
+      "region": "us-east-1",
+      "statistic": "Average",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "threshold": 80,
+      "threshold_metric_id": "",
+      "treat_missing_data": "missing",
+      "unit": "",
+      "warm_up_configuration": []
+     },
+     "sensitive_values": {
+      "alarm_actions": [
+       false
+      ],
+      "dimensions": {},
+      "evaluation_criteria": [],
+      "evaluation_window": [],
+      "metric_query": [],
+      "tags_all": {},
+      "warm_up_configuration": []
+     },
+     "depends_on": [
+      "aws_db_instance.principal",
+      "aws_db_parameter_group.principal",
+      "aws_db_subnet_group.principal",
+      "aws_security_group.balanceador",
+      "aws_security_group.base_datos",
+      "aws_security_group.web",
+      "aws_sns_topic.alerta",
+      "aws_subnet.privada",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "alarm_name": "p2-cpu-base-datos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_db_instance.principal",
+     "mode": "managed",
+     "type": "aws_db_instance",
+     "name": "principal",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 2,
+     "values": {
+      "address": "172.17.0.2",
+      "allocated_storage": 20,
+      "allow_major_version_upgrade": null,
+      "apply_immediately": false,
+      "arn": "arn:aws:rds:us-east-1:000000000000:db:p2-base-datos",
+      "auto_minor_version_upgrade": true,
+      "availability_zone": "us-east-1a",
+      "backup_retention_period": 7,
+      "backup_target": "",
+      "backup_window": "04:00-06:00",
+      "blue_green_update": [],
+      "ca_cert_identifier": "rds-ca-rsa2048-g1",
+      "character_set_name": "",
+      "copy_tags_to_snapshot": false,
+      "custom_iam_instance_profile": "",
+      "customer_owned_ip_enabled": false,
+      "database_insights_mode": "",
+      "db_name": "aplicacion",
+      "db_subnet_group_name": "p2-base-datos",
+      "dedicated_log_volume": false,
+      "delete_automated_backups": true,
+      "deletion_protection": false,
+      "domain": "",
+      "domain_auth_secret_arn": "",
+      "domain_dns_ips": null,
+      "domain_fqdn": "",
+      "domain_iam_role_name": "",
+      "domain_ou": "",
+      "enabled_cloudwatch_logs_exports": null,
+      "endpoint": "172.17.0.2:7001",
+      "engine": "postgres",
+      "engine_lifecycle_support": "open-source-rds-extended-support",
+      "engine_version": "16",
+      "engine_version_actual": "16",
+      "final_snapshot_identifier": null,
+      "hosted_zone_id": "Z2R2ITUGPM61AM",
+      "iam_database_authentication_enabled": false,
+      "id": "db-3667ECA0D4B145168E277709",
+      "identifier": "p2-base-datos",
+      "identifier_prefix": "",
+      "instance_class": "db.t3.micro",
+      "iops": 0,
+      "kms_key_id": "",
+      "latest_restorable_time": "2026-11-03T14:49:15Z",
+      "license_model": "",
+      "listener_endpoint": [],
+      "maintenance_window": "mon:00:00-mon:03:00",
+      "manage_master_user_password": true,
+      "master_user_secret": [
+       {
+        "kms_key_id": "arn:aws:kms:us-east-1:000000000000:key/32259c67-8565-43a4-a2a3-488b26f07d1a",
+        "secret_arn": "arn:aws:secretsmanager:us-east-1:000000000000:secret:rds!db-3667ECA0D4B145168E277709-IXNYBZ",
+        "secret_status": "active"
+       }
+      ],
+      "master_user_secret_kms_key_id": null,
+      "max_allocated_storage": 0,
+      "monitoring_interval": 0,
+      "monitoring_role_arn": "",
+      "multi_az": false,
+      "multi_tenant": false,
+      "nchar_character_set_name": "",
+      "network_type": "",
+      "option_group_name": "default:postgres-16",
+      "parameter_group_name": "p2-postgres16",
+      "password": null,
+      "password_wo": null,
+      "password_wo_version": null,
+      "performance_insights_enabled": false,
+      "performance_insights_kms_key_id": "",
+      "performance_insights_retention_period": 0,
+      "port": 7001,
+      "publicly_accessible": false,
+      "region": "us-east-1",
+      "replica_mode": "",
+      "replicas": [],
+      "replicate_source_db": "",
+      "resource_id": "db-3667ECA0D4B145168E277709",
+      "restore_to_point_in_time": [],
+      "s3_import": [],
+      "skip_final_snapshot": true,
+      "snapshot_identifier": null,
+      "status": "available",
+      "storage_encrypted": true,
+      "storage_throughput": 0,
+      "storage_type": "gp2",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "timezone": "",
+      "upgrade_rollout_order": "",
+      "upgrade_storage_config": null,
+      "username": "aplicacion",
+      "vpc_security_group_ids": [
+       "sg-a527f04d8512bebec"
+      ],
+      "warning_event_categories": null
+     },
+     "sensitive_values": {
+      "blue_green_update": [],
+      "listener_endpoint": [],
+      "master_user_secret": [
+       {}
+      ],
+      "password": true,
+      "password_wo": true,
+      "replicas": [],
+      "restore_to_point_in_time": [],
+      "s3_import": [],
+      "tags_all": {},
+      "vpc_security_group_ids": [
+       false
+      ]
+     },
+     "depends_on": [
+      "aws_db_parameter_group.principal",
+      "aws_db_subnet_group.principal",
+      "aws_security_group.balanceador",
+      "aws_security_group.base_datos",
+      "aws_security_group.web",
+      "aws_subnet.privada",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "identifier": "p2-base-datos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_db_parameter_group.principal",
+     "mode": "managed",
+     "type": "aws_db_parameter_group",
+     "name": "principal",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:rds:us-east-1:000000000000:pg:p2-postgres16",
+      "description": "Managed by Terraform",
+      "family": "postgres16",
+      "id": "p2-postgres16",
+      "name": "p2-postgres16",
+      "name_prefix": "",
+      "parameter": [
+       {
+        "apply_method": "immediate",
+        "name": "log_min_duration_statement",
+        "value": "1000"
+       }
+      ],
+      "region": "us-east-1",
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "parameter": [
+       {}
+      ],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "p2-postgres16",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_db_subnet_group.principal",
+     "mode": "managed",
+     "type": "aws_db_subnet_group",
+     "name": "principal",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:rds:us-east-1:000000000000:subgrp:p2-base-datos",
+      "description": "Managed by Terraform",
+      "id": "p2-base-datos",
+      "name": "p2-base-datos",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "subnet_ids": [
+       "subnet-093f294a",
+       "subnet-42c746a0"
+      ],
+      "supported_network_types": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "subnet_ids": [
+       false,
+       false
+      ],
+      "supported_network_types": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_subnet.privada",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-base-datos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "address": null,
+      "allocation_id": "eipalloc-f47fbc28730c047a2",
+      "arn": "arn:aws:ec2:us-east-1::elastic-ip/eipalloc-f47fbc28730c047a2",
+      "associate_with_private_ip": null,
+      "association_id": "",
+      "carrier_ip": "",
+      "customer_owned_ip": "",
+      "customer_owned_ipv4_pool": "",
+      "domain": "vpc",
+      "id": "eipalloc-f47fbc28730c047a2",
+      "instance": "",
+      "ipam_pool_id": "",
+      "network_border_group": "us-east-1",
+      "network_interface": "",
+      "private_dns": "",
+      "private_ip": "",
+      "ptr_record": "",
+      "public_dns": "ec2-203-0-113-2.compute-1.amazonaws.com",
+      "public_ip": "203.0.113.2",
+      "public_ipv4_pool": "amazon",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "eipalloc-f47fbc28730c047a2",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_flow_log.vpc",
+     "mode": "managed",
+     "type": "aws_flow_log",
+     "name": "vpc",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1::vpc-flow-log/fl-f094df27fc5b9fc11",
+      "deliver_cross_account_role": "",
+      "destination_options": [],
+      "eni_id": null,
+      "iam_role_arn": "arn:aws:iam::000000000000:role/p2-flujo-red",
+      "id": "fl-f094df27fc5b9fc11",
+      "log_destination": "arn:aws:logs:us-east-1:000000000000:log-group:/p2/flujo-red",
+      "log_destination_type": "cloud-watch-logs",
+      "log_format": "${version} ${account-id} ${interface-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${packets} ${bytes} ${start} ${end} ${action} ${log-status}",
+      "max_aggregation_interval": 600,
+      "region": "us-east-1",
+      "regional_nat_gateway_id": null,
+      "subnet_id": null,
+      "tag_field_specification": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "traffic_type": "ALL",
+      "transit_gateway_attachment_id": null,
+      "transit_gateway_id": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "destination_options": [],
+      "tag_field_specification": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.flujo_red",
+      "aws_iam_role.flujo_red",
+      "aws_vpc.principal",
+      "data.aws_iam_policy_document.confianza_flujo"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "fl-f094df27fc5b9fc11",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_instance_profile.web",
+     "mode": "managed",
+     "type": "aws_iam_instance_profile",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:instance-profile/p2-web",
+      "create_date": "2026-11-03T14:47:50Z",
+      "id": "p2-web",
+      "name": "p2-web",
+      "name_prefix": "",
+      "path": "/",
+      "role": "p2-web",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AIPA9413DTWTO5W46LHH"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_iam_role.web",
+      "data.aws_iam_policy_document.confianza_ec2"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-web"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.flujo_red",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "flujo_red",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p2-flujo-red",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"vpc-flow-logs.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:47:50Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "p2-flujo-red",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p2-flujo-red",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROAYNNF12KWZQTVPCK8"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_flujo"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-flujo-red"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.web",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p2-web",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:47:50Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "p2-web",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p2-web",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA88I9PYTXMCH4Y4AB"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_ec2"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-web"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.flujo_red",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "flujo_red",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p2-flujo-red:p2-flujo-red",
+      "name": "p2-flujo-red",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"logs:DescribeLogStreams\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/p2/flujo-red:*\"]}]}",
+      "role": "p2-flujo-red"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.flujo_red",
+      "aws_iam_role.flujo_red",
+      "data.aws_iam_policy_document.confianza_flujo"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-flujo-red",
+      "role": "p2-flujo-red"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.web",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p2-web:p2-web-permisos",
+      "name": "p2-web-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"s3:GetObject\",\"s3:PutObject\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::p2-archivos-aplicacion/*\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/p2/aplicacion:*\"]}]}",
+      "role": "p2-web"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.aplicacion",
+      "aws_iam_role.web",
+      "aws_s3_bucket.archivo",
+      "data.aws_iam_policy_document.confianza_ec2"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p2-web-permisos",
+      "role": "p2-web"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_internet_gateway.principal",
+     "mode": "managed",
+     "type": "aws_internet_gateway",
+     "name": "principal",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:internet-gateway/igw-161db65e",
+      "id": "igw-161db65e",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "igw-161db65e",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_launch_template.web",
+     "mode": "managed",
+     "type": "aws_launch_template",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1::launch-template/lt-ef9410bfc41145737",
+      "block_device_mappings": [],
+      "capacity_reservation_specification": [],
+      "cpu_options": [],
+      "credit_specification": [],
+      "default_version": 1,
+      "description": "",
+      "disable_api_stop": false,
+      "disable_api_termination": false,
+      "ebs_optimized": "",
+      "enclave_options": [],
+      "hibernation_options": [],
+      "iam_instance_profile": [
+       {
+        "arn": "arn:aws:iam::000000000000:instance-profile/p2-web",
+        "name": ""
+       }
+      ],
+      "id": "lt-ef9410bfc41145737",
+      "image_id": "ami-0abcdef1234567890",
+      "instance_initiated_shutdown_behavior": "",
+      "instance_market_options": [],
+      "instance_requirements": [],
+      "instance_type": "t3.micro",
+      "kernel_id": "",
+      "key_name": "",
+      "latest_version": 1,
+      "license_specification": [],
+      "maintenance_options": [],
+      "metadata_options": [],
+      "monitoring": [],
+      "name": "p2-web",
+      "name_prefix": "",
+      "network_interfaces": [],
+      "network_performance_options": [],
+      "placement": [],
+      "private_dns_name_options": [],
+      "ram_disk_id": "",
+      "region": "us-east-1",
+      "secondary_interfaces": [],
+      "security_group_names": null,
+      "tag_specifications": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "update_default_version": null,
+      "user_data": "",
+      "vpc_security_group_ids": [
+       "sg-da7faed4960804c9b"
+      ]
+     },
+     "sensitive_values": {
+      "block_device_mappings": [],
+      "capacity_reservation_specification": [],
+      "cpu_options": [],
+      "credit_specification": [],
+      "enclave_options": [],
+      "hibernation_options": [],
+      "iam_instance_profile": [
+       {}
+      ],
+      "instance_market_options": [],
+      "instance_requirements": [],
+      "license_specification": [],
+      "maintenance_options": [],
+      "metadata_options": [],
+      "monitoring": [],
+      "network_interfaces": [],
+      "network_performance_options": [],
+      "placement": [],
+      "private_dns_name_options": [],
+      "secondary_interfaces": [],
+      "tag_specifications": [],
+      "tags_all": {},
+      "vpc_security_group_ids": [
+       false
+      ]
+     },
+     "depends_on": [
+      "aws_iam_instance_profile.web",
+      "aws_iam_role.web",
+      "aws_security_group.balanceador",
+      "aws_security_group.web",
+      "aws_vpc.principal",
+      "data.aws_iam_policy_document.confianza_ec2"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "lt-ef9410bfc41145737",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lb.web",
+     "mode": "managed",
+     "type": "aws_lb",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "access_logs": [
+       {
+        "bucket": "",
+        "enabled": false,
+        "prefix": ""
+       }
+      ],
+      "arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:loadbalancer/app/p2-web/527a69401aa24619",
+      "arn_suffix": "app/p2-web/527a69401aa24619",
+      "client_keep_alive": 3600,
+      "connection_logs": [
+       {
+        "bucket": "",
+        "enabled": false,
+        "prefix": ""
+       }
+      ],
+      "customer_owned_ipv4_pool": "",
+      "desync_mitigation_mode": "defensive",
+      "dns_name": "p2-web-527a69401aa24619.elb.localhost.floci.io",
+      "dns_record_client_routing_policy": null,
+      "drop_invalid_header_fields": false,
+      "enable_cross_zone_load_balancing": true,
+      "enable_deletion_protection": false,
+      "enable_http2": true,
+      "enable_prefix_for_ipv6_source_nat": "",
+      "enable_tls_version_and_cipher_suite_headers": false,
+      "enable_waf_fail_open": false,
+      "enable_xff_client_port": false,
+      "enable_zonal_shift": false,
+      "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+      "health_check_logs": [
+       {
+        "bucket": "",
+        "enabled": false,
+        "prefix": ""
+       }
+      ],
+      "id": "arn:aws:elasticloadbalancing:us-east-1:000000000000:loadbalancer/app/p2-web/527a69401aa24619",
+      "idle_timeout": 60,
+      "internal": false,
+      "ip_address_type": "ipv4",
+      "ipam_pools": [],
+      "load_balancer_type": "application",
+      "minimum_load_balancer_capacity": [],
+      "name": "p2-web",
+      "name_prefix": "",
+      "preserve_host_header": false,
+      "region": "us-east-1",
+      "secondary_ips_auto_assigned_per_subnet": null,
+      "security_groups": [
+       "sg-b610fe6b8f44d577d"
+      ],
+      "subnet_mapping": [
+       {
+        "allocation_id": "",
+        "ipv6_address": "",
+        "outpost_id": "",
+        "private_ipv4_address": "",
+        "subnet_id": "subnet-25d35d7a"
+       },
+       {
+        "allocation_id": "",
+        "ipv6_address": "",
+        "outpost_id": "",
+        "private_ipv4_address": "",
+        "subnet_id": "subnet-d7364822"
+       }
+      ],
+      "subnets": [
+       "subnet-25d35d7a",
+       "subnet-d7364822"
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c",
+      "xff_header_processing_mode": "append",
+      "zone_id": "Z35SXDOTRQ7X7K"
+     },
+     "sensitive_values": {
+      "access_logs": [
+       {}
+      ],
+      "connection_logs": [
+       {}
+      ],
+      "health_check_logs": [
+       {}
+      ],
+      "ipam_pools": [],
+      "minimum_load_balancer_capacity": [],
+      "security_groups": [
+       false
+      ],
+      "subnet_mapping": [
+       {},
+       {}
+      ],
+      "subnets": [
+       false,
+       false
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_security_group.balanceador",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:loadbalancer/app/p2-web/527a69401aa24619"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lb_listener.http",
+     "mode": "managed",
+     "type": "aws_lb_listener",
+     "name": "http",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "alpn_policy": null,
+      "arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:listener/app/p2-web/527a69401aa24619/de46357e13644dc5",
+      "certificate_arn": null,
+      "default_action": [
+       {
+        "authenticate_cognito": [],
+        "authenticate_oidc": [],
+        "fixed_response": [],
+        "forward": [],
+        "jwt_validation": [],
+        "order": 1,
+        "redirect": [],
+        "target_group_arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:targetgroup/p2-web/a16c690b6aa44bed",
+        "type": "forward"
+       }
+      ],
+      "id": "arn:aws:elasticloadbalancing:us-east-1:000000000000:listener/app/p2-web/527a69401aa24619/de46357e13644dc5",
+      "load_balancer_arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:loadbalancer/app/p2-web/527a69401aa24619",
+      "mutual_authentication": [],
+      "port": 80,
+      "protocol": "HTTP",
+      "region": "us-east-1",
+      "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+      "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+      "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+      "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+      "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+      "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+      "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+      "routing_http_request_x_amzn_tls_version_header_name": null,
+      "routing_http_response_access_control_allow_credentials_header_value": null,
+      "routing_http_response_access_control_allow_headers_header_value": null,
+      "routing_http_response_access_control_allow_methods_header_value": null,
+      "routing_http_response_access_control_allow_origin_header_value": null,
+      "routing_http_response_access_control_expose_headers_header_value": null,
+      "routing_http_response_access_control_max_age_header_value": null,
+      "routing_http_response_content_security_policy_header_value": null,
+      "routing_http_response_server_enabled": null,
+      "routing_http_response_strict_transport_security_header_value": null,
+      "routing_http_response_x_content_type_options_header_value": null,
+      "routing_http_response_x_frame_options_header_value": null,
+      "ssl_policy": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tcp_idle_timeout_seconds": null,
+      "timeouts": null
+     },
+     "sensitive_values": {
+      "default_action": [
+       {
+        "authenticate_cognito": [],
+        "authenticate_oidc": [],
+        "fixed_response": [],
+        "forward": [],
+        "jwt_validation": [],
+        "redirect": []
+       }
+      ],
+      "mutual_authentication": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_lb.web",
+      "aws_lb_target_group.web",
+      "aws_security_group.balanceador",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:listener/app/p2-web/527a69401aa24619/de46357e13644dc5"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lb_target_group.web",
+     "mode": "managed",
+     "type": "aws_lb_target_group",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:targetgroup/p2-web/a16c690b6aa44bed",
+      "arn_suffix": "targetgroup/p2-web/a16c690b6aa44bed",
+      "connection_termination": null,
+      "deregistration_delay": "300",
+      "health_check": [
+       {
+        "enabled": true,
+        "healthy_threshold": 3,
+        "interval": 30,
+        "matcher": "200",
+        "path": "/salud",
+        "port": "traffic-port",
+        "protocol": "HTTP",
+        "timeout": 5,
+        "unhealthy_threshold": 3
+       }
+      ],
+      "id": "arn:aws:elasticloadbalancing:us-east-1:000000000000:targetgroup/p2-web/a16c690b6aa44bed",
+      "ip_address_type": "ipv4",
+      "lambda_multi_value_headers_enabled": false,
+      "load_balancer_arns": [],
+      "load_balancing_algorithm_type": "round_robin",
+      "load_balancing_anomaly_mitigation": null,
+      "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+      "name": "p2-web",
+      "name_prefix": "",
+      "port": 8080,
+      "preserve_client_ip": null,
+      "protocol": "HTTP",
+      "protocol_version": "",
+      "proxy_protocol_v2": false,
+      "region": "us-east-1",
+      "slow_start": 0,
+      "stickiness": [
+       {
+        "cookie_duration": 86400,
+        "cookie_name": "",
+        "enabled": false,
+        "type": "lb_cookie"
+       }
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "target_control_port": 0,
+      "target_failover": [
+       {
+        "on_deregistration": null,
+        "on_unhealthy": null
+       }
+      ],
+      "target_group_health": [
+       {
+        "dns_failover": [
+         {
+          "minimum_healthy_targets_count": null,
+          "minimum_healthy_targets_percentage": null
+         }
+        ],
+        "unhealthy_state_routing": [
+         {
+          "minimum_healthy_targets_count": null,
+          "minimum_healthy_targets_percentage": null
+         }
+        ]
+       }
+      ],
+      "target_health_state": [
+       {
+        "enable_unhealthy_connection_termination": null,
+        "unhealthy_draining_interval": null
+       }
+      ],
+      "target_type": "instance",
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "health_check": [
+       {}
+      ],
+      "load_balancer_arns": [],
+      "stickiness": [
+       {}
+      ],
+      "tags_all": {},
+      "target_failover": [
+       {}
+      ],
+      "target_group_health": [
+       {
+        "dns_failover": [
+         {}
+        ],
+        "unhealthy_state_routing": [
+         {}
+        ]
+       }
+      ],
+      "target_health_state": [
+       {}
+      ]
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "arn": "arn:aws:elasticloadbalancing:us-east-1:000000000000:targetgroup/p2-web/a16c690b6aa44bed"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.principal",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "principal",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "allocation_id": "eipalloc-f47fbc28730c047a2",
+      "association_id": null,
+      "auto_provision_zones": null,
+      "auto_scaling_ips": null,
+      "availability_mode": "",
+      "availability_zone_address": [],
+      "connectivity_type": "public",
+      "id": "nat-8955e297a0680e9d1",
+      "network_interface_id": null,
+      "private_ip": null,
+      "public_ip": null,
+      "region": "us-east-1",
+      "regional_nat_gateway_address": [],
+      "regional_nat_gateway_auto_mode": null,
+      "route_table_id": null,
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_address_count": null,
+      "secondary_private_ip_addresses": [],
+      "subnet_id": "subnet-25d35d7a",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "availability_zone_address": [],
+      "regional_nat_gateway_address": [],
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_addresses": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_eip.nat",
+      "aws_internet_gateway.principal",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "nat-8955e297a0680e9d1",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table.privada",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "privada",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-e25fc3a0",
+      "id": "rtb-e25fc3a0",
+      "owner_id": "000000000000",
+      "propagating_vgws": [],
+      "region": "us-east-1",
+      "route": [
+       {
+        "carrier_gateway_id": "",
+        "cidr_block": "0.0.0.0/0",
+        "core_network_arn": "",
+        "destination_prefix_list_id": "",
+        "egress_only_gateway_id": "",
+        "gateway_id": "",
+        "ipv6_cidr_block": "",
+        "local_gateway_id": "",
+        "nat_gateway_id": "nat-8955e297a0680e9d1",
+        "network_interface_id": "",
+        "odb_network_arn": "",
+        "transit_gateway_id": "",
+        "vpc_endpoint_id": "",
+        "vpc_peering_connection_id": ""
+       }
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "propagating_vgws": [],
+      "route": [
+       {}
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_eip.nat",
+      "aws_internet_gateway.principal",
+      "aws_nat_gateway.principal",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtb-e25fc3a0",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table.publica",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "publica",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-c08bfd17",
+      "id": "rtb-c08bfd17",
+      "owner_id": "000000000000",
+      "propagating_vgws": [],
+      "region": "us-east-1",
+      "route": [
+       {
+        "carrier_gateway_id": "",
+        "cidr_block": "0.0.0.0/0",
+        "core_network_arn": "",
+        "destination_prefix_list_id": "",
+        "egress_only_gateway_id": "",
+        "gateway_id": "igw-161db65e",
+        "ipv6_cidr_block": "",
+        "local_gateway_id": "",
+        "nat_gateway_id": "",
+        "network_interface_id": "",
+        "odb_network_arn": "",
+        "transit_gateway_id": "",
+        "vpc_endpoint_id": "",
+        "vpc_peering_connection_id": ""
+       }
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "propagating_vgws": [],
+      "route": [
+       {}
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_internet_gateway.principal",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtb-c08bfd17",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.privada[\"a\"]",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "privada",
+     "index": "a",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-205bcdc4",
+      "region": "us-east-1",
+      "route_table_id": "rtb-e25fc3a0",
+      "subnet_id": "subnet-093f294a",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_eip.nat",
+      "aws_internet_gateway.principal",
+      "aws_nat_gateway.principal",
+      "aws_route_table.privada",
+      "aws_subnet.privada",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-205bcdc4",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.privada[\"b\"]",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "privada",
+     "index": "b",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-889bb614",
+      "region": "us-east-1",
+      "route_table_id": "rtb-e25fc3a0",
+      "subnet_id": "subnet-42c746a0",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_eip.nat",
+      "aws_internet_gateway.principal",
+      "aws_nat_gateway.principal",
+      "aws_route_table.privada",
+      "aws_subnet.privada",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-889bb614",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.publica[\"a\"]",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "publica",
+     "index": "a",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-b9adb317",
+      "region": "us-east-1",
+      "route_table_id": "rtb-c08bfd17",
+      "subnet_id": "subnet-25d35d7a",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_internet_gateway.principal",
+      "aws_route_table.publica",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-b9adb317",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.publica[\"b\"]",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "publica",
+     "index": "b",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-d62ecfb6",
+      "region": "us-east-1",
+      "route_table_id": "rtb-c08bfd17",
+      "subnet_id": "subnet-d7364822",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_internet_gateway.principal",
+      "aws_route_table.publica",
+      "aws_subnet.publica",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-d62ecfb6",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket",
+     "name": "archivo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "acceleration_status": "",
+      "acl": null,
+      "arn": "arn:aws:s3:::p2-archivos-aplicacion",
+      "bucket": "p2-archivos-aplicacion",
+      "bucket_domain_name": "p2-archivos-aplicacion.s3.amazonaws.com",
+      "bucket_namespace": "global",
+      "bucket_prefix": "",
+      "bucket_region": "us-east-1",
+      "bucket_regional_domain_name": "p2-archivos-aplicacion.s3.us-east-1.amazonaws.com",
+      "cors_rule": [],
+      "force_destroy": false,
+      "grant": [
+       {
+        "id": "f7b11509f4d675c3c44f0dd37ca830bb02e8cfa58f04c46283c4bfcbdce1ff45",
+        "permissions": [
+         "FULL_CONTROL"
+        ],
+        "type": "CanonicalUser",
+        "uri": ""
+       }
+      ],
+      "hosted_zone_id": "Z3AQBSTGFYJSTF",
+      "id": "p2-archivos-aplicacion",
+      "lifecycle_rule": [],
+      "logging": [],
+      "object_lock_configuration": [],
+      "object_lock_enabled": false,
+      "policy": "",
+      "region": "us-east-1",
+      "replication_configuration": [],
+      "request_payer": "BucketOwner",
+      "server_side_encryption_configuration": [
+       {
+        "rule": [
+         {
+          "apply_server_side_encryption_by_default": [
+           {
+            "kms_master_key_id": "",
+            "sse_algorithm": "AES256"
+           }
+          ],
+          "bucket_key_enabled": false
+         }
+        ]
+       }
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "versioning": [
+       {
+        "enabled": false,
+        "mfa_delete": false
+       }
+      ],
+      "website": [],
+      "website_domain": null,
+      "website_endpoint": null
+     },
+     "sensitive_values": {
+      "cors_rule": [],
+      "grant": [
+       {
+        "permissions": [
+         false
+        ]
+       }
+      ],
+      "lifecycle_rule": [],
+      "logging": [],
+      "object_lock_configuration": [],
+      "replication_configuration": [],
+      "server_side_encryption_configuration": [
+       {
+        "rule": [
+         {
+          "apply_server_side_encryption_by_default": [
+           {}
+          ]
+         }
+        ]
+       }
+      ],
+      "tags_all": {},
+      "versioning": [
+       {}
+      ],
+      "website": []
+     },
+     "identity": {
+      "account_id": "",
+      "bucket": "p2-archivos-aplicacion",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket_public_access_block",
+     "name": "archivo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "block_public_acls": true,
+      "block_public_policy": true,
+      "bucket": "p2-archivos-aplicacion",
+      "id": "p2-archivos-aplicacion",
+      "ignore_public_acls": true,
+      "region": "us-east-1",
+      "restrict_public_buckets": true,
+      "skip_destroy": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_s3_bucket.archivo"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "p2-archivos-aplicacion",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_server_side_encryption_configuration.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket_server_side_encryption_configuration",
+     "name": "archivo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "bucket": "p2-archivos-aplicacion",
+      "expected_bucket_owner": "",
+      "id": "p2-archivos-aplicacion",
+      "region": "us-east-1",
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {
+          "kms_master_key_id": "",
+          "sse_algorithm": "AES256"
+         }
+        ],
+        "blocked_encryption_types": [],
+        "bucket_key_enabled": false
+       }
+      ]
+     },
+     "sensitive_values": {
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {}
+        ],
+        "blocked_encryption_types": []
+       }
+      ]
+     },
+     "depends_on": [
+      "aws_s3_bucket.archivo"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "p2-archivos-aplicacion",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_s3_bucket_versioning.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket_versioning",
+     "name": "archivo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "bucket": "p2-archivos-aplicacion",
+      "expected_bucket_owner": "",
+      "id": "p2-archivos-aplicacion",
+      "mfa": null,
+      "region": "us-east-1",
+      "versioning_configuration": [
+       {
+        "mfa_delete": "Disabled",
+        "status": "Enabled"
+       }
+      ]
+     },
+     "sensitive_values": {
+      "versioning_configuration": [
+       {}
+      ]
+     },
+     "depends_on": [
+      "aws_s3_bucket.archivo"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "p2-archivos-aplicacion",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_security_group.balanceador",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "balanceador",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:security-group/sg-b610fe6b8f44d577d",
+      "description": "HTTP y HTTPS desde internet",
+      "egress": [
+       {
+        "cidr_blocks": [
+         "0.0.0.0/0"
+        ],
+        "description": "Salida a cualquier destino",
+        "from_port": 0,
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "protocol": "-1",
+        "security_groups": [],
+        "self": false,
+        "to_port": 0
+       }
+      ],
+      "id": "sg-b610fe6b8f44d577d",
+      "ingress": [
+       {
+        "cidr_blocks": [
+         "0.0.0.0/0"
+        ],
+        "description": "HTTP",
+        "from_port": 80,
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "protocol": "tcp",
+        "security_groups": [],
+        "self": false,
+        "to_port": 80
+       },
+       {
+        "cidr_blocks": [
+         "0.0.0.0/0"
+        ],
+        "description": "HTTPS",
+        "from_port": 443,
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "protocol": "tcp",
+        "security_groups": [],
+        "self": false,
+        "to_port": 443
+       }
+      ],
+      "name": "p2-balanceador",
+      "name_prefix": "",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "revoke_rules_on_delete": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "egress": [
+       {
+        "cidr_blocks": [
+         false
+        ],
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "security_groups": []
+       }
+      ],
+      "ingress": [
+       {
+        "cidr_blocks": [
+         false
+        ],
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "security_groups": []
+       },
+       {
+        "cidr_blocks": [
+         false
+        ],
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "security_groups": []
+       }
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "sg-b610fe6b8f44d577d",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_security_group.base_datos",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "base_datos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:security-group/sg-a527f04d8512bebec",
+      "description": "PostgreSQL solo desde los servidores web",
+      "egress": [],
+      "id": "sg-a527f04d8512bebec",
+      "ingress": [
+       {
+        "cidr_blocks": [],
+        "description": "PostgreSQL desde los servidores web",
+        "from_port": 5432,
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "protocol": "tcp",
+        "security_groups": [
+         "sg-da7faed4960804c9b"
+        ],
+        "self": false,
+        "to_port": 5432
+       }
+      ],
+      "name": "p2-base-datos",
+      "name_prefix": "",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "revoke_rules_on_delete": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "egress": [],
+      "ingress": [
+       {
+        "cidr_blocks": [],
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "security_groups": [
+         false
+        ]
+       }
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_security_group.balanceador",
+      "aws_security_group.web",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "sg-a527f04d8512bebec",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_security_group.web",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "web",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:security-group/sg-da7faed4960804c9b",
+      "description": "Puerto de la aplicacion solo desde el balanceador",
+      "egress": [
+       {
+        "cidr_blocks": [
+         "0.0.0.0/0"
+        ],
+        "description": "Salida a cualquier destino",
+        "from_port": 0,
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "protocol": "-1",
+        "security_groups": [],
+        "self": false,
+        "to_port": 0
+       }
+      ],
+      "id": "sg-da7faed4960804c9b",
+      "ingress": [
+       {
+        "cidr_blocks": [],
+        "description": "Aplicacion desde el balanceador",
+        "from_port": 8080,
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "protocol": "tcp",
+        "security_groups": [
+         "sg-b610fe6b8f44d577d"
+        ],
+        "self": false,
+        "to_port": 8080
+       }
+      ],
+      "name": "p2-web",
+      "name_prefix": "",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "revoke_rules_on_delete": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "egress": [
+       {
+        "cidr_blocks": [
+         false
+        ],
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "security_groups": []
+       }
+      ],
+      "ingress": [
+       {
+        "cidr_blocks": [],
+        "ipv6_cidr_blocks": [],
+        "prefix_list_ids": [],
+        "security_groups": [
+         false
+        ]
+       }
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_security_group.balanceador",
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "sg-da7faed4960804c9b",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic.alerta",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "alerta",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "application_failure_feedback_role_arn": "",
+      "application_success_feedback_role_arn": "",
+      "application_success_feedback_sample_rate": 0,
+      "archive_policy": "",
+      "arn": "arn:aws:sns:us-east-1:000000000000:p2-alertas",
+      "beginning_archive_time": "",
+      "content_based_deduplication": false,
+      "delivery_policy": "",
+      "display_name": "",
+      "fifo_throughput_scope": "",
+      "fifo_topic": false,
+      "firehose_failure_feedback_role_arn": "",
+      "firehose_success_feedback_role_arn": "",
+      "firehose_success_feedback_sample_rate": 0,
+      "http_failure_feedback_role_arn": "",
+      "http_success_feedback_role_arn": "",
+      "http_success_feedback_sample_rate": 0,
+      "id": "arn:aws:sns:us-east-1:000000000000:p2-alertas",
+      "kms_master_key_id": "",
+      "lambda_failure_feedback_role_arn": "",
+      "lambda_success_feedback_role_arn": "",
+      "lambda_success_feedback_sample_rate": 0,
+      "maximum_message_size": 0,
+      "name": "p2-alertas",
+      "name_prefix": "",
+      "owner": "000000000000",
+      "policy": "{\"Id\":\"__default_policy_ID\",\"Statement\":[{\"Action\":[\"SNS:GetTopicAttributes\",\"SNS:SetTopicAttributes\",\"SNS:AddPermission\",\"SNS:RemovePermission\",\"SNS:DeleteTopic\",\"SNS:Subscribe\",\"SNS:ListSubscriptionsByTopic\",\"SNS:Publish\"],\"Condition\":{\"StringEquals\":{\"AWS:SourceOwner\":\"000000000000\"}},\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Resource\":\"arn:aws:sns:us-east-1:000000000000:p2-alertas\",\"Sid\":\"__default_statement_ID\"}],\"Version\":\"2008-10-17\"}",
+      "region": "us-east-1",
+      "signature_version": 0,
+      "sqs_failure_feedback_role_arn": "",
+      "sqs_success_feedback_role_arn": "",
+      "sqs_success_feedback_sample_rate": 0,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tracing_config": ""
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:p2-alertas"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.privada[\"a\"]",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "privada",
+     "index": "a",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-093f294a",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1a",
+      "availability_zone_id": "use1-az1",
+      "cidr_block": "10.20.10.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-093f294a",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": false,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-093f294a",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.privada[\"b\"]",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "privada",
+     "index": "b",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-42c746a0",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1b",
+      "availability_zone_id": "use1-az2",
+      "cidr_block": "10.20.11.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-42c746a0",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": false,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-42c746a0",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.publica[\"a\"]",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "publica",
+     "index": "a",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-25d35d7a",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1a",
+      "availability_zone_id": "use1-az1",
+      "cidr_block": "10.20.0.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-25d35d7a",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": true,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-25d35d7a",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.publica[\"b\"]",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "publica",
+     "index": "b",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-d7364822",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1b",
+      "availability_zone_id": "use1-az2",
+      "cidr_block": "10.20.1.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-d7364822",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": true,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-b511fb2c"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.principal"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-d7364822",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_vpc.principal",
+     "mode": "managed",
+     "type": "aws_vpc",
+     "name": "principal",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:vpc/vpc-b511fb2c",
+      "assign_generated_ipv6_cidr_block": false,
+      "cidr_block": "10.20.0.0/16",
+      "default_network_acl_id": "acl-39d694d8aa386457d",
+      "default_route_table_id": "rtb-eab6cd29859c357ad",
+      "default_security_group_id": "sg-531823ac10c78319e",
+      "dhcp_options_id": "dopt-default",
+      "enable_dns_hostnames": true,
+      "enable_dns_support": true,
+      "enable_network_address_usage_metrics": false,
+      "id": "vpc-b511fb2c",
+      "instance_tenancy": "default",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_association_id": "",
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_network_border_group": "",
+      "ipv6_ipam_pool_id": "",
+      "ipv6_netmask_length": 0,
+      "main_route_table_id": "rtb-eab6cd29859c357ad",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "vpc-b511fb2c",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_autoscaling_group.web",
+     "mode": "managed",
+     "type": "aws_autoscaling_group",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "desired_capacity": {
+       "constant_value": 2
+      },
+      "launch_template": [
+       {
+        "id": {
+         "references": [
+          "aws_launch_template.web.id",
+          "aws_launch_template.web"
+         ]
+        },
+        "version": {
+         "constant_value": "$Latest"
+        }
+       }
+      ],
+      "max_size": {
+       "constant_value": 4
+      },
+      "min_size": {
+       "constant_value": 2
+      },
+      "name": {
+       "constant_value": "p2-web"
+      },
+      "target_group_arns": {
+       "references": [
+        "aws_lb_target_group.web.arn",
+        "aws_lb_target_group.web"
+       ]
+      },
+      "vpc_zone_identifier": {
+       "references": [
+        "aws_subnet.privada"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_autoscaling_policy.cpu",
+     "mode": "managed",
+     "type": "aws_autoscaling_policy",
+     "name": "cpu",
+     "provider_config_key": "aws",
+     "expressions": {
+      "autoscaling_group_name": {
+       "references": [
+        "aws_autoscaling_group.web.name",
+        "aws_autoscaling_group.web"
+       ]
+      },
+      "name": {
+       "constant_value": "p2-web-cpu"
+      },
+      "policy_type": {
+       "constant_value": "TargetTrackingScaling"
+      },
+      "target_tracking_configuration": [
+       {
+        "predefined_metric_specification": [
+         {
+          "predefined_metric_type": {
+           "constant_value": "ASGAverageCPUUtilization"
+          }
+         }
+        ],
+        "target_value": {
+         "constant_value": 60
+        }
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.aplicacion",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "aplicacion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "/p2/aplicacion"
+      },
+      "retention_in_days": {
+       "constant_value": 30
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.flujo_red",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "flujo_red",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "/p2/flujo-red"
+      },
+      "retention_in_days": {
+       "constant_value": 30
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_metric_alarm.cpu_base_datos",
+     "mode": "managed",
+     "type": "aws_cloudwatch_metric_alarm",
+     "name": "cpu_base_datos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "alarm_actions": {
+       "references": [
+        "aws_sns_topic.alerta.arn",
+        "aws_sns_topic.alerta"
+       ]
+      },
+      "alarm_name": {
+       "constant_value": "p2-cpu-base-datos"
+      },
+      "comparison_operator": {
+       "constant_value": "GreaterThanThreshold"
+      },
+      "dimensions": {
+       "references": [
+        "aws_db_instance.principal.identifier",
+        "aws_db_instance.principal"
+       ]
+      },
+      "evaluation_periods": {
+       "constant_value": 2
+      },
+      "metric_name": {
+       "constant_value": "CPUUtilization"
+      },
+      "namespace": {
+       "constant_value": "AWS/RDS"
+      },
+      "period": {
+       "constant_value": 300
+      },
+      "statistic": {
+       "constant_value": "Average"
+      },
+      "threshold": {
+       "constant_value": 80
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_db_instance.principal",
+     "mode": "managed",
+     "type": "aws_db_instance",
+     "name": "principal",
+     "provider_config_key": "aws",
+     "expressions": {
+      "allocated_storage": {
+       "constant_value": 20
+      },
+      "backup_retention_period": {
+       "constant_value": 7
+      },
+      "db_name": {
+       "constant_value": "aplicacion"
+      },
+      "db_subnet_group_name": {
+       "references": [
+        "aws_db_subnet_group.principal.name",
+        "aws_db_subnet_group.principal"
+       ]
+      },
+      "engine": {
+       "constant_value": "postgres"
+      },
+      "engine_version": {
+       "constant_value": "16"
+      },
+      "identifier": {
+       "constant_value": "p2-base-datos"
+      },
+      "instance_class": {
+       "constant_value": "db.t3.micro"
+      },
+      "manage_master_user_password": {
+       "constant_value": true
+      },
+      "parameter_group_name": {
+       "references": [
+        "aws_db_parameter_group.principal.name",
+        "aws_db_parameter_group.principal"
+       ]
+      },
+      "publicly_accessible": {
+       "constant_value": false
+      },
+      "skip_final_snapshot": {
+       "constant_value": true
+      },
+      "storage_encrypted": {
+       "constant_value": true
+      },
+      "username": {
+       "constant_value": "aplicacion"
+      },
+      "vpc_security_group_ids": {
+       "references": [
+        "aws_security_group.base_datos.id",
+        "aws_security_group.base_datos"
+       ]
+      }
+     },
+     "schema_version": 2
+    },
+    {
+     "address": "aws_db_parameter_group.principal",
+     "mode": "managed",
+     "type": "aws_db_parameter_group",
+     "name": "principal",
+     "provider_config_key": "aws",
+     "expressions": {
+      "family": {
+       "constant_value": "postgres16"
+      },
+      "name": {
+       "constant_value": "p2-postgres16"
+      },
+      "parameter": [
+       {
+        "name": {
+         "constant_value": "log_min_duration_statement"
+        },
+        "value": {
+         "constant_value": "1000"
+        }
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_db_subnet_group.principal",
+     "mode": "managed",
+     "type": "aws_db_subnet_group",
+     "name": "principal",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p2-base-datos"
+      },
+      "subnet_ids": {
+       "references": [
+        "aws_subnet.privada"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat",
+     "provider_config_key": "aws",
+     "expressions": {
+      "domain": {
+       "constant_value": "vpc"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_flow_log.vpc",
+     "mode": "managed",
+     "type": "aws_flow_log",
+     "name": "vpc",
+     "provider_config_key": "aws",
+     "expressions": {
+      "iam_role_arn": {
+       "references": [
+        "aws_iam_role.flujo_red.arn",
+        "aws_iam_role.flujo_red"
+       ]
+      },
+      "log_destination": {
+       "references": [
+        "aws_cloudwatch_log_group.flujo_red.arn",
+        "aws_cloudwatch_log_group.flujo_red"
+       ]
+      },
+      "traffic_type": {
+       "constant_value": "ALL"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_iam_instance_profile.web",
+     "mode": "managed",
+     "type": "aws_iam_instance_profile",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p2-web"
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.web.name",
+        "aws_iam_role.web"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.flujo_red",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "flujo_red",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {
+       "references": [
+        "data.aws_iam_policy_document.confianza_flujo.json",
+        "data.aws_iam_policy_document.confianza_flujo"
+       ]
+      },
+      "name": {
+       "constant_value": "p2-flujo-red"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.web",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {
+       "references": [
+        "data.aws_iam_policy_document.confianza_ec2.json",
+        "data.aws_iam_policy_document.confianza_ec2"
+       ]
+      },
+      "name": {
+       "constant_value": "p2-web"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.flujo_red",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "flujo_red",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p2-flujo-red"
+      },
+      "policy": {
+       "references": [
+        "aws_cloudwatch_log_group.flujo_red.arn",
+        "aws_cloudwatch_log_group.flujo_red"
+       ]
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.flujo_red.id",
+        "aws_iam_role.flujo_red"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.web",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p2-web-permisos"
+      },
+      "policy": {
+       "references": [
+        "aws_s3_bucket.archivo.arn",
+        "aws_s3_bucket.archivo",
+        "aws_cloudwatch_log_group.aplicacion.arn",
+        "aws_cloudwatch_log_group.aplicacion"
+       ]
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.web.id",
+        "aws_iam_role.web"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_internet_gateway.principal",
+     "mode": "managed",
+     "type": "aws_internet_gateway",
+     "name": "principal",
+     "provider_config_key": "aws",
+     "expressions": {
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_launch_template.web",
+     "mode": "managed",
+     "type": "aws_launch_template",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "iam_instance_profile": [
+       {
+        "arn": {
+         "references": [
+          "aws_iam_instance_profile.web.arn",
+          "aws_iam_instance_profile.web"
+         ]
+        }
+       }
+      ],
+      "image_id": {
+       "constant_value": "ami-0abcdef1234567890"
+      },
+      "instance_type": {
+       "constant_value": "t3.micro"
+      },
+      "name": {
+       "constant_value": "p2-web"
+      },
+      "vpc_security_group_ids": {
+       "references": [
+        "aws_security_group.web.id",
+        "aws_security_group.web"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_lb.web",
+     "mode": "managed",
+     "type": "aws_lb",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "internal": {
+       "constant_value": false
+      },
+      "load_balancer_type": {
+       "constant_value": "application"
+      },
+      "name": {
+       "constant_value": "p2-web"
+      },
+      "security_groups": {
+       "references": [
+        "aws_security_group.balanceador.id",
+        "aws_security_group.balanceador"
+       ]
+      },
+      "subnets": {
+       "references": [
+        "aws_subnet.publica"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_lb_listener.http",
+     "mode": "managed",
+     "type": "aws_lb_listener",
+     "name": "http",
+     "provider_config_key": "aws",
+     "expressions": {
+      "default_action": [
+       {
+        "target_group_arn": {
+         "references": [
+          "aws_lb_target_group.web.arn",
+          "aws_lb_target_group.web"
+         ]
+        },
+        "type": {
+         "constant_value": "forward"
+        }
+       }
+      ],
+      "load_balancer_arn": {
+       "references": [
+        "aws_lb.web.arn",
+        "aws_lb.web"
+       ]
+      },
+      "port": {
+       "constant_value": 80
+      },
+      "protocol": {
+       "constant_value": "HTTP"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_lb_target_group.web",
+     "mode": "managed",
+     "type": "aws_lb_target_group",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "health_check": [
+       {
+        "path": {
+         "constant_value": "/salud"
+        }
+       }
+      ],
+      "name": {
+       "constant_value": "p2-web"
+      },
+      "port": {
+       "constant_value": 8080
+      },
+      "protocol": {
+       "constant_value": "HTTP"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.principal",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "principal",
+     "provider_config_key": "aws",
+     "expressions": {
+      "allocation_id": {
+       "references": [
+        "aws_eip.nat.id",
+        "aws_eip.nat"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.publica[\"a\"].id",
+        "aws_subnet.publica[\"a\"]",
+        "aws_subnet.publica"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "depends_on": [
+      "aws_internet_gateway.principal"
+     ]
+    },
+    {
+     "address": "aws_route_table.privada",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "privada",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route": {
+       "references": [
+        "aws_nat_gateway.principal.id",
+        "aws_nat_gateway.principal"
+       ]
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table.publica",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "publica",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route": {
+       "references": [
+        "aws_internet_gateway.principal.id",
+        "aws_internet_gateway.principal"
+       ]
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.privada",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "privada",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.privada.id",
+        "aws_route_table.privada"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "each.value.id",
+        "each.value"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "aws_subnet.privada"
+      ]
+     }
+    },
+    {
+     "address": "aws_route_table_association.publica",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "publica",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.publica.id",
+        "aws_route_table.publica"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "each.value.id",
+        "each.value"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "aws_subnet.publica"
+      ]
+     }
+    },
+    {
+     "address": "aws_s3_bucket.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket",
+     "name": "archivo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "constant_value": "p2-archivos-aplicacion"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket_public_access_block",
+     "name": "archivo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "block_public_acls": {
+       "constant_value": true
+      },
+      "block_public_policy": {
+       "constant_value": true
+      },
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.archivo.id",
+        "aws_s3_bucket.archivo"
+       ]
+      },
+      "ignore_public_acls": {
+       "constant_value": true
+      },
+      "restrict_public_buckets": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_server_side_encryption_configuration.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket_server_side_encryption_configuration",
+     "name": "archivo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.archivo.id",
+        "aws_s3_bucket.archivo"
+       ]
+      },
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {
+          "sse_algorithm": {
+           "constant_value": "AES256"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_versioning.archivo",
+     "mode": "managed",
+     "type": "aws_s3_bucket_versioning",
+     "name": "archivo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.archivo.id",
+        "aws_s3_bucket.archivo"
+       ]
+      },
+      "versioning_configuration": [
+       {
+        "status": {
+         "constant_value": "Enabled"
+        }
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_security_group.balanceador",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "balanceador",
+     "provider_config_key": "aws",
+     "expressions": {
+      "description": {
+       "constant_value": "HTTP y HTTPS desde internet"
+      },
+      "egress": {
+       "constant_value": [
+        {
+         "cidr_blocks": [
+          "0.0.0.0/0"
+         ],
+         "description": "Salida a cualquier destino",
+         "from_port": 0,
+         "ipv6_cidr_blocks": null,
+         "prefix_list_ids": null,
+         "protocol": "-1",
+         "security_groups": null,
+         "self": null,
+         "to_port": 0
+        }
+       ]
+      },
+      "ingress": {
+       "constant_value": [
+        {
+         "cidr_blocks": [
+          "0.0.0.0/0"
+         ],
+         "description": "HTTP",
+         "from_port": 80,
+         "ipv6_cidr_blocks": null,
+         "prefix_list_ids": null,
+         "protocol": "tcp",
+         "security_groups": null,
+         "self": null,
+         "to_port": 80
+        },
+        {
+         "cidr_blocks": [
+          "0.0.0.0/0"
+         ],
+         "description": "HTTPS",
+         "from_port": 443,
+         "ipv6_cidr_blocks": null,
+         "prefix_list_ids": null,
+         "protocol": "tcp",
+         "security_groups": null,
+         "self": null,
+         "to_port": 443
+        }
+       ]
+      },
+      "name": {
+       "constant_value": "p2-balanceador"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_security_group.base_datos",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "base_datos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "description": {
+       "constant_value": "PostgreSQL solo desde los servidores web"
+      },
+      "ingress": {
+       "references": [
+        "aws_security_group.web.id",
+        "aws_security_group.web"
+       ]
+      },
+      "name": {
+       "constant_value": "p2-base-datos"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_security_group.web",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "web",
+     "provider_config_key": "aws",
+     "expressions": {
+      "description": {
+       "constant_value": "Puerto de la aplicacion solo desde el balanceador"
+      },
+      "egress": {
+       "constant_value": [
+        {
+         "cidr_blocks": [
+          "0.0.0.0/0"
+         ],
+         "description": "Salida a cualquier destino",
+         "from_port": 0,
+         "ipv6_cidr_blocks": null,
+         "prefix_list_ids": null,
+         "protocol": "-1",
+         "security_groups": null,
+         "self": null,
+         "to_port": 0
+        }
+       ]
+      },
+      "ingress": {
+       "references": [
+        "aws_security_group.balanceador.id",
+        "aws_security_group.balanceador"
+       ]
+      },
+      "name": {
+       "constant_value": "p2-web"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_sns_topic.alerta",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "alerta",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p2-alertas"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_subnet.privada",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "privada",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "var.region",
+        "each.key"
+       ]
+      },
+      "cidr_block": {
+       "references": [
+        "aws_vpc.principal.cidr_block",
+        "aws_vpc.principal",
+        "each.value"
+       ]
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 1,
+     "for_each_expression": {
+      "references": [
+       "local.zonas"
+      ]
+     }
+    },
+    {
+     "address": "aws_subnet.publica",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "publica",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "var.region",
+        "each.key"
+       ]
+      },
+      "cidr_block": {
+       "references": [
+        "aws_vpc.principal.cidr_block",
+        "aws_vpc.principal",
+        "each.value"
+       ]
+      },
+      "map_public_ip_on_launch": {
+       "constant_value": true
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.principal.id",
+        "aws_vpc.principal"
+       ]
+      }
+     },
+     "schema_version": 1,
+     "for_each_expression": {
+      "references": [
+       "local.zonas"
+      ]
+     }
+    },
+    {
+     "address": "aws_vpc.principal",
+     "mode": "managed",
+     "type": "aws_vpc",
+     "name": "principal",
+     "provider_config_key": "aws",
+     "expressions": {
+      "cidr_block": {
+       "constant_value": "10.20.0.0/16"
+      },
+      "enable_dns_hostnames": {
+       "constant_value": true
+      },
+      "enable_dns_support": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "data.aws_iam_policy_document.confianza_ec2",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_ec2",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sts:AssumeRole"
+         ]
+        },
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "ec2.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_iam_policy_document.confianza_flujo",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_flujo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sts:AssumeRole"
+         ]
+        },
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "vpc-flow-logs.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

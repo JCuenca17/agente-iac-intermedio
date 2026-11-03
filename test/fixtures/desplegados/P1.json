@@ -1,0 +1,3682 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_iam_policy_document.confianza_lambda",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_lambda",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "2690255455",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"lambda.amazonaws.com\"\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sts:AssumeRole"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "lambda.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": []
+       }
+      ]
+     }
+    },
+    {
+     "address": "aws_apigatewayv2_api.tienda",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_api",
+     "name": "tienda",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_endpoint": "https://1748a8f1e4.execute-api.us-east-1.amazonaws.com",
+      "api_key_selection_expression": "$request.header.x-api-key",
+      "arn": "arn:aws:apigateway:us-east-1::/apis/1748a8f1e4",
+      "body": null,
+      "cors_configuration": [],
+      "credentials_arn": null,
+      "description": "",
+      "disable_execute_api_endpoint": false,
+      "execution_arn": "arn:aws:execute-api:us-east-1::1748a8f1e4",
+      "fail_on_warnings": null,
+      "id": "1748a8f1e4",
+      "ip_address_type": "",
+      "name": "p1-tienda",
+      "protocol_type": "HTTP",
+      "region": "us-east-1",
+      "route_key": null,
+      "route_selection_expression": "$request.method $request.path",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "target": null,
+      "version": ""
+     },
+     "sensitive_values": {
+      "cors_configuration": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "1748a8f1e4",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_integration.funcion[\"carrito\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_integration",
+     "name": "funcion",
+     "index": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "connection_id": "",
+      "connection_type": "INTERNET",
+      "content_handling_strategy": "",
+      "credentials_arn": "",
+      "description": "",
+      "id": "c176828a",
+      "integration_method": "",
+      "integration_response_selection_expression": "",
+      "integration_subtype": "",
+      "integration_type": "AWS_PROXY",
+      "integration_uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-carrito/invocations",
+      "passthrough_behavior": "",
+      "payload_format_version": "2.0",
+      "region": "us-east-1",
+      "request_parameters": null,
+      "request_templates": null,
+      "response_parameters": [],
+      "template_selection_expression": "",
+      "timeout_milliseconds": 0,
+      "tls_config": []
+     },
+     "sensitive_values": {
+      "response_parameters": [],
+      "tls_config": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "c176828a",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_integration.funcion[\"catalogo\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_integration",
+     "name": "funcion",
+     "index": "catalogo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "connection_id": "",
+      "connection_type": "INTERNET",
+      "content_handling_strategy": "",
+      "credentials_arn": "",
+      "description": "",
+      "id": "823800e2",
+      "integration_method": "",
+      "integration_response_selection_expression": "",
+      "integration_subtype": "",
+      "integration_type": "AWS_PROXY",
+      "integration_uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-catalogo/invocations",
+      "passthrough_behavior": "",
+      "payload_format_version": "2.0",
+      "region": "us-east-1",
+      "request_parameters": null,
+      "request_templates": null,
+      "response_parameters": [],
+      "template_selection_expression": "",
+      "timeout_milliseconds": 0,
+      "tls_config": []
+     },
+     "sensitive_values": {
+      "response_parameters": [],
+      "tls_config": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "823800e2",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_integration.funcion[\"pedidos\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_integration",
+     "name": "funcion",
+     "index": "pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "connection_id": "",
+      "connection_type": "INTERNET",
+      "content_handling_strategy": "",
+      "credentials_arn": "",
+      "description": "",
+      "id": "10bffe85",
+      "integration_method": "",
+      "integration_response_selection_expression": "",
+      "integration_subtype": "",
+      "integration_type": "AWS_PROXY",
+      "integration_uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-pedidos/invocations",
+      "passthrough_behavior": "",
+      "payload_format_version": "2.0",
+      "region": "us-east-1",
+      "request_parameters": null,
+      "request_templates": null,
+      "response_parameters": [],
+      "template_selection_expression": "",
+      "timeout_milliseconds": 0,
+      "tls_config": []
+     },
+     "sensitive_values": {
+      "response_parameters": [],
+      "tls_config": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "10bffe85",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.ruta[\"GET /carrito\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "ruta",
+     "index": "GET /carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "api_key_required": false,
+      "authorization_scopes": null,
+      "authorization_type": "NONE",
+      "authorizer_id": "",
+      "id": "247a6f9a",
+      "model_selection_expression": "",
+      "operation_name": "",
+      "region": "us-east-1",
+      "request_models": null,
+      "request_parameter": [],
+      "route_key": "GET /carrito",
+      "route_response_selection_expression": "",
+      "target": "integrations/c176828a"
+     },
+     "sensitive_values": {
+      "request_parameter": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_apigatewayv2_integration.funcion",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "247a6f9a",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.ruta[\"GET /productos\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "ruta",
+     "index": "GET /productos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "api_key_required": false,
+      "authorization_scopes": null,
+      "authorization_type": "NONE",
+      "authorizer_id": "",
+      "id": "3c3e1247",
+      "model_selection_expression": "",
+      "operation_name": "",
+      "region": "us-east-1",
+      "request_models": null,
+      "request_parameter": [],
+      "route_key": "GET /productos",
+      "route_response_selection_expression": "",
+      "target": "integrations/823800e2"
+     },
+     "sensitive_values": {
+      "request_parameter": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_apigatewayv2_integration.funcion",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "3c3e1247",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.ruta[\"GET /productos/{id}\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "ruta",
+     "index": "GET /productos/{id}",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "api_key_required": false,
+      "authorization_scopes": null,
+      "authorization_type": "NONE",
+      "authorizer_id": "",
+      "id": "6c55e1b6",
+      "model_selection_expression": "",
+      "operation_name": "",
+      "region": "us-east-1",
+      "request_models": null,
+      "request_parameter": [],
+      "route_key": "GET /productos/{id}",
+      "route_response_selection_expression": "",
+      "target": "integrations/823800e2"
+     },
+     "sensitive_values": {
+      "request_parameter": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_apigatewayv2_integration.funcion",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "6c55e1b6",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.ruta[\"POST /pedidos\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "ruta",
+     "index": "POST /pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "api_key_required": false,
+      "authorization_scopes": null,
+      "authorization_type": "NONE",
+      "authorizer_id": "",
+      "id": "30095a54",
+      "model_selection_expression": "",
+      "operation_name": "",
+      "region": "us-east-1",
+      "request_models": null,
+      "request_parameter": [],
+      "route_key": "POST /pedidos",
+      "route_response_selection_expression": "",
+      "target": "integrations/10bffe85"
+     },
+     "sensitive_values": {
+      "request_parameter": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_apigatewayv2_integration.funcion",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "30095a54",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.ruta[\"PUT /carrito\"]",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "ruta",
+     "index": "PUT /carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "1748a8f1e4",
+      "api_key_required": false,
+      "authorization_scopes": null,
+      "authorization_type": "NONE",
+      "authorizer_id": "",
+      "id": "061a206b",
+      "model_selection_expression": "",
+      "operation_name": "",
+      "region": "us-east-1",
+      "request_models": null,
+      "request_parameter": [],
+      "route_key": "PUT /carrito",
+      "route_response_selection_expression": "",
+      "target": "integrations/c176828a"
+     },
+     "sensitive_values": {
+      "request_parameter": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_apigatewayv2_integration.funcion",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "1748a8f1e4",
+      "id": "061a206b",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_stage.defecto",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_stage",
+     "name": "defecto",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "access_log_settings": [],
+      "api_id": "1748a8f1e4",
+      "arn": "arn:aws:apigateway:us-east-1::/apis/1748a8f1e4/stages/$default",
+      "auto_deploy": true,
+      "client_certificate_id": "",
+      "default_route_settings": [],
+      "deployment_id": "",
+      "description": "",
+      "execution_arn": "arn:aws:execute-api:us-east-1::1748a8f1e4/$default",
+      "id": "$default",
+      "invoke_url": "https://1748a8f1e4.execute-api.us-east-1.amazonaws.com/",
+      "name": "$default",
+      "region": "us-east-1",
+      "route_settings": [],
+      "stage_variables": null,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "access_log_settings": [],
+      "default_route_settings": [],
+      "route_settings": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda"
+     ]
+    },
+    {
+     "address": "aws_cloudwatch_event_rule.reporte_diario",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_rule",
+     "name": "reporte_diario",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:events:us-east-1:000000000000:rule/p1-reporte-diario",
+      "description": "",
+      "event_bus_name": "default",
+      "event_pattern": null,
+      "force_destroy": false,
+      "id": "p1-reporte-diario",
+      "is_enabled": true,
+      "name": "p1-reporte-diario",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "role_arn": "",
+      "schedule_expression": "cron(0 6 * * ? *)",
+      "state": "ENABLED",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "p1-reporte-diario",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_event_target.reporte",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_target",
+     "name": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "appsync_target": [],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-reporte",
+      "batch_target": [],
+      "dead_letter_config": [],
+      "ecs_target": [],
+      "event_bus_name": "default",
+      "force_destroy": false,
+      "http_target": [],
+      "id": "p1-reporte-diario-terraform-1rpsv49bMOcCLAAAau7KToZQ8S",
+      "input": "",
+      "input_path": "",
+      "input_transformer": [],
+      "kinesis_target": [],
+      "redshift_target": [],
+      "region": "us-east-1",
+      "retry_policy": [],
+      "role_arn": "",
+      "rule": "p1-reporte-diario",
+      "run_command_targets": [],
+      "sagemaker_pipeline_target": [],
+      "sqs_target": [],
+      "target_id": "terraform-1rpsv49bMOcCLAAAau7KToZQ8S"
+     },
+     "sensitive_values": {
+      "appsync_target": [],
+      "batch_target": [],
+      "dead_letter_config": [],
+      "ecs_target": [],
+      "http_target": [],
+      "input_transformer": [],
+      "kinesis_target": [],
+      "redshift_target": [],
+      "retry_policy": [],
+      "run_command_targets": [],
+      "sagemaker_pipeline_target": [],
+      "sqs_target": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_event_rule.reporte_diario",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "event_bus_name": "default",
+      "region": "us-east-1",
+      "rule": "p1-reporte-diario",
+      "target_id": "terraform-1rpsv49bMOcCLAAAau7KToZQ8S"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion[\"carrito\"]",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "index": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-carrito",
+      "deletion_protection_enabled": false,
+      "id": "/aws/lambda/p1-carrito",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/aws/lambda/p1-carrito",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/aws/lambda/p1-carrito",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion[\"catalogo\"]",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "index": "catalogo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-catalogo",
+      "deletion_protection_enabled": false,
+      "id": "/aws/lambda/p1-catalogo",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/aws/lambda/p1-catalogo",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/aws/lambda/p1-catalogo",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion[\"pedidos\"]",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "index": "pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-pedidos",
+      "deletion_protection_enabled": false,
+      "id": "/aws/lambda/p1-pedidos",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/aws/lambda/p1-pedidos",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/aws/lambda/p1-pedidos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion[\"procesar\"]",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "index": "procesar",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-procesar",
+      "deletion_protection_enabled": false,
+      "id": "/aws/lambda/p1-procesar",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/aws/lambda/p1-procesar",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/aws/lambda/p1-procesar",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion[\"reporte\"]",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "index": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-reporte",
+      "deletion_protection_enabled": false,
+      "id": "/aws/lambda/p1-reporte",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/aws/lambda/p1-reporte",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 30,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/aws/lambda/p1-reporte",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_dynamodb_table.carrito",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:dynamodb:us-east-1:000000000000:table/p1-carritos",
+      "attribute": [
+       {
+        "name": "cliente_id",
+        "type": "S"
+       }
+      ],
+      "billing_mode": "PAY_PER_REQUEST",
+      "deletion_protection_enabled": false,
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "hash_key": "cliente_id",
+      "id": "p1-carritos",
+      "import_table": [],
+      "local_secondary_index": [],
+      "name": "p1-carritos",
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {
+        "enabled": true,
+        "recovery_period_in_days": 35
+       }
+      ],
+      "range_key": null,
+      "read_capacity": 0,
+      "region": "us-east-1",
+      "replica": [],
+      "restore_backup_arn": null,
+      "restore_date_time": null,
+      "restore_source_name": null,
+      "restore_source_table_arn": null,
+      "restore_to_latest_time": null,
+      "server_side_encryption": [],
+      "stream_arn": "",
+      "stream_enabled": false,
+      "stream_label": "",
+      "stream_view_type": "",
+      "table_class": "STANDARD",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "ttl": [
+       {
+        "attribute_name": "expira_en",
+        "enabled": true
+       }
+      ],
+      "warm_throughput": [],
+      "write_capacity": 0
+     },
+     "sensitive_values": {
+      "attribute": [
+       {}
+      ],
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "import_table": [],
+      "local_secondary_index": [],
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {}
+      ],
+      "replica": [],
+      "server_side_encryption": [],
+      "tags_all": {},
+      "ttl": [
+       {}
+      ],
+      "warm_throughput": []
+     },
+     "identity": {
+      "account_id": "",
+      "name": "p1-carritos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_dynamodb_table.pedido",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "pedido",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:dynamodb:us-east-1:000000000000:table/p1-pedidos",
+      "attribute": [
+       {
+        "name": "fecha",
+        "type": "S"
+       },
+       {
+        "name": "pedido_id",
+        "type": "S"
+       }
+      ],
+      "billing_mode": "PAY_PER_REQUEST",
+      "deletion_protection_enabled": false,
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "hash_key": "pedido_id",
+      "id": "p1-pedidos",
+      "import_table": [],
+      "local_secondary_index": [],
+      "name": "p1-pedidos",
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {
+        "enabled": true,
+        "recovery_period_in_days": 35
+       }
+      ],
+      "range_key": "fecha",
+      "read_capacity": 0,
+      "region": "us-east-1",
+      "replica": [],
+      "restore_backup_arn": null,
+      "restore_date_time": null,
+      "restore_source_name": null,
+      "restore_source_table_arn": null,
+      "restore_to_latest_time": null,
+      "server_side_encryption": [],
+      "stream_arn": "",
+      "stream_enabled": false,
+      "stream_label": "",
+      "stream_view_type": "",
+      "table_class": "STANDARD",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "ttl": [
+       {
+        "attribute_name": "",
+        "enabled": false
+       }
+      ],
+      "warm_throughput": [],
+      "write_capacity": 0
+     },
+     "sensitive_values": {
+      "attribute": [
+       {},
+       {}
+      ],
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "import_table": [],
+      "local_secondary_index": [],
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {}
+      ],
+      "replica": [],
+      "server_side_encryption": [],
+      "tags_all": {},
+      "ttl": [
+       {}
+      ],
+      "warm_throughput": []
+     },
+     "identity": {
+      "account_id": "",
+      "name": "p1-pedidos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_dynamodb_table.producto",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "producto",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:dynamodb:us-east-1:000000000000:table/p1-productos",
+      "attribute": [
+       {
+        "name": "producto_id",
+        "type": "S"
+       }
+      ],
+      "billing_mode": "PAY_PER_REQUEST",
+      "deletion_protection_enabled": false,
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "hash_key": "producto_id",
+      "id": "p1-productos",
+      "import_table": [],
+      "local_secondary_index": [],
+      "name": "p1-productos",
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {
+        "enabled": true,
+        "recovery_period_in_days": 35
+       }
+      ],
+      "range_key": null,
+      "read_capacity": 0,
+      "region": "us-east-1",
+      "replica": [],
+      "restore_backup_arn": null,
+      "restore_date_time": null,
+      "restore_source_name": null,
+      "restore_source_table_arn": null,
+      "restore_to_latest_time": null,
+      "server_side_encryption": [],
+      "stream_arn": "",
+      "stream_enabled": false,
+      "stream_label": "",
+      "stream_view_type": "",
+      "table_class": "STANDARD",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "ttl": [
+       {
+        "attribute_name": "",
+        "enabled": false
+       }
+      ],
+      "warm_throughput": [],
+      "write_capacity": 0
+     },
+     "sensitive_values": {
+      "attribute": [
+       {}
+      ],
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "import_table": [],
+      "local_secondary_index": [],
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {}
+      ],
+      "replica": [],
+      "server_side_encryption": [],
+      "tags_all": {},
+      "ttl": [
+       {}
+      ],
+      "warm_throughput": []
+     },
+     "identity": {
+      "account_id": "",
+      "name": "p1-productos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.funcion[\"carrito\"]",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "funcion",
+     "index": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p1-carrito",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:40:14Z",
+      "description": "Lee y actualiza el carrito del cliente",
+      "force_detach_policies": false,
+      "id": "p1-carrito",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p1-carrito",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROALNEYO8LPZA5G7AF5"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-carrito"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.funcion[\"catalogo\"]",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "funcion",
+     "index": "catalogo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p1-catalogo",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:40:14Z",
+      "description": "Lista y consulta los productos",
+      "force_detach_policies": false,
+      "id": "p1-catalogo",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p1-catalogo",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA971IH3H1C1WKWVP3"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-catalogo"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.funcion[\"pedidos\"]",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "funcion",
+     "index": "pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p1-pedidos",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:40:14Z",
+      "description": "Registra el pedido y lo encola para procesarlo",
+      "force_detach_policies": false,
+      "id": "p1-pedidos",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p1-pedidos",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA9DK7IKPH4GYH1GJI"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-pedidos"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.funcion[\"procesar\"]",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "funcion",
+     "index": "procesar",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p1-procesar",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:40:14Z",
+      "description": "Procesa los pedidos de la cola",
+      "force_detach_policies": false,
+      "id": "p1-procesar",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p1-procesar",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROAK47RXYOG3KA7U47E"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-procesar"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.funcion[\"reporte\"]",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "funcion",
+     "index": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/p1-reporte",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:40:14Z",
+      "description": "Genera el reporte diario de ventas y lo publica",
+      "force_detach_policies": false,
+      "id": "p1-reporte",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "p1-reporte",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA6FWTNTPZBJJPOL1R"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-reporte"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.funcion[\"carrito\"]",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "funcion",
+     "index": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p1-carrito:p1-carrito-permisos",
+      "name": "p1-carrito-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:GetItem\",\"dynamodb:PutItem\",\"dynamodb:UpdateItem\",\"dynamodb:DeleteItem\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-carritos\"]},{\"Action\":[\"dynamodb:GetItem\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-productos\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-carrito:*\"]}]}",
+      "role": "p1-carrito"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-carrito-permisos",
+      "role": "p1-carrito"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.funcion[\"catalogo\"]",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "funcion",
+     "index": "catalogo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p1-catalogo:p1-catalogo-permisos",
+      "name": "p1-catalogo-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:GetItem\",\"dynamodb:Query\",\"dynamodb:Scan\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-productos\"]},{\"Action\":[\"s3:GetObject\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::p1-imagenes-productos/*\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-catalogo:*\"]}]}",
+      "role": "p1-catalogo"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-catalogo-permisos",
+      "role": "p1-catalogo"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.funcion[\"pedidos\"]",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "funcion",
+     "index": "pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p1-pedidos:p1-pedidos-permisos",
+      "name": "p1-pedidos-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:PutItem\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-pedidos\"]},{\"Action\":[\"dynamodb:GetItem\",\"dynamodb:DeleteItem\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-carritos\"]},{\"Action\":[\"sqs:SendMessage\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:sqs:us-east-1:000000000000:p1-pedidos\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-pedidos:*\"]}]}",
+      "role": "p1-pedidos"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-pedidos-permisos",
+      "role": "p1-pedidos"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.funcion[\"procesar\"]",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "funcion",
+     "index": "procesar",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p1-procesar:p1-procesar-permisos",
+      "name": "p1-procesar-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"sqs:ReceiveMessage\",\"sqs:DeleteMessage\",\"sqs:GetQueueAttributes\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:sqs:us-east-1:000000000000:p1-pedidos\"]},{\"Action\":[\"dynamodb:UpdateItem\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-pedidos\"]},{\"Action\":[\"sns:Publish\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:sns:us-east-1:000000000000:p1-notificaciones\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-procesar:*\"]}]}",
+      "role": "p1-procesar"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-procesar-permisos",
+      "role": "p1-procesar"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.funcion[\"reporte\"]",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "funcion",
+     "index": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "p1-reporte:p1-reporte-permisos",
+      "name": "p1-reporte-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:Query\",\"dynamodb:Scan\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:dynamodb:us-east-1:000000000000:table/p1-pedidos\"]},{\"Action\":[\"sns:Publish\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:sns:us-east-1:000000000000:p1-notificaciones\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/p1-reporte:*\"]}]}",
+      "role": "p1-reporte"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "p1-reporte-permisos",
+      "role": "p1-reporte"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_event_source_mapping.pedido",
+     "mode": "managed",
+     "type": "aws_lambda_event_source_mapping",
+     "name": "pedido",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "amazon_managed_kafka_event_source_config": [],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:event-source-mapping:33db27dc-c855-4552-9816-d19142004be6",
+      "batch_size": 10,
+      "bisect_batch_on_function_error": false,
+      "destination_config": [],
+      "document_db_event_source_config": [],
+      "enabled": true,
+      "event_source_arn": "arn:aws:sqs:us-east-1:000000000000:p1-pedidos",
+      "filter_criteria": [],
+      "function_arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-procesar",
+      "function_name": "arn:aws:lambda:us-east-1:000000000000:function:p1-procesar",
+      "function_response_types": null,
+      "id": "33db27dc-c855-4552-9816-d19142004be6",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:41:20Z",
+      "last_processing_result": "",
+      "maximum_batching_window_in_seconds": 0,
+      "maximum_record_age_in_seconds": 0,
+      "maximum_retry_attempts": 0,
+      "metrics_config": [],
+      "parallelization_factor": 0,
+      "provisioned_poller_config": [],
+      "queues": null,
+      "region": "us-east-1",
+      "scaling_config": [],
+      "self_managed_event_source": [],
+      "self_managed_kafka_event_source_config": [],
+      "source_access_configuration": [],
+      "starting_position": "",
+      "starting_position_timestamp": "",
+      "state": "Enabled",
+      "state_transition_reason": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "topics": null,
+      "tumbling_window_in_seconds": 0,
+      "use_resource_timeout_for_propagation": null,
+      "uuid": "33db27dc-c855-4552-9816-d19142004be6"
+     },
+     "sensitive_values": {
+      "amazon_managed_kafka_event_source_config": [],
+      "destination_config": [],
+      "document_db_event_source_config": [],
+      "filter_criteria": [],
+      "metrics_config": [],
+      "provisioned_poller_config": [],
+      "scaling_config": [],
+      "self_managed_event_source": [],
+      "self_managed_kafka_event_source_config": [],
+      "source_access_configuration": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "region": "us-east-1",
+      "uuid": "33db27dc-c855-4552-9816-d19142004be6"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.funcion[\"carrito\"]",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "funcion",
+     "index": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-carrito",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "Lee y actualiza el carrito del cliente",
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {
+         "BUCKET_IMAGENES": "p1-imagenes-productos",
+         "COLA_PEDIDOS": "http://localhost:4566/000000000000/p1-pedidos",
+         "TABLA_CARRITOS": "p1-carritos",
+         "TABLA_PEDIDOS": "p1-pedidos",
+         "TABLA_PRODUCTOS": "p1-productos",
+         "TEMA_AVISOS": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones"
+        }
+       }
+      ],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "p1-carrito",
+      "handler": "index.handler",
+      "id": "p1-carrito",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-carrito/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:41:05.383+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/p1-carrito",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-carrito",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-carrito/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-carrito/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/p1-carrito",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 30,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {}
+       }
+      ],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-carrito",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.funcion[\"catalogo\"]",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "funcion",
+     "index": "catalogo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-catalogo",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "Lista y consulta los productos",
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {
+         "BUCKET_IMAGENES": "p1-imagenes-productos",
+         "COLA_PEDIDOS": "http://localhost:4566/000000000000/p1-pedidos",
+         "TABLA_CARRITOS": "p1-carritos",
+         "TABLA_PEDIDOS": "p1-pedidos",
+         "TABLA_PRODUCTOS": "p1-productos",
+         "TEMA_AVISOS": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones"
+        }
+       }
+      ],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "p1-catalogo",
+      "handler": "index.handler",
+      "id": "p1-catalogo",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-catalogo/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:41:20.596+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/p1-catalogo",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-catalogo",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-catalogo/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-catalogo/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/p1-catalogo",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 30,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {}
+       }
+      ],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-catalogo",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.funcion[\"pedidos\"]",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "funcion",
+     "index": "pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-pedidos",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "Registra el pedido y lo encola para procesarlo",
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {
+         "BUCKET_IMAGENES": "p1-imagenes-productos",
+         "COLA_PEDIDOS": "http://localhost:4566/000000000000/p1-pedidos",
+         "TABLA_CARRITOS": "p1-carritos",
+         "TABLA_PEDIDOS": "p1-pedidos",
+         "TABLA_PRODUCTOS": "p1-productos",
+         "TEMA_AVISOS": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones"
+        }
+       }
+      ],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "p1-pedidos",
+      "handler": "index.handler",
+      "id": "p1-pedidos",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-pedidos/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:41:25.663+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/p1-pedidos",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-pedidos",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-pedidos/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-pedidos/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/p1-pedidos",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 30,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {}
+       }
+      ],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-pedidos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.funcion[\"procesar\"]",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "funcion",
+     "index": "procesar",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-procesar",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "Procesa los pedidos de la cola",
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {
+         "BUCKET_IMAGENES": "p1-imagenes-productos",
+         "COLA_PEDIDOS": "http://localhost:4566/000000000000/p1-pedidos",
+         "TABLA_CARRITOS": "p1-carritos",
+         "TABLA_PEDIDOS": "p1-pedidos",
+         "TABLA_PRODUCTOS": "p1-productos",
+         "TEMA_AVISOS": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones"
+        }
+       }
+      ],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "p1-procesar",
+      "handler": "index.handler",
+      "id": "p1-procesar",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-procesar/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:41:15.527+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/p1-procesar",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-procesar",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-procesar/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-procesar/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/p1-procesar",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 30,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {}
+       }
+      ],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-procesar",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.funcion[\"reporte\"]",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "funcion",
+     "index": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-reporte",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "Genera el reporte diario de ventas y lo publica",
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {
+         "BUCKET_IMAGENES": "p1-imagenes-productos",
+         "COLA_PEDIDOS": "http://localhost:4566/000000000000/p1-pedidos",
+         "TABLA_CARRITOS": "p1-carritos",
+         "TABLA_PEDIDOS": "p1-pedidos",
+         "TABLA_PRODUCTOS": "p1-productos",
+         "TEMA_AVISOS": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones"
+        }
+       }
+      ],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "p1-reporte",
+      "handler": "index.handler",
+      "id": "p1-reporte",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-reporte/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:41:10.451+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/p1-reporte",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:p1-reporte",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-reporte/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:p1-reporte/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/p1-reporte",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 30,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {}
+       }
+      ],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-reporte",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.api[\"carrito\"]",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "api",
+     "index": "carrito",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "action": "lambda:InvokeFunction",
+      "event_source_token": null,
+      "function_name": "p1-carrito",
+      "function_url_auth_type": null,
+      "id": "PermitirApiGateway",
+      "invoked_via_function_url": null,
+      "principal": "apigateway.amazonaws.com",
+      "principal_org_id": null,
+      "qualifier": "",
+      "region": "us-east-1",
+      "source_account": null,
+      "source_arn": "arn:aws:execute-api:us-east-1::1748a8f1e4/*/*",
+      "statement_id": "PermitirApiGateway",
+      "statement_id_prefix": "",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-carrito",
+      "qualifier": null,
+      "region": "us-east-1",
+      "statement_id": "PermitirApiGateway"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.api[\"catalogo\"]",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "api",
+     "index": "catalogo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "action": "lambda:InvokeFunction",
+      "event_source_token": null,
+      "function_name": "p1-catalogo",
+      "function_url_auth_type": null,
+      "id": "PermitirApiGateway",
+      "invoked_via_function_url": null,
+      "principal": "apigateway.amazonaws.com",
+      "principal_org_id": null,
+      "qualifier": "",
+      "region": "us-east-1",
+      "source_account": null,
+      "source_arn": "arn:aws:execute-api:us-east-1::1748a8f1e4/*/*",
+      "statement_id": "PermitirApiGateway",
+      "statement_id_prefix": "",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-catalogo",
+      "qualifier": null,
+      "region": "us-east-1",
+      "statement_id": "PermitirApiGateway"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.api[\"pedidos\"]",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "api",
+     "index": "pedidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "action": "lambda:InvokeFunction",
+      "event_source_token": null,
+      "function_name": "p1-pedidos",
+      "function_url_auth_type": null,
+      "id": "PermitirApiGateway",
+      "invoked_via_function_url": null,
+      "principal": "apigateway.amazonaws.com",
+      "principal_org_id": null,
+      "qualifier": "",
+      "region": "us-east-1",
+      "source_account": null,
+      "source_arn": "arn:aws:execute-api:us-east-1::1748a8f1e4/*/*",
+      "statement_id": "PermitirApiGateway",
+      "statement_id_prefix": "",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_apigatewayv2_api.tienda",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-pedidos",
+      "qualifier": null,
+      "region": "us-east-1",
+      "statement_id": "PermitirApiGateway"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.reporte",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "action": "lambda:InvokeFunction",
+      "event_source_token": null,
+      "function_name": "p1-reporte",
+      "function_url_auth_type": null,
+      "id": "PermitirEventBridge",
+      "invoked_via_function_url": null,
+      "principal": "events.amazonaws.com",
+      "principal_org_id": null,
+      "qualifier": "",
+      "region": "us-east-1",
+      "source_account": null,
+      "source_arn": "arn:aws:events:us-east-1:000000000000:rule/p1-reporte-diario",
+      "statement_id": "PermitirEventBridge",
+      "statement_id_prefix": "",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_event_rule.reporte_diario",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_dynamodb_table.carrito",
+      "aws_dynamodb_table.pedido",
+      "aws_dynamodb_table.producto",
+      "aws_iam_role.funcion",
+      "aws_lambda_function.funcion",
+      "aws_s3_bucket.imagen",
+      "aws_sns_topic.notificacion",
+      "aws_sqs_queue.pedido",
+      "aws_sqs_queue.pedido_fallido",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "p1-reporte",
+      "qualifier": null,
+      "region": "us-east-1",
+      "statement_id": "PermitirEventBridge"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket",
+     "name": "imagen",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "acceleration_status": "",
+      "acl": null,
+      "arn": "arn:aws:s3:::p1-imagenes-productos",
+      "bucket": "p1-imagenes-productos",
+      "bucket_domain_name": "p1-imagenes-productos.s3.amazonaws.com",
+      "bucket_namespace": "global",
+      "bucket_prefix": "",
+      "bucket_region": "us-east-1",
+      "bucket_regional_domain_name": "p1-imagenes-productos.s3.us-east-1.amazonaws.com",
+      "cors_rule": [],
+      "force_destroy": false,
+      "grant": [
+       {
+        "id": "f7b11509f4d675c3c44f0dd37ca830bb02e8cfa58f04c46283c4bfcbdce1ff45",
+        "permissions": [
+         "FULL_CONTROL"
+        ],
+        "type": "CanonicalUser",
+        "uri": ""
+       }
+      ],
+      "hosted_zone_id": "Z3AQBSTGFYJSTF",
+      "id": "p1-imagenes-productos",
+      "lifecycle_rule": [],
+      "logging": [],
+      "object_lock_configuration": [],
+      "object_lock_enabled": false,
+      "policy": "",
+      "region": "us-east-1",
+      "replication_configuration": [],
+      "request_payer": "BucketOwner",
+      "server_side_encryption_configuration": [
+       {
+        "rule": [
+         {
+          "apply_server_side_encryption_by_default": [
+           {
+            "kms_master_key_id": "",
+            "sse_algorithm": "AES256"
+           }
+          ],
+          "bucket_key_enabled": false
+         }
+        ]
+       }
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "versioning": [
+       {
+        "enabled": false,
+        "mfa_delete": false
+       }
+      ],
+      "website": [],
+      "website_domain": null,
+      "website_endpoint": null
+     },
+     "sensitive_values": {
+      "cors_rule": [],
+      "grant": [
+       {
+        "permissions": [
+         false
+        ]
+       }
+      ],
+      "lifecycle_rule": [],
+      "logging": [],
+      "object_lock_configuration": [],
+      "replication_configuration": [],
+      "server_side_encryption_configuration": [
+       {
+        "rule": [
+         {
+          "apply_server_side_encryption_by_default": [
+           {}
+          ]
+         }
+        ]
+       }
+      ],
+      "tags_all": {},
+      "versioning": [
+       {}
+      ],
+      "website": []
+     },
+     "identity": {
+      "account_id": "",
+      "bucket": "p1-imagenes-productos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket_public_access_block",
+     "name": "imagen",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "block_public_acls": true,
+      "block_public_policy": true,
+      "bucket": "p1-imagenes-productos",
+      "id": "p1-imagenes-productos",
+      "ignore_public_acls": true,
+      "region": "us-east-1",
+      "restrict_public_buckets": true,
+      "skip_destroy": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_s3_bucket.imagen"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "p1-imagenes-productos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_server_side_encryption_configuration.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket_server_side_encryption_configuration",
+     "name": "imagen",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "bucket": "p1-imagenes-productos",
+      "expected_bucket_owner": "",
+      "id": "p1-imagenes-productos",
+      "region": "us-east-1",
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {
+          "kms_master_key_id": "",
+          "sse_algorithm": "AES256"
+         }
+        ],
+        "blocked_encryption_types": [],
+        "bucket_key_enabled": false
+       }
+      ]
+     },
+     "sensitive_values": {
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {}
+        ],
+        "blocked_encryption_types": []
+       }
+      ]
+     },
+     "depends_on": [
+      "aws_s3_bucket.imagen"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "p1-imagenes-productos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_s3_bucket_versioning.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket_versioning",
+     "name": "imagen",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "bucket": "p1-imagenes-productos",
+      "expected_bucket_owner": "",
+      "id": "p1-imagenes-productos",
+      "mfa": null,
+      "region": "us-east-1",
+      "versioning_configuration": [
+       {
+        "mfa_delete": "Disabled",
+        "status": "Enabled"
+       }
+      ]
+     },
+     "sensitive_values": {
+      "versioning_configuration": [
+       {}
+      ]
+     },
+     "depends_on": [
+      "aws_s3_bucket.imagen"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "p1-imagenes-productos",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sns_topic.notificacion",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "notificacion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "application_failure_feedback_role_arn": "",
+      "application_success_feedback_role_arn": "",
+      "application_success_feedback_sample_rate": 0,
+      "archive_policy": "",
+      "arn": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones",
+      "beginning_archive_time": "",
+      "content_based_deduplication": false,
+      "delivery_policy": "",
+      "display_name": "",
+      "fifo_throughput_scope": "",
+      "fifo_topic": false,
+      "firehose_failure_feedback_role_arn": "",
+      "firehose_success_feedback_role_arn": "",
+      "firehose_success_feedback_sample_rate": 0,
+      "http_failure_feedback_role_arn": "",
+      "http_success_feedback_role_arn": "",
+      "http_success_feedback_sample_rate": 0,
+      "id": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones",
+      "kms_master_key_id": "",
+      "lambda_failure_feedback_role_arn": "",
+      "lambda_success_feedback_role_arn": "",
+      "lambda_success_feedback_sample_rate": 0,
+      "maximum_message_size": 0,
+      "name": "p1-notificaciones",
+      "name_prefix": "",
+      "owner": "000000000000",
+      "policy": "{\"Id\":\"__default_policy_ID\",\"Statement\":[{\"Action\":[\"SNS:GetTopicAttributes\",\"SNS:SetTopicAttributes\",\"SNS:AddPermission\",\"SNS:RemovePermission\",\"SNS:DeleteTopic\",\"SNS:Subscribe\",\"SNS:ListSubscriptionsByTopic\",\"SNS:Publish\"],\"Condition\":{\"StringEquals\":{\"AWS:SourceOwner\":\"000000000000\"}},\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Resource\":\"arn:aws:sns:us-east-1:000000000000:p1-notificaciones\",\"Sid\":\"__default_statement_ID\"}],\"Version\":\"2008-10-17\"}",
+      "region": "us-east-1",
+      "signature_version": 0,
+      "sqs_failure_feedback_role_arn": "",
+      "sqs_success_feedback_role_arn": "",
+      "sqs_success_feedback_sample_rate": 0,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tracing_config": ""
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:p1-notificaciones"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.pedido",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "pedido",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:p1-pedidos",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/p1-pedidos",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "p1-pedidos",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:000000000000:p1-pedidos-fallidos\",\"maxReceiveCount\":3}",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/p1-pedidos",
+      "visibility_timeout_seconds": 60
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_sqs_queue.pedido_fallido"
+     ],
+     "identity": {
+      "url": "http://localhost:4566/000000000000/p1-pedidos"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue.pedido_fallido",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "pedido_fallido",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:p1-pedidos-fallidos",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/p1-pedidos-fallidos",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "p1-pedidos-fallidos",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/p1-pedidos-fallidos",
+      "visibility_timeout_seconds": 30
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "url": "http://localhost:4566/000000000000/p1-pedidos-fallidos"
+     },
+     "identity_schema_version": 1
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_apigatewayv2_api.tienda",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_api",
+     "name": "tienda",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p1-tienda"
+      },
+      "protocol_type": {
+       "constant_value": "HTTP"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_integration.funcion",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_integration",
+     "name": "funcion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.tienda.id",
+        "aws_apigatewayv2_api.tienda"
+       ]
+      },
+      "integration_type": {
+       "constant_value": "AWS_PROXY"
+      },
+      "integration_uri": {
+       "references": [
+        "aws_lambda_function.funcion",
+        "each.key"
+       ]
+      },
+      "payload_format_version": {
+       "constant_value": "2.0"
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.integraciones"
+      ]
+     }
+    },
+    {
+     "address": "aws_apigatewayv2_route.ruta",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "ruta",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.tienda.id",
+        "aws_apigatewayv2_api.tienda"
+       ]
+      },
+      "route_key": {
+       "references": [
+        "each.key"
+       ]
+      },
+      "target": {
+       "references": [
+        "aws_apigatewayv2_integration.funcion",
+        "each.value"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.rutas"
+      ]
+     }
+    },
+    {
+     "address": "aws_apigatewayv2_stage.defecto",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_stage",
+     "name": "defecto",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.tienda.id",
+        "aws_apigatewayv2_api.tienda"
+       ]
+      },
+      "auto_deploy": {
+       "constant_value": true
+      },
+      "name": {
+       "constant_value": "$default"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_event_rule.reporte_diario",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_rule",
+     "name": "reporte_diario",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p1-reporte-diario"
+      },
+      "schedule_expression": {
+       "constant_value": "cron(0 6 * * ? *)"
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_cloudwatch_event_target.reporte",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_target",
+     "name": "reporte",
+     "provider_config_key": "aws",
+     "expressions": {
+      "arn": {
+       "references": [
+        "aws_lambda_function.funcion[\"reporte\"].arn",
+        "aws_lambda_function.funcion[\"reporte\"]",
+        "aws_lambda_function.funcion"
+       ]
+      },
+      "rule": {
+       "references": [
+        "aws_cloudwatch_event_rule.reporte_diario.name",
+        "aws_cloudwatch_event_rule.reporte_diario"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "references": [
+        "each.key"
+       ]
+      },
+      "retention_in_days": {
+       "constant_value": 30
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.funciones"
+      ]
+     }
+    },
+    {
+     "address": "aws_dynamodb_table.carrito",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "carrito",
+     "provider_config_key": "aws",
+     "expressions": {
+      "attribute": [
+       {
+        "name": {
+         "constant_value": "cliente_id"
+        },
+        "type": {
+         "constant_value": "S"
+        }
+       }
+      ],
+      "billing_mode": {
+       "constant_value": "PAY_PER_REQUEST"
+      },
+      "hash_key": {
+       "constant_value": "cliente_id"
+      },
+      "name": {
+       "constant_value": "p1-carritos"
+      },
+      "point_in_time_recovery": [
+       {
+        "enabled": {
+         "constant_value": true
+        }
+       }
+      ],
+      "ttl": [
+       {
+        "attribute_name": {
+         "constant_value": "expira_en"
+        },
+        "enabled": {
+         "constant_value": true
+        }
+       }
+      ]
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_dynamodb_table.pedido",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "pedido",
+     "provider_config_key": "aws",
+     "expressions": {
+      "attribute": [
+       {
+        "name": {
+         "constant_value": "pedido_id"
+        },
+        "type": {
+         "constant_value": "S"
+        }
+       },
+       {
+        "name": {
+         "constant_value": "fecha"
+        },
+        "type": {
+         "constant_value": "S"
+        }
+       }
+      ],
+      "billing_mode": {
+       "constant_value": "PAY_PER_REQUEST"
+      },
+      "hash_key": {
+       "constant_value": "pedido_id"
+      },
+      "name": {
+       "constant_value": "p1-pedidos"
+      },
+      "point_in_time_recovery": [
+       {
+        "enabled": {
+         "constant_value": true
+        }
+       }
+      ],
+      "range_key": {
+       "constant_value": "fecha"
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_dynamodb_table.producto",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "producto",
+     "provider_config_key": "aws",
+     "expressions": {
+      "attribute": [
+       {
+        "name": {
+         "constant_value": "producto_id"
+        },
+        "type": {
+         "constant_value": "S"
+        }
+       }
+      ],
+      "billing_mode": {
+       "constant_value": "PAY_PER_REQUEST"
+      },
+      "hash_key": {
+       "constant_value": "producto_id"
+      },
+      "name": {
+       "constant_value": "p1-productos"
+      },
+      "point_in_time_recovery": [
+       {
+        "enabled": {
+         "constant_value": true
+        }
+       }
+      ]
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_iam_role.funcion",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "funcion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {
+       "references": [
+        "data.aws_iam_policy_document.confianza_lambda.json",
+        "data.aws_iam_policy_document.confianza_lambda"
+       ]
+      },
+      "description": {
+       "references": [
+        "each.value"
+       ]
+      },
+      "name": {
+       "references": [
+        "each.key"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.funciones"
+      ]
+     }
+    },
+    {
+     "address": "aws_iam_role_policy.funcion",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "funcion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "references": [
+        "each.key"
+       ]
+      },
+      "policy": {
+       "references": [
+        "local.permisos",
+        "each.key",
+        "aws_cloudwatch_log_group.funcion",
+        "each.key"
+       ]
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.funcion",
+        "each.key"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.funciones"
+      ]
+     }
+    },
+    {
+     "address": "aws_lambda_event_source_mapping.pedido",
+     "mode": "managed",
+     "type": "aws_lambda_event_source_mapping",
+     "name": "pedido",
+     "provider_config_key": "aws",
+     "expressions": {
+      "batch_size": {
+       "constant_value": 10
+      },
+      "event_source_arn": {
+       "references": [
+        "aws_sqs_queue.pedido.arn",
+        "aws_sqs_queue.pedido"
+       ]
+      },
+      "function_name": {
+       "references": [
+        "aws_lambda_function.funcion[\"procesar\"].arn",
+        "aws_lambda_function.funcion[\"procesar\"]",
+        "aws_lambda_function.funcion"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.funcion",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "funcion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "description": {
+       "references": [
+        "each.value"
+       ]
+      },
+      "environment": [
+       {
+        "variables": {
+         "references": [
+          "aws_dynamodb_table.producto.name",
+          "aws_dynamodb_table.producto",
+          "aws_dynamodb_table.carrito.name",
+          "aws_dynamodb_table.carrito",
+          "aws_dynamodb_table.pedido.name",
+          "aws_dynamodb_table.pedido",
+          "aws_sqs_queue.pedido.url",
+          "aws_sqs_queue.pedido",
+          "aws_sns_topic.notificacion.arn",
+          "aws_sns_topic.notificacion",
+          "aws_s3_bucket.imagen.bucket",
+          "aws_s3_bucket.imagen"
+         ]
+        }
+       }
+      ],
+      "filename": {
+       "references": [
+        "var.ruta_lambda_zip"
+       ]
+      },
+      "function_name": {
+       "references": [
+        "each.key"
+       ]
+      },
+      "handler": {
+       "constant_value": "index.handler"
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.funcion",
+        "each.key"
+       ]
+      },
+      "runtime": {
+       "constant_value": "python3.12"
+      },
+      "source_code_hash": {
+       "references": [
+        "var.ruta_lambda_zip"
+       ]
+      },
+      "timeout": {
+       "constant_value": 30
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.funciones"
+      ]
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion"
+     ]
+    },
+    {
+     "address": "aws_lambda_permission.api",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "api",
+     "provider_config_key": "aws",
+     "expressions": {
+      "action": {
+       "constant_value": "lambda:InvokeFunction"
+      },
+      "function_name": {
+       "references": [
+        "aws_lambda_function.funcion",
+        "each.key"
+       ]
+      },
+      "principal": {
+       "constant_value": "apigateway.amazonaws.com"
+      },
+      "source_arn": {
+       "references": [
+        "aws_apigatewayv2_api.tienda.execution_arn",
+        "aws_apigatewayv2_api.tienda"
+       ]
+      },
+      "statement_id": {
+       "constant_value": "PermitirApiGateway"
+      }
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "local.integraciones"
+      ]
+     }
+    },
+    {
+     "address": "aws_lambda_permission.reporte",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "reporte",
+     "provider_config_key": "aws",
+     "expressions": {
+      "action": {
+       "constant_value": "lambda:InvokeFunction"
+      },
+      "function_name": {
+       "references": [
+        "aws_lambda_function.funcion[\"reporte\"].function_name",
+        "aws_lambda_function.funcion[\"reporte\"]",
+        "aws_lambda_function.funcion"
+       ]
+      },
+      "principal": {
+       "constant_value": "events.amazonaws.com"
+      },
+      "source_arn": {
+       "references": [
+        "aws_cloudwatch_event_rule.reporte_diario.arn",
+        "aws_cloudwatch_event_rule.reporte_diario"
+       ]
+      },
+      "statement_id": {
+       "constant_value": "PermitirEventBridge"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket",
+     "name": "imagen",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "constant_value": "p1-imagenes-productos"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket_public_access_block",
+     "name": "imagen",
+     "provider_config_key": "aws",
+     "expressions": {
+      "block_public_acls": {
+       "constant_value": true
+      },
+      "block_public_policy": {
+       "constant_value": true
+      },
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.imagen.id",
+        "aws_s3_bucket.imagen"
+       ]
+      },
+      "ignore_public_acls": {
+       "constant_value": true
+      },
+      "restrict_public_buckets": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_server_side_encryption_configuration.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket_server_side_encryption_configuration",
+     "name": "imagen",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.imagen.id",
+        "aws_s3_bucket.imagen"
+       ]
+      },
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {
+          "sse_algorithm": {
+           "constant_value": "AES256"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_versioning.imagen",
+     "mode": "managed",
+     "type": "aws_s3_bucket_versioning",
+     "name": "imagen",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.imagen.id",
+        "aws_s3_bucket.imagen"
+       ]
+      },
+      "versioning_configuration": [
+       {
+        "status": {
+         "constant_value": "Enabled"
+        }
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic.notificacion",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "notificacion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p1-notificaciones"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.pedido",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "pedido",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p1-pedidos"
+      },
+      "redrive_policy": {
+       "references": [
+        "aws_sqs_queue.pedido_fallido.arn",
+        "aws_sqs_queue.pedido_fallido"
+       ]
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      },
+      "visibility_timeout_seconds": {
+       "constant_value": 60
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.pedido_fallido",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "pedido_fallido",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "p1-pedidos-fallidos"
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_iam_policy_document.confianza_lambda",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_lambda",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sts:AssumeRole"
+         ]
+        },
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "lambda.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

@@ -1,5 +1,6 @@
 # Lista de verificación de C12 (N3). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c12
 
 import rego.v1
@@ -18,12 +19,12 @@ requisitos := {
 
 cumple contains "programacion" if {
 	some r in comun.recursos("aws_cloudwatch_event_rule")
-	r.values.schedule_expression != null
+	comun.con_valor(r.values.schedule_expression)
 }
 
 cumple contains "programacion" if {
 	some r in comun.recursos("aws_scheduler_schedule")
-	r.values.schedule_expression != null
+	comun.con_valor(r.values.schedule_expression)
 }
 
 cumple contains "objetivo" if comun.conecta("aws_cloudwatch_event_target", "arn", "aws_lambda_function")
@@ -35,7 +36,11 @@ cumple contains "permiso_eventos" if {
 	p.values.principal in {"events.amazonaws.com", "scheduler.amazonaws.com"}
 }
 
-cumple contains "permiso_eventos" if comun.hay("aws_scheduler_schedule")
+# Con EventBridge Scheduler, el permiso es un rol del programador que puede invocar la función.
+cumple contains "permiso_eventos" if {
+	comun.conecta_en_algo("aws_scheduler_schedule", "aws_iam_role")
+	"lambda:InvokeFunction" in comun.acciones_iam
+}
 
 cumple contains "tema" if {
 	comun.hay("aws_sns_topic")

@@ -1,5 +1,6 @@
 # Lista de verificación de C07 (N2). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c07
 
 import rego.v1

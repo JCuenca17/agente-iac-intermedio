@@ -31,7 +31,9 @@ console.log("Descargando el proveedor fijado (solo la primera vez)...");
 tofu(["init", "-input=false", "-no-color"]);
 console.log("Exportando el esquema...");
 const completo = JSON.parse(tofu(["providers", "schema", "-json"]));
-const [fuente, proveedor] = Object.entries(completo.provider_schemas)[0];
+const entrada = Object.entries(completo.provider_schemas ?? {}).find(([nombre]) => nombre.endsWith("/aws"));
+if (!entrada) throw new Error("El esquema exportado no incluye el proveedor AWS");
+const [fuente, proveedor] = entrada;
 
 function compactarBloque(bloque) {
   const atributos = {};
@@ -59,8 +61,7 @@ function compactarBloque(bloque) {
 const recursos = {};
 for (const [tipo, s] of Object.entries(proveedor.resource_schemas)) recursos[tipo] = compactarBloque(s.block);
 
-const lock = spawnSync("tofu", ["version", "-json"], { cwd: trabajo, encoding: "utf8" });
-const versionProveedor = JSON.parse(lock.stdout).provider_selections?.[fuente] ?? "desconocida";
+const versionProveedor = JSON.parse(tofu(["version", "-json"])).provider_selections?.[fuente] ?? "desconocida";
 
 mkdirSync(dirname(salida), { recursive: true });
 writeFileSync(salida, JSON.stringify({ fuente, version: versionProveedor, recursos }));

@@ -1,0 +1,982 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_iam_policy_document.confianza_lambda",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_lambda",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "2690255455",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"lambda.amazonaws.com\"\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sts:AssumeRole"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "lambda.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": []
+       }
+      ]
+     }
+    },
+    {
+     "address": "data.aws_iam_policy_document.permisos",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "permisos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "4041157840",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sns:Publish\",\n      \"Resource\": \"arn:aws:sns:us-east-1:000000000000:c12-avisos\"\n    },\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"logs:PutLogEvents\",\n        \"logs:CreateLogStream\"\n      ],\n      \"Resource\": \"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/c12-reporte-diario:*\"\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sns:Publish\",\"Resource\":\"arn:aws:sns:us-east-1:000000000000:c12-avisos\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:PutLogEvents\",\"logs:CreateLogStream\"],\"Resource\":\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/c12-reporte-diario:*\"}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sns:Publish"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [],
+        "resources": [
+         "arn:aws:sns:us-east-1:000000000000:c12-avisos"
+        ],
+        "sid": ""
+       },
+       {
+        "actions": [
+         "logs:CreateLogStream",
+         "logs:PutLogEvents"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [],
+        "resources": [
+         "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/c12-reporte-diario:*"
+        ],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [],
+        "resources": [
+         false
+        ]
+       },
+       {
+        "actions": [
+         false,
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [],
+        "resources": [
+         false
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "address": "aws_cloudwatch_event_rule.diario",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_rule",
+     "name": "diario",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:events:us-east-1:000000000000:rule/c12-diario",
+      "description": "",
+      "event_bus_name": "default",
+      "event_pattern": null,
+      "force_destroy": false,
+      "id": "c12-diario",
+      "is_enabled": true,
+      "name": "c12-diario",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "role_arn": "",
+      "schedule_expression": "cron(0 8 * * ? *)",
+      "state": "ENABLED",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "c12-diario",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_event_target.reporte",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_target",
+     "name": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "appsync_target": [],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:c12-reporte-diario",
+      "batch_target": [],
+      "dead_letter_config": [],
+      "ecs_target": [],
+      "event_bus_name": "default",
+      "force_destroy": false,
+      "http_target": [],
+      "id": "c12-diario-terraform-huP37ZWcp2vwWo3JSi8yolzOlT",
+      "input": "",
+      "input_path": "",
+      "input_transformer": [],
+      "kinesis_target": [],
+      "redshift_target": [],
+      "region": "us-east-1",
+      "retry_policy": [],
+      "role_arn": "",
+      "rule": "c12-diario",
+      "run_command_targets": [],
+      "sagemaker_pipeline_target": [],
+      "sqs_target": [],
+      "target_id": "terraform-huP37ZWcp2vwWo3JSi8yolzOlT"
+     },
+     "sensitive_values": {
+      "appsync_target": [],
+      "batch_target": [],
+      "dead_letter_config": [],
+      "ecs_target": [],
+      "http_target": [],
+      "input_transformer": [],
+      "kinesis_target": [],
+      "redshift_target": [],
+      "retry_policy": [],
+      "run_command_targets": [],
+      "sagemaker_pipeline_target": [],
+      "sqs_target": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_event_rule.diario",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_iam_role.reporte",
+      "aws_lambda_function.reporte",
+      "aws_sns_topic.avisos",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "event_bus_name": "default",
+      "region": "us-east-1",
+      "rule": "c12-diario",
+      "target_id": "terraform-huP37ZWcp2vwWo3JSi8yolzOlT"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/c12-reporte-diario",
+      "deletion_protection_enabled": false,
+      "id": "/aws/lambda/c12-reporte-diario",
+      "kms_key_id": "",
+      "log_group_class": "STANDARD",
+      "name": "/aws/lambda/c12-reporte-diario",
+      "name_prefix": "",
+      "region": "us-east-1",
+      "retention_in_days": 14,
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "/aws/lambda/c12-reporte-diario",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.reporte",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/c12-reporte-diario",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:39:37Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "c12-reporte-diario",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "c12-reporte-diario",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROALNSK2ENGM0ZPPBL2"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "c12-reporte-diario"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.permisos",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "permisos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "c12-reporte-diario:c12-permisos",
+      "name": "c12-permisos",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sns:Publish\",\"Effect\":\"Allow\",\"Resource\":\"arn:aws:sns:us-east-1:000000000000:c12-avisos\"},{\"Action\":[\"logs:PutLogEvents\",\"logs:CreateLogStream\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:logs:us-east-1:000000000000:log-group:/aws/lambda/c12-reporte-diario:*\"}]}",
+      "role": "c12-reporte-diario"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_iam_role.reporte",
+      "aws_sns_topic.avisos",
+      "data.aws_iam_policy_document.confianza_lambda",
+      "data.aws_iam_policy_document.permisos"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "c12-permisos",
+      "role": "c12-reporte-diario"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.reporte",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "reporte",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:c12-reporte-diario",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "",
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {
+         "TEMA": "arn:aws:sns:us-east-1:000000000000:c12-avisos"
+        }
+       }
+      ],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "c12-reporte-diario",
+      "handler": "index.handler",
+      "id": "c12-reporte-diario",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:c12-reporte-diario/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:39:38.157+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/c12-reporte-diario",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:c12-reporte-diario",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:c12-reporte-diario/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:c12-reporte-diario/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/c12-reporte-diario",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 3,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [
+       {
+        "variables": {}
+       }
+      ],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion",
+      "aws_iam_role.reporte",
+      "aws_sns_topic.avisos",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "c12-reporte-diario",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.eventbridge",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "eventbridge",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "action": "lambda:InvokeFunction",
+      "event_source_token": null,
+      "function_name": "c12-reporte-diario",
+      "function_url_auth_type": null,
+      "id": "PermitirEventBridge",
+      "invoked_via_function_url": null,
+      "principal": "events.amazonaws.com",
+      "principal_org_id": null,
+      "qualifier": "",
+      "region": "us-east-1",
+      "source_account": null,
+      "source_arn": "arn:aws:events:us-east-1:000000000000:rule/c12-diario",
+      "statement_id": "PermitirEventBridge",
+      "statement_id_prefix": "",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_cloudwatch_event_rule.diario",
+      "aws_cloudwatch_log_group.funcion",
+      "aws_iam_role.reporte",
+      "aws_lambda_function.reporte",
+      "aws_sns_topic.avisos",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "c12-reporte-diario",
+      "qualifier": null,
+      "region": "us-east-1",
+      "statement_id": "PermitirEventBridge"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic.avisos",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "avisos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "application_failure_feedback_role_arn": "",
+      "application_success_feedback_role_arn": "",
+      "application_success_feedback_sample_rate": 0,
+      "archive_policy": "",
+      "arn": "arn:aws:sns:us-east-1:000000000000:c12-avisos",
+      "beginning_archive_time": "",
+      "content_based_deduplication": false,
+      "delivery_policy": "",
+      "display_name": "",
+      "fifo_throughput_scope": "",
+      "fifo_topic": false,
+      "firehose_failure_feedback_role_arn": "",
+      "firehose_success_feedback_role_arn": "",
+      "firehose_success_feedback_sample_rate": 0,
+      "http_failure_feedback_role_arn": "",
+      "http_success_feedback_role_arn": "",
+      "http_success_feedback_sample_rate": 0,
+      "id": "arn:aws:sns:us-east-1:000000000000:c12-avisos",
+      "kms_master_key_id": "",
+      "lambda_failure_feedback_role_arn": "",
+      "lambda_success_feedback_role_arn": "",
+      "lambda_success_feedback_sample_rate": 0,
+      "maximum_message_size": 0,
+      "name": "c12-avisos",
+      "name_prefix": "",
+      "owner": "000000000000",
+      "policy": "{\"Id\":\"__default_policy_ID\",\"Statement\":[{\"Action\":[\"SNS:GetTopicAttributes\",\"SNS:SetTopicAttributes\",\"SNS:AddPermission\",\"SNS:RemovePermission\",\"SNS:DeleteTopic\",\"SNS:Subscribe\",\"SNS:ListSubscriptionsByTopic\",\"SNS:Publish\"],\"Condition\":{\"StringEquals\":{\"AWS:SourceOwner\":\"000000000000\"}},\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Resource\":\"arn:aws:sns:us-east-1:000000000000:c12-avisos\",\"Sid\":\"__default_statement_ID\"}],\"Version\":\"2008-10-17\"}",
+      "region": "us-east-1",
+      "signature_version": 0,
+      "sqs_failure_feedback_role_arn": "",
+      "sqs_success_feedback_role_arn": "",
+      "sqs_success_feedback_sample_rate": 0,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tracing_config": ""
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:c12-avisos"
+     },
+     "identity_schema_version": 0
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_cloudwatch_event_rule.diario",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_rule",
+     "name": "diario",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c12-diario"
+      },
+      "schedule_expression": {
+       "constant_value": "cron(0 8 * * ? *)"
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_cloudwatch_event_target.reporte",
+     "mode": "managed",
+     "type": "aws_cloudwatch_event_target",
+     "name": "reporte",
+     "provider_config_key": "aws",
+     "expressions": {
+      "arn": {
+       "references": [
+        "aws_lambda_function.reporte.arn",
+        "aws_lambda_function.reporte"
+       ]
+      },
+      "rule": {
+       "references": [
+        "aws_cloudwatch_event_rule.diario.name",
+        "aws_cloudwatch_event_rule.diario"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_cloudwatch_log_group.funcion",
+     "mode": "managed",
+     "type": "aws_cloudwatch_log_group",
+     "name": "funcion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "/aws/lambda/c12-reporte-diario"
+      },
+      "retention_in_days": {
+       "constant_value": 14
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.reporte",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "reporte",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {
+       "references": [
+        "data.aws_iam_policy_document.confianza_lambda.json",
+        "data.aws_iam_policy_document.confianza_lambda"
+       ]
+      },
+      "name": {
+       "constant_value": "c12-reporte-diario"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.permisos",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "permisos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c12-permisos"
+      },
+      "policy": {
+       "references": [
+        "data.aws_iam_policy_document.permisos.json",
+        "data.aws_iam_policy_document.permisos"
+       ]
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.reporte.id",
+        "aws_iam_role.reporte"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.reporte",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "reporte",
+     "provider_config_key": "aws",
+     "expressions": {
+      "environment": [
+       {
+        "variables": {
+         "references": [
+          "aws_sns_topic.avisos.arn",
+          "aws_sns_topic.avisos"
+         ]
+        }
+       }
+      ],
+      "filename": {
+       "references": [
+        "var.ruta_lambda_zip"
+       ]
+      },
+      "function_name": {
+       "constant_value": "c12-reporte-diario"
+      },
+      "handler": {
+       "constant_value": "index.handler"
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.reporte.arn",
+        "aws_iam_role.reporte"
+       ]
+      },
+      "runtime": {
+       "constant_value": "python3.12"
+      },
+      "source_code_hash": {
+       "references": [
+        "var.ruta_lambda_zip"
+       ]
+      }
+     },
+     "schema_version": 0,
+     "depends_on": [
+      "aws_cloudwatch_log_group.funcion"
+     ]
+    },
+    {
+     "address": "aws_lambda_permission.eventbridge",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "eventbridge",
+     "provider_config_key": "aws",
+     "expressions": {
+      "action": {
+       "constant_value": "lambda:InvokeFunction"
+      },
+      "function_name": {
+       "references": [
+        "aws_lambda_function.reporte.function_name",
+        "aws_lambda_function.reporte"
+       ]
+      },
+      "principal": {
+       "constant_value": "events.amazonaws.com"
+      },
+      "source_arn": {
+       "references": [
+        "aws_cloudwatch_event_rule.diario.arn",
+        "aws_cloudwatch_event_rule.diario"
+       ]
+      },
+      "statement_id": {
+       "constant_value": "PermitirEventBridge"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic.avisos",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "avisos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c12-avisos"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_iam_policy_document.confianza_lambda",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_lambda",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sts:AssumeRole"
+         ]
+        },
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "lambda.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_iam_policy_document.permisos",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "permisos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sns:Publish"
+         ]
+        },
+        "resources": {
+         "references": [
+          "aws_sns_topic.avisos.arn",
+          "aws_sns_topic.avisos"
+         ]
+        }
+       },
+       {
+        "actions": {
+         "constant_value": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ]
+        },
+        "resources": {
+         "references": [
+          "aws_cloudwatch_log_group.funcion.arn",
+          "aws_cloudwatch_log_group.funcion"
+         ]
+        }
+       }
+      ]
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

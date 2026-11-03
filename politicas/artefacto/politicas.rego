@@ -66,7 +66,7 @@ deny contains v if {
 deny contains v if {
 	some i, q in recursos_de_tipo("aws_sqs_queue")
 	not q.atributos.sqs_managed_sse_enabled == true
-	not q.atributos.kms_master_key_id
+	not con_valor(object.get(q.atributos, "kms_master_key_id", null))
 	v := {
 		"regla": "sqs-cifrado",
 		"ruta": ruta(i, "/atributos"),
@@ -75,15 +75,21 @@ deny contains v if {
 }
 
 # --- P4: sin comodines de acciones en políticas IAM ----------------------------------
+# Se revisan las declaraciones que conceden (Allow) en el documento escrito como objeto o
+# como texto JSON, también dentro de bloques como inline_policy o statement.
 
-atributos_politica := {"policy", "assume_role_policy", "inline_policy"}
+atributos_politica := {"policy", "assume_role_policy", "inline_policy", "statement"}
 
 deny contains v if {
 	some i, r in input.recursos
 	some nombre in atributos_politica
-	documento := r.atributos[nombre]
-	walk(documento, [camino, accion])
-	accion_comodin(camino, accion)
+	some documento in documentos(object.get(r.atributos, nombre, null))
+	walk(documento, [_, declaracion])
+	is_object(declaracion)
+	concede(declaracion)
+	some clave in {"Action", "actions"}
+	some accion in lista(object.get(declaracion, clave, []))
+	es_comodin(accion)
 	v := {
 		"regla": "iam-sin-comodin",
 		"ruta": ruta(i, sprintf("/atributos/%s", [nombre])),
@@ -91,20 +97,29 @@ deny contains v if {
 	}
 }
 
-accion_comodin(camino, accion) if {
-	is_string(accion)
-	clave_accion(camino)
-	es_comodin(accion)
+# El valor como objeto, y los textos JSON que contenga (el documento entero o un "policy").
+documentos(valor) := {d | is_object(valor); d := valor} | {d | is_array(valor); d := {"bloques": valor}} | {d |
+	walk(valor, [_, texto])
+	is_string(texto)
+	json.is_valid(texto)
+	d := json.unmarshal(texto)
+	is_object(d)
 }
 
-clave_accion(camino) if {
-	some k in camino
-	k in {"Action", "actions"}
-}
+concede(declaracion) if lower(object.get(declaracion, "Effect", object.get(declaracion, "effect", "Allow"))) == "allow"
+
+lista(x) := x if is_array(x)
+
+lista(x) := [x] if is_string(x)
 
 es_comodin(a) if a == "*"
 
 es_comodin(a) if endswith(a, ":*")
+
+con_valor(x) if {
+	is_string(x)
+	x != ""
+}
 
 # --- P5: grupos de seguridad sin puertos abiertos a internet salvo 80 y 443 ----------
 
@@ -114,7 +129,7 @@ deny contains v if {
 	some i, g in recursos_de_tipo("aws_security_group")
 	reglas := entradas(g.atributos.ingress)
 	some j, regla in reglas
-	"0.0.0.0/0" in object.get(regla, "cidr_blocks", [])
+	abierta_a_internet(regla)
 	not solo_web(regla)
 	v := {
 		"regla": "sg-abierto",
@@ -125,7 +140,7 @@ deny contains v if {
 
 deny contains v if {
 	some i, r in recursos_de_tipo("aws_vpc_security_group_ingress_rule")
-	r.atributos.cidr_ipv4 == "0.0.0.0/0"
+	internet(object.get(r.atributos, "cidr_ipv4", object.get(r.atributos, "cidr_ipv6", "")))
 	not solo_web(r.atributos)
 	v := {
 		"regla": "sg-abierto",
@@ -134,13 +149,21 @@ deny contains v if {
 	}
 }
 
+internet(cidr) if cidr in {"0.0.0.0/0", "::/0"}
+
+abierta_a_internet(regla) if "0.0.0.0/0" in object.get(regla, "cidr_blocks", [])
+
+abierta_a_internet(regla) if "::/0" in object.get(regla, "ipv6_cidr_blocks", [])
+
 entradas(x) := x if is_array(x)
 
 entradas(x) := [x] if is_object(x)
 
+# Un solo puerto web. Con protocolo "-1" (todos) quedan abiertos todos los puertos.
 solo_web(regla) if {
 	regla.from_port == regla.to_port
 	regla.from_port in puertos_web
+	not object.get(regla, "protocol", object.get(regla, "ip_protocol", "tcp")) in {"-1", "all"}
 }
 
 # --- P6: tablas con recuperación ante borrado -------------------------------------
@@ -171,7 +194,10 @@ deny contains v if {
 	}
 }
 
-retencion_definida(g) if g.atributos.retention_in_days > 0
+retencion_definida(g) if {
+	is_number(g.atributos.retention_in_days)
+	g.atributos.retention_in_days > 0
+}
 
 # --- P8: bases de datos cifradas y no públicas --------------------------------------------
 

@@ -19,7 +19,7 @@ Las pruebas unitarias y de políticas no usan el emulador ni ningún modelo: se 
 
 - En los módulos de validación, traducción, diagrama, ciclo, métricas y estadística, la prueba se escribió antes del código y se comprobó que fallaba.
 - Los valores de referencia estadísticos se calcularon por un camino independiente: la fórmula de Wilson, la binomial exacta y la enumeración de las 2^n asignaciones de signo para Wilcoxon con empates.
-- Las listas de verificación de M4 se validan en las dos direcciones: cada solución de referencia cumple el 100 % y una versión dañada a propósito falla exactamente en el requisito afectado.
+- Las listas de verificación de M4 se validan en las dos direcciones sobre el estado real de cada solución de referencia desplegada en Floci: la referencia cumple el 100 % y una versión dañada a propósito falla exactamente en el requisito afectado.
 - Antes de cada commit se ejecutan `npm test` y la verificación de tipos (`tsc --noEmit`); las pruebas de integración se ejecutan al tocar C4, el ciclo, el despliegue o las métricas.
 
 ## 3. Entorno
@@ -36,8 +36,8 @@ OpenTofu 1.13.1, OPA 1.22.0, proveedor AWS 6.71.0, Node 24 en Windows 11 y Node 
 
 | Nivel | Resultado |
 |---|---|
-| Unitario | 207 de 207 pruebas, en 24 archivos |
-| Políticas Rego | 17 de 17 |
+| Unitario | 231 de 231 pruebas, en 24 archivos |
+| Políticas Rego | 30 de 30 |
 | Integración | 7 de 7 en Floci (incluye el banco de errores con el validador real) |
 | Prueba mínima | 12 de 12 casos en Floci y 12 de 12 en MiniStack |
 | Proyecto grande P1 | Despliega 47 recursos en MiniStack, sin cambios pendientes; su lista M4 se cumple al 100 % sobre el estado real |
@@ -61,11 +61,11 @@ Detalle por archivo de pruebas unitarias:
 | `ejecutor.test.ts` | 12 | Ejecutor del experimento |
 | `estadistica.test.ts` | 8 | Wilson, McNemar, Wilcoxon y Holm |
 | `iaceval.test.ts` | 5 | Evaluación de IaC-Eval |
-| `intencion.test.ts` | 23 | Listas de verificación (M4) |
+| `intencion.test.ts` | 32 | Listas de verificación (M4), sobre estados reales |
 | `mermaid.test.ts` | 9 | Diagrama |
 | `modelo.test.ts` | 9 | Proveedores del modelo y costo |
 | `pagina-revision.test.ts` | 7 | Página de revisión |
-| `politicas-desplegado.test.ts` | 7 | Políticas sobre lo desplegado (M3) |
+| `politicas-desplegado.test.ts` | 22 | Políticas sobre lo desplegado (M3), sobre estados reales |
 | `registro.test.ts` | 2 | Trazas |
 | `resumen.test.ts` | 9 | Resumen de resultados |
 | `seguridad-codigo.test.ts` | 11 | Construcciones no permitidas antes de OpenTofu |
@@ -105,6 +105,20 @@ Antes de entregar la herramienta para el experimento se revisó `src/` con la sk
 | Comparaciones de T contra cinco configuraciones sin ajuste | Más falsos positivos | Valores p ajustados con Holm |
 
 Las demás correcciones agregan tiempos límite a OpenTofu, OPA y Claude Code, permiten reanudar aunque `resultados.jsonl` termine en una línea cortada, validan las opciones del CLI y muestran los atributos y las relaciones en la página de revisión. Cada corrección tiene su prueba. El único punto sin verificar (una posible clave en la configuración de usuario de Claude Code) quedó anotado en `_bmad-output/deferred-work.md`, fuera del repositorio.
+
+La segunda parte de la revisión cubrió los scripts, las políticas de C3 y M3 y las listas de verificación de M4. Para comprobar cada observación se desplegó en Floci la solución de referencia de cada caso y se guardó su estado real, que es lo que miden M3 y M4. Los defectos que cambiaban la medición fueron estos:
+
+| Problema | Consecuencia | Corrección |
+|---|---|---|
+| En el estado, un texto opcional sin valor queda como `""`; las listas preguntaban por `null` | En C03 y P1 cualquier cola contaba como cifrada; en C02 y C12 pasaban una tabla sin clave de ordenamiento y una regla sin programación | Se comprueba que el texto tenga valor |
+| Las `inline_policy` de un rol son una lista de bloques y no un texto JSON | Sus acciones no se leían en M4 ni en M3 | Se lee cada bloque |
+| Las declaraciones `Deny` contaban como acciones concedidas | Falsas violaciones de comodín y de escritura | Solo cuentan las declaraciones `Allow` |
+| En el estado, todo bucket informa el cifrado por defecto del servicio | En C01 el cifrado por la forma antigua se daba siempre por cumplido | La forma antigua se reconoce en la configuración |
+| Varios requisitos se comprobaban con menos exigencia que su texto (rutas de la API REST, comodines parciales en C04, principal de S3 en C05, alarma de la base en P2, entre otros) | M4 sobrestimado | Cada regla exige lo que dice el requisito |
+| Protocolo `-1`, IPv6 `::/0` y reglas de entrada sueltas no se consideraban abiertas | Puertos abiertos sin detectar en C3, M3, C11 y P2 | Se consideran en todas |
+| Las referencias de C05 y C10 dejaban el bucket sin bloqueo público ni cifrado | Una referencia que incumplía los requisitos de seguridad que recibe el modelo | Se agregaron el bloqueo y el cifrado |
+
+Las pruebas de M3 y M4 usan ahora esos estados reales (`test/fixtures/desplegados/`) en lugar de planes: cada referencia cumple el 100 % de su lista sin violaciones, y cada forma alternativa o requisito tiene una prueba que la confirma o la hace fallar. Los scripts recibieron correcciones menores: validación de opciones, reanudación de `iaceval:preparar` sin descartar tareas por errores pasajeros y orden del diagnóstico. Con el caché actual, `iaceval:preparar` reproduce la misma selección de 38 tareas.
 
 ## 8. Matriz de trazabilidad
 

@@ -1,0 +1,278 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_sqs_queue.fallidos",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "fallidos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:c03-trabajos-fallidos",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/c03-trabajos-fallidos",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "c03-trabajos-fallidos",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/c03-trabajos-fallidos",
+      "visibility_timeout_seconds": 30
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "url": "http://localhost:4566/000000000000/c03-trabajos-fallidos"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue.trabajos",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "trabajos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:c03-trabajos",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/c03-trabajos",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "c03-trabajos",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:000000000000:c03-trabajos-fallidos\",\"maxReceiveCount\":3}",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/c03-trabajos",
+      "visibility_timeout_seconds": 30
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_sqs_queue.fallidos"
+     ],
+     "identity": {
+      "url": "http://localhost:4566/000000000000/c03-trabajos"
+     },
+     "identity_schema_version": 1
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_sqs_queue.fallidos",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "fallidos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c03-trabajos-fallidos"
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.trabajos",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "trabajos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c03-trabajos"
+      },
+      "redrive_policy": {
+       "references": [
+        "aws_sqs_queue.fallidos.arn",
+        "aws_sqs_queue.fallidos"
+       ]
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

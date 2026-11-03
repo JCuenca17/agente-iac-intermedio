@@ -38,9 +38,18 @@ cumple contains "subredes" if {
 
 cumple contains "internet" if {
 	comun.hay("aws_internet_gateway")
+	ruta_por_defecto
+}
+
+ruta_por_defecto if {
 	some t in comun.recursos("aws_route_table")
 	some r in t.values.route
 	r.cidr_block == "0.0.0.0/0"
+}
+
+ruta_por_defecto if {
+	some r in comun.recursos("aws_route")
+	r.values.destination_cidr_block == "0.0.0.0/0"
 }
 
 cumple contains "nat" if comun.hay("aws_nat_gateway")
@@ -74,29 +83,55 @@ cumple contains "escalado_cpu" if {
 	contains(lower(json.marshal(p.values)), "cpu")
 }
 
-entradas contains {"g": g.address, "desde": i.from_port, "hasta": i.to_port, "cidrs": i.cidr_blocks} if {
+# Entradas de los grupos de seguridad (IPv4 e IPv6), igual que en C11.
+entradas contains {"desde": d, "hasta": h, "cidr": c} if {
 	some g in comun.recursos("aws_security_group")
 	some i in g.values.ingress
+	some c in array.concat(object.get(i, "cidr_blocks", []), object.get(i, "ipv6_cidr_blocks", []))
+	[d, h] := puertos(i.protocol, i.from_port, i.to_port)
 }
 
-# Puerto abierto solo a grupos de seguridad (sin rangos de IP), con referencia en la configuración.
+entradas contains {"desde": d, "hasta": h, "cidr": c} if {
+	some r in comun.recursos("aws_vpc_security_group_ingress_rule")
+	some c in [r.values.cidr_ipv4, r.values.cidr_ipv6]
+	comun.con_valor(c)
+	[d, h] := puertos(r.values.ip_protocol, r.values.from_port, r.values.to_port)
+}
+
+puertos(protocolo, desde, hasta) := [0, 65535] if protocolo in {"-1", "all"}
+
+puertos(protocolo, desde, hasta) := [desde, hasta] if not protocolo in {"-1", "all"}
+
+internet(cidr) if cidr in {"0.0.0.0/0", "::/0"}
+
+# Puerto abierto a otro grupo de seguridad (en el estado, la regla guarda el id del grupo)
+# y a ningún rango de IP.
 abierto_solo_a_grupos(puerto) if {
+	abierto_a_grupo(puerto)
+	not abierto_a_ip(puerto)
+}
+
+abierto_a_grupo(puerto) if {
 	some g in comun.recursos("aws_security_group")
 	some i in g.values.ingress
-	i.from_port <= puerto
-	i.to_port >= puerto
-	count(i.cidr_blocks) == 0
-	some r in comun.config("aws_security_group")
-	r.address == g.address
-	some ref in comun.referencias(r.expressions.ingress)
-	startswith(ref, "aws_security_group.")
+	[d, h] := puertos(i.protocol, i.from_port, i.to_port)
+	d <= puerto
+	h >= puerto
+	count(object.get(i, "security_groups", [])) > 0
 }
 
-abierto_solo_a_grupos(puerto) if {
-	some r in comun.config("aws_vpc_security_group_ingress_rule")
-	r.expressions.from_port.constant_value <= puerto
-	r.expressions.to_port.constant_value >= puerto
-	count(comun.referencias(r.expressions.referenced_security_group_id)) > 0
+abierto_a_grupo(puerto) if {
+	some r in comun.recursos("aws_vpc_security_group_ingress_rule")
+	[d, h] := puertos(r.values.ip_protocol, r.values.from_port, r.values.to_port)
+	d <= puerto
+	h >= puerto
+	comun.con_valor(r.values.referenced_security_group_id)
+}
+
+abierto_a_ip(puerto) if {
+	some e in entradas
+	e.desde <= puerto
+	e.hasta >= puerto
 }
 
 cumple contains "web_desde_balanceador" if abierto_solo_a_grupos(8080)
@@ -114,8 +149,11 @@ cumple contains "base_datos" if {
 cumple contains "archivos" if {
 	comun.conecta("aws_s3_bucket_versioning", "bucket", "aws_s3_bucket")
 	comun.conecta("aws_s3_bucket_server_side_encryption_configuration", "bucket", "aws_s3_bucket")
+	comun.conecta("aws_s3_bucket_public_access_block", "bucket", "aws_s3_bucket")
 	some b in comun.recursos("aws_s3_bucket_public_access_block")
 	b.values.block_public_acls == true
+	b.values.block_public_policy == true
+	b.values.ignore_public_acls == true
 	b.values.restrict_public_buckets == true
 }
 
@@ -126,11 +164,18 @@ cumple contains "logs" if {
 
 cumple contains "flujo_red" if comun.conecta("aws_flow_log", "vpc_id", "aws_vpc")
 
+# La misma alarma vigila la CPU de la base de datos y avisa por SNS.
 cumple contains "alarma" if {
 	some a in comun.recursos("aws_cloudwatch_metric_alarm")
 	a.values.metric_name == "CPUUtilization"
-	comun.conecta("aws_cloudwatch_metric_alarm", "alarm_actions", "aws_sns_topic")
+	a.values.namespace == "AWS/RDS"
+	some c in comun.config("aws_cloudwatch_metric_alarm")
+	sin_indice(a.address) == c.address
+	some ref in comun.referencias(object.get(c.expressions, "alarm_actions", {}))
+	startswith(ref, "aws_sns_topic.")
 }
+
+sin_indice(direccion) := regex.replace(direccion, `\[[^\]]*\]$`, "")
 
 cumple contains "sin_puertos_abiertos" if {
 	count(entradas) > 0
@@ -139,7 +184,7 @@ cumple contains "sin_puertos_abiertos" if {
 	}
 }
 
-permitida(e) if not "0.0.0.0/0" in e.cidrs
+permitida(e) if not internet(e.cidr)
 
 permitida(e) if {
 	e.desde == e.hasta

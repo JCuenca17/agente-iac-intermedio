@@ -9,6 +9,13 @@ import { fileURLToPath } from "node:url";
 
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const versiones = JSON.parse(readFileSync(join(raiz, "versiones.json"), "utf8"));
+// La versión de Node se revisa antes de todo: con una versión antigua no existe
+// process.loadEnvFile y el diagnóstico no llegaría a decir qué falta.
+const mayorNode = Number(process.versions.node.split(".")[0]);
+if (mayorNode < 22 || typeof process.loadEnvFile !== "function") {
+  console.log(`  [falta] Node ${process.versions.node}: se necesita 22 o superior`);
+  process.exit(1);
+}
 const hayEnv = existsSync(join(raiz, ".env"));
 if (hayEnv) process.loadEnvFile(join(raiz, ".env"));
 

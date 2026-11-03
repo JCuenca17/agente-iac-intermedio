@@ -44,7 +44,7 @@ Doce requerimientos en tres niveles. Cada uno tiene una solución de referencia 
 
 ### 3.3 IaC-Eval
 
-Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público para esta tarea según S12. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política. Con 30 intentos por nivel quedaron 38 tareas: 10, 10, 6, 7, 3 y 2 en los niveles 1 a 6. Los niveles altos tienen menos porque usan servicios que el emulador no soporta o referencias que no cumplen su propia política (`experimento/iaceval/seleccion.json`).
+Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público para esta tarea según S12. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política. Con 30 intentos por nivel quedaron 38 tareas: 10, 10, 6, 7, 3 y 2 en los niveles 1 a 6. Los niveles altos tienen menos porque usan servicios que el emulador no soporta o referencias que no cumplen su propia política (`experimento/iaceval/seleccion.json`). También quedan fuera las tareas que necesitan otro proveedor además de AWS (por ejemplo `archive` o `random`) o alias de proveedor, porque la herramienta configura solo el proveedor AWS fijado.
 
 ## 4. Configuraciones
 
@@ -86,6 +86,8 @@ Decisiones de medición (ADR-019), iguales para todas las configuraciones:
 
 - M3 y M4 se miden sobre el estado después del apply. En el plan, los valores que dependen de otros recursos (por ejemplo, una política IAM con referencias) quedan desconocidos hasta aplicar.
 - M4 acepta las formas deprecadas que siguen funcionando; el uso de una forma deprecada se cuenta en M2.
+- M3 exige el cifrado de S3 con el recurso `aws_s3_bucket_server_side_encryption_configuration`, igual que C3. Un bucket cifrado con el bloque antiguo cuenta como violación: en el estado no se distingue de un bucket sin cifrado explícito, porque todo bucket informa el cifrado por defecto del servicio.
+- En el estado, un atributo de texto opcional sin valor queda como `""` y no como `null`. Las listas de verificación y las políticas de M3 lo tratan como ausente.
 - Si una configuración no despliega, M3 y M4 valen 0.
 - La diferencia de `referenced_security_group_id` con el número de cuenta delante del mismo ID se trata como cosmética y se registra aparte.
 

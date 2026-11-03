@@ -27,13 +27,17 @@ const ctx = {
 const casos = generarBanco({ c01: leer("c01-valido"), c03: leer("c03-valido"), c07: leer("c07-valido") });
 const trabajo = mkdtempSync(join(tmpdir(), "banco-errores-"));
 console.log(`Banco de errores: ${casos.length} casos · emulador ${ctx.endpoint}\n`);
-const r = await evaluarBanco(casos, async (caso) => {
-  const v = await validarPorCapas(caso.artefacto, join(trabajo, caso.id), ctx);
-  const capa = v.valido ? "ninguna" : v.capaFallida;
-  console.log(`${caso.id.padEnd(24)} esperada ${caso.capaEsperada} · detectada ${capa}${capa === caso.capaEsperada ? "" : "  <-- distinta"}`);
-  return v;
-});
-rmSync(trabajo, { recursive: true, force: true });
+let r;
+try {
+  r = await evaluarBanco(casos, async (caso) => {
+    const v = await validarPorCapas(caso.artefacto, join(trabajo, caso.id), ctx);
+    const capa = v.valido ? "ninguna" : v.capaFallida;
+    console.log(`${caso.id.padEnd(24)} esperada ${caso.capaEsperada} · detectada ${capa}${capa === caso.capaEsperada ? "" : "  <-- distinta"}`);
+    return v;
+  });
+} finally {
+  rmSync(trabajo, { recursive: true, force: true });
+}
 
 const pct = (a, b) => (b ? `${((a / b) * 100).toFixed(0)} %` : "—");
 const filas = TIPOS_ERROR.map((t) => {

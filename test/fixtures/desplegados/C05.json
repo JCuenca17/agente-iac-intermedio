@@ -1,0 +1,720 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_iam_policy_document.s3_envia_a_cola",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "s3_envia_a_cola",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "1779280168",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sqs:SendMessage\",\n      \"Resource\": \"arn:aws:sqs:us-east-1:000000000000:c05-avisos-carga\",\n      \"Principal\": {\n        \"Service\": \"s3.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:s3:::c05-cargas\"\n        }\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:c05-avisos-carga\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Condition\":{\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:s3:::c05-cargas\"}}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sqs:SendMessage"
+        ],
+        "condition": [
+         {
+          "test": "ArnEquals",
+          "values": [
+           "arn:aws:s3:::c05-cargas"
+          ],
+          "variable": "aws:SourceArn"
+         }
+        ],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "s3.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [
+         "arn:aws:sqs:us-east-1:000000000000:c05-avisos-carga"
+        ],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [
+         {
+          "values": [
+           false
+          ]
+         }
+        ],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": [
+         false
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "address": "aws_s3_bucket.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket",
+     "name": "cargas",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "acceleration_status": "",
+      "acl": null,
+      "arn": "arn:aws:s3:::c05-cargas",
+      "bucket": "c05-cargas",
+      "bucket_domain_name": "c05-cargas.s3.amazonaws.com",
+      "bucket_namespace": "global",
+      "bucket_prefix": "",
+      "bucket_region": "us-east-1",
+      "bucket_regional_domain_name": "c05-cargas.s3.us-east-1.amazonaws.com",
+      "cors_rule": [],
+      "force_destroy": false,
+      "grant": [
+       {
+        "id": "f7b11509f4d675c3c44f0dd37ca830bb02e8cfa58f04c46283c4bfcbdce1ff45",
+        "permissions": [
+         "FULL_CONTROL"
+        ],
+        "type": "CanonicalUser",
+        "uri": ""
+       }
+      ],
+      "hosted_zone_id": "Z3AQBSTGFYJSTF",
+      "id": "c05-cargas",
+      "lifecycle_rule": [],
+      "logging": [],
+      "object_lock_configuration": [],
+      "object_lock_enabled": false,
+      "policy": "",
+      "region": "us-east-1",
+      "replication_configuration": [],
+      "request_payer": "BucketOwner",
+      "server_side_encryption_configuration": [
+       {
+        "rule": [
+         {
+          "apply_server_side_encryption_by_default": [
+           {
+            "kms_master_key_id": "",
+            "sse_algorithm": "AES256"
+           }
+          ],
+          "bucket_key_enabled": false
+         }
+        ]
+       }
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "versioning": [
+       {
+        "enabled": false,
+        "mfa_delete": false
+       }
+      ],
+      "website": [],
+      "website_domain": null,
+      "website_endpoint": null
+     },
+     "sensitive_values": {
+      "cors_rule": [],
+      "grant": [
+       {
+        "permissions": [
+         false
+        ]
+       }
+      ],
+      "lifecycle_rule": [],
+      "logging": [],
+      "object_lock_configuration": [],
+      "replication_configuration": [],
+      "server_side_encryption_configuration": [
+       {
+        "rule": [
+         {
+          "apply_server_side_encryption_by_default": [
+           {}
+          ]
+         }
+        ]
+       }
+      ],
+      "tags_all": {},
+      "versioning": [
+       {}
+      ],
+      "website": []
+     },
+     "identity": {
+      "account_id": "",
+      "bucket": "c05-cargas",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_notification.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket_notification",
+     "name": "cargas",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "bucket": "c05-cargas",
+      "eventbridge": false,
+      "id": "c05-cargas",
+      "lambda_function": [],
+      "queue": [
+       {
+        "events": [
+         "s3:ObjectCreated:*"
+        ],
+        "filter_prefix": "",
+        "filter_suffix": "",
+        "id": "tf-s3-queue-20261103144432061600000001",
+        "queue_arn": "arn:aws:sqs:us-east-1:000000000000:c05-avisos-carga"
+       }
+      ],
+      "region": "us-east-1",
+      "topic": []
+     },
+     "sensitive_values": {
+      "lambda_function": [],
+      "queue": [
+       {
+        "events": [
+         false
+        ]
+       }
+      ],
+      "topic": []
+     },
+     "depends_on": [
+      "aws_s3_bucket.cargas",
+      "aws_sqs_queue.avisos",
+      "aws_sqs_queue_policy.avisos",
+      "data.aws_iam_policy_document.s3_envia_a_cola"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "c05-cargas",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket_public_access_block",
+     "name": "cargas",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "block_public_acls": true,
+      "block_public_policy": true,
+      "bucket": "c05-cargas",
+      "id": "c05-cargas",
+      "ignore_public_acls": true,
+      "region": "us-east-1",
+      "restrict_public_buckets": true,
+      "skip_destroy": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_s3_bucket.cargas"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "c05-cargas",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_server_side_encryption_configuration.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket_server_side_encryption_configuration",
+     "name": "cargas",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "bucket": "c05-cargas",
+      "expected_bucket_owner": "",
+      "id": "c05-cargas",
+      "region": "us-east-1",
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {
+          "kms_master_key_id": "",
+          "sse_algorithm": "AES256"
+         }
+        ],
+        "blocked_encryption_types": [],
+        "bucket_key_enabled": false
+       }
+      ]
+     },
+     "sensitive_values": {
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {}
+        ],
+        "blocked_encryption_types": []
+       }
+      ]
+     },
+     "depends_on": [
+      "aws_s3_bucket.cargas"
+     ],
+     "identity": {
+      "account_id": "",
+      "bucket": "c05-cargas",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue.avisos",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "avisos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:c05-avisos-carga",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/c05-avisos-carga",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "c05-avisos-carga",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/c05-avisos-carga",
+      "visibility_timeout_seconds": 30
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "url": "http://localhost:4566/000000000000/c05-avisos-carga"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue_policy.avisos",
+     "mode": "managed",
+     "type": "aws_sqs_queue_policy",
+     "name": "avisos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "id": "http://localhost:4566/000000000000/c05-avisos-carga",
+      "policy": "{\"Statement\":[{\"Action\":\"sqs:SendMessage\",\"Condition\":{\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:s3:::c05-cargas\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:c05-avisos-carga\"}],\"Version\":\"2012-10-17\"}",
+      "queue_url": "http://localhost:4566/000000000000/c05-avisos-carga",
+      "region": "us-east-1"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_s3_bucket.cargas",
+      "aws_sqs_queue.avisos",
+      "data.aws_iam_policy_document.s3_envia_a_cola"
+     ],
+     "identity": {
+      "queue_url": "http://localhost:4566/000000000000/c05-avisos-carga"
+     },
+     "identity_schema_version": 1
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_s3_bucket.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket",
+     "name": "cargas",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "constant_value": "c05-cargas"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_notification.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket_notification",
+     "name": "cargas",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.cargas.id",
+        "aws_s3_bucket.cargas"
+       ]
+      },
+      "queue": [
+       {
+        "events": {
+         "constant_value": [
+          "s3:ObjectCreated:*"
+         ]
+        },
+        "queue_arn": {
+         "references": [
+          "aws_sqs_queue.avisos.arn",
+          "aws_sqs_queue.avisos"
+         ]
+        }
+       }
+      ]
+     },
+     "schema_version": 0,
+     "depends_on": [
+      "aws_sqs_queue_policy.avisos"
+     ]
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket_public_access_block",
+     "name": "cargas",
+     "provider_config_key": "aws",
+     "expressions": {
+      "block_public_acls": {
+       "constant_value": true
+      },
+      "block_public_policy": {
+       "constant_value": true
+      },
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.cargas.id",
+        "aws_s3_bucket.cargas"
+       ]
+      },
+      "ignore_public_acls": {
+       "constant_value": true
+      },
+      "restrict_public_buckets": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_s3_bucket_server_side_encryption_configuration.cargas",
+     "mode": "managed",
+     "type": "aws_s3_bucket_server_side_encryption_configuration",
+     "name": "cargas",
+     "provider_config_key": "aws",
+     "expressions": {
+      "bucket": {
+       "references": [
+        "aws_s3_bucket.cargas.id",
+        "aws_s3_bucket.cargas"
+       ]
+      },
+      "rule": [
+       {
+        "apply_server_side_encryption_by_default": [
+         {
+          "sse_algorithm": {
+           "constant_value": "AES256"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.avisos",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "avisos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c05-avisos-carga"
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue_policy.avisos",
+     "mode": "managed",
+     "type": "aws_sqs_queue_policy",
+     "name": "avisos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "policy": {
+       "references": [
+        "data.aws_iam_policy_document.s3_envia_a_cola.json",
+        "data.aws_iam_policy_document.s3_envia_a_cola"
+       ]
+      },
+      "queue_url": {
+       "references": [
+        "aws_sqs_queue.avisos.id",
+        "aws_sqs_queue.avisos"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "data.aws_iam_policy_document.s3_envia_a_cola",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "s3_envia_a_cola",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sqs:SendMessage"
+         ]
+        },
+        "condition": [
+         {
+          "test": {
+           "constant_value": "ArnEquals"
+          },
+          "values": {
+           "references": [
+            "aws_s3_bucket.cargas.arn",
+            "aws_s3_bucket.cargas"
+           ]
+          },
+          "variable": {
+           "constant_value": "aws:SourceArn"
+          }
+         }
+        ],
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "s3.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ],
+        "resources": {
+         "references": [
+          "aws_sqs_queue.avisos.arn",
+          "aws_sqs_queue.avisos"
+         ]
+        }
+       }
+      ]
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

@@ -39,7 +39,12 @@ cumple contains "rutas" if {
 	"POST /pedidos" in rutas_v2
 }
 
-cumple contains "rutas" if count(comun.recursos("aws_api_gateway_method")) >= 5
+# API REST (v1): deben existir los recursos de productos, carrito y pedidos, con métodos.
+cumple contains "rutas" if {
+	partes := {r.values.path_part | some r in comun.recursos("aws_api_gateway_resource")}
+	{"productos", "carrito", "pedidos"} - partes == set()
+	count(comun.recursos("aws_api_gateway_method")) >= 5
+}
 
 cumple contains "funciones" if count(comun.recursos("aws_lambda_function")) >= 5
 
@@ -68,8 +73,11 @@ cumple contains "imagenes" if {
 	comun.hay("aws_s3_bucket")
 	comun.conecta("aws_s3_bucket_versioning", "bucket", "aws_s3_bucket")
 	comun.conecta("aws_s3_bucket_server_side_encryption_configuration", "bucket", "aws_s3_bucket")
+	comun.conecta("aws_s3_bucket_public_access_block", "bucket", "aws_s3_bucket")
 	some b in comun.recursos("aws_s3_bucket_public_access_block")
 	b.values.block_public_acls == true
+	b.values.block_public_policy == true
+	b.values.ignore_public_acls == true
 	b.values.restrict_public_buckets == true
 }
 
@@ -82,7 +90,7 @@ cumple contains "cola_pedidos" if {
 
 cifrada(q) if q.values.sqs_managed_sse_enabled == true
 
-cifrada(q) if q.values.kms_master_key_id != null
+cifrada(q) if comun.con_valor(q.values.kms_master_key_id)
 
 cumple contains "procesamiento" if comun.conecta("aws_lambda_event_source_mapping", "event_source_arn", "aws_sqs_queue")
 
@@ -93,7 +101,8 @@ cumple contains "avisos" if {
 
 cumple contains "reporte_diario" if {
 	some r in comun.recursos("aws_cloudwatch_event_rule")
-	r.values.schedule_expression != null
+	comun.con_valor(r.values.schedule_expression)
+	comun.conecta("aws_cloudwatch_event_target", "rule", "aws_cloudwatch_event_rule")
 	comun.conecta("aws_cloudwatch_event_target", "arn", "aws_lambda_function")
 }
 
@@ -108,8 +117,10 @@ cumple contains "logs" if {
 }
 
 cumple contains "roles_propios" if {
-	roles := {f.values.role | some f in comun.recursos("aws_lambda_function")}
-	count(roles) == count(comun.recursos("aws_lambda_function"))
+	funciones := comun.recursos("aws_lambda_function")
+	count(funciones) > 0
+	roles := {f.values.role | some f in funciones}
+	count(roles) == count(funciones)
 }
 
 cumple contains "minimo_privilegio" if {

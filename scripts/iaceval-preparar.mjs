@@ -27,6 +27,9 @@ const SEMILLA = 2026;
 const { values } = parseArgs({ options: { "por-nivel": { type: "string", default: "10" }, intentos: { type: "string", default: "20" } } });
 const POR_NIVEL = Number(values["por-nivel"]);
 const INTENTOS = Number(values.intentos);
+for (const [nombre, valor] of [["--por-nivel", POR_NIVEL], ["--intentos", INTENTOS]]) {
+  if (!Number.isInteger(valor) || valor < 1) throw new Error(`${nombre} debe ser un entero mayor o igual que 1`);
+}
 
 if (existsSync(join(RAIZ, ".env"))) process.loadEnvFile(join(RAIZ, ".env"));
 const endpoint = process.env.AWS_ENDPOINT || "http://localhost:4566";
@@ -111,9 +114,36 @@ function aleatorio(semilla) {
 
 // --- Filtrado -----------------------------------------------------------------------------
 const registro = join(cache, "filtrado.jsonl");
-const hechas = new Map(
-  existsSync(registro) ? readFileSync(registro, "utf8").split("\n").filter(Boolean).map((l) => { const x = JSON.parse(l); return [x.indice, x]; }) : [],
-);
+// Al reanudar se ignora una última línea cortada, y las tareas que fallaron por un error
+// pasajero (por ejemplo, el emulador no respondía) se vuelven a probar.
+const hechas = new Map();
+if (existsSync(registro)) {
+  for (const linea of readFileSync(registro, "utf8").split("\n").filter(Boolean)) {
+    try {
+      const x = JSON.parse(linea);
+      if (x.etapa !== "error") hechas.set(x.indice, x);
+    } catch {
+      // línea incompleta de una ejecución interrumpida
+    }
+  }
+}
+
+/** Deja el emulador limpio: MiniStack tiene un endpoint de reinicio; Floci se reinicia. */
+async function reiniciarEmulador() {
+  if ((process.env.EMULADOR || "floci") === "ministack") {
+    await fetch(`${endpoint}/_ministack/reset`, { method: "POST" }).catch(() => undefined);
+    return;
+  }
+  spawnSync("docker", ["restart", process.env.FLOCI_CONTENEDOR || "floci"]);
+  for (let i = 0; i < 60; i++) {
+    try {
+      await fetch(endpoint, { signal: AbortSignal.timeout(2000) });
+      return;
+    } catch {
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+  }
+}
 
 async function probar(t) {
   const dir = join(cache, "trabajo", String(t.indice));
@@ -127,8 +157,13 @@ async function probar(t) {
   if (!c4.valido) return { ...r, etapa: "plan", detalle: c4.errores[0]?.mensaje?.slice(0, 200) };
   const rego = evaluarRegoIaCEval(t["Rego intent"], c4.plan);
   if (!rego.correcto) return { ...r, etapa: "rego", detalle: rego.error || "la referencia no cumple su propia política" };
-  const d = await desplegar(dir);
-  const destruido = await destruir(dir);
+  let d;
+  let destruido;
+  try {
+    d = await desplegar(dir);
+  } finally {
+    destruido = await destruir(dir);
+  }
   if (!d.aplicado) return { ...r, etapa: "apply", detalle: d.errores[0]?.mensaje?.slice(0, 200), destruido };
   if (!d.sinCambios) return { ...r, etapa: "plan-posterior", detalle: JSON.stringify(d.cambiosPendientes).slice(0, 200), destruido };
   return { ...r, aceptada: true, etapa: "ok", destruido, recursos: c4.resumen?.crear };
@@ -150,9 +185,9 @@ for (const nivel of niveles) {
     } catch (e) {
       r = { indice: t.indice, dificultad: nivel, aceptada: false, etapa: "error", detalle: String(e.message).slice(0, 200) };
     }
-    if (r.destruido === false) spawnSync("docker", ["restart", process.env.FLOCI_CONTENEDOR || "floci"]);
+    if (r.destruido === false || r.etapa === "error") await reiniciarEmulador();
     appendFileSync(registro, JSON.stringify(r) + "\n");
-    hechas.set(t.indice, r);
+    if (r.etapa !== "error") hechas.set(t.indice, r);
     intentos++;
     if (r.aceptada) aceptadas++;
     console.log(r.aceptada ? "aceptada" : `descartada en ${r.etapa}`);
@@ -161,7 +196,11 @@ for (const nivel of niveles) {
 }
 
 // --- Selección final ----------------------------------------------------------------------
-const aceptadas = [...hechas.values()].filter((x) => x.aceptada).sort((a, b) => a.dificultad.localeCompare(b.dificultad) || a.indice - b.indice);
+// Como mucho POR_NIVEL por nivel (si se reanuda con un valor menor que el anterior).
+const aceptadas = niveles
+  .flatMap((n) => [...hechas.values()].filter((x) => x.aceptada && x.dificultad === n).slice(0, POR_NIVEL))
+  .sort((a, b) => a.dificultad.localeCompare(b.dificultad) || a.indice - b.indice);
+if (!aceptadas.length) throw new Error("No se aceptó ninguna tarea; no se cambia la selección anterior");
 rmSync(destino, { recursive: true, force: true });
 mkdirSync(destino, { recursive: true });
 for (const a of aceptadas) {

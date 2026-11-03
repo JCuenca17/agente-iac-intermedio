@@ -1,5 +1,6 @@
 # Lista de verificación de C01 (N1). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c01
 
 import rego.v1
@@ -26,18 +27,22 @@ cumple contains "versionado" if {
 # También vale la forma antigua (deprecada) dentro del bucket: el requisito es que el
 # versionado y el cifrado estén activos, no la forma de escribirlo (eso lo mide M2).
 cumple contains "versionado" if {
-	some b in comun.recursos("aws_s3_bucket")
-	b.values.versioning[0].enabled == true
+	some b in comun.config("aws_s3_bucket")
+	some v in b.expressions.versioning
+	v.enabled.constant_value == true
 }
 
 cumple contains "cifrado" if comun.conecta("aws_s3_bucket_server_side_encryption_configuration", "bucket", "aws_s3_bucket")
 
+# En el estado, todo bucket informa el cifrado por defecto del servicio; por eso la forma
+# antigua se reconoce en la configuración, donde solo aparece si se escribió.
 cumple contains "cifrado" if {
-	some b in comun.recursos("aws_s3_bucket")
-	count(b.values.server_side_encryption_configuration) > 0
+	some b in comun.config("aws_s3_bucket")
+	count(object.get(b.expressions, "server_side_encryption_configuration", [])) > 0
 }
 
 cumple contains "privado" if {
+	comun.conecta("aws_s3_bucket_public_access_block", "bucket", "aws_s3_bucket")
 	some b in comun.recursos("aws_s3_bucket_public_access_block")
 	b.values.block_public_acls == true
 	b.values.block_public_policy == true

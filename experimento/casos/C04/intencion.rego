@@ -1,5 +1,6 @@
 # Lista de verificación de C04 (N1). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c04
 
 import rego.v1
@@ -26,7 +27,12 @@ cumple contains "sin_escritura" if {
 	}
 }
 
-prohibida(a) if a in {"*", "s3:*", "s3:PutObject", "s3:DeleteObject", "s3:DeleteBucket", "s3:PutBucketPolicy"}
+# Comodines de cualquier forma (*, s3:*, s3:Put*...) y toda acción de escritura o borrado de S3.
+prohibida(a) if contains(a, "*")
+
+prohibida(a) if startswith(lower(a), "s3:put")
+
+prohibida(a) if startswith(lower(a), "s3:delete")
 
 cumple contains "politica_asociada" if comun.conecta("aws_iam_role_policy_attachment", "role", "aws_iam_role")
 

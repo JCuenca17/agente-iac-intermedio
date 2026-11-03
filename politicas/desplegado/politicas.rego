@@ -1,7 +1,9 @@
 # Métrica M3: violaciones de política en lo desplegado.
-# Son las mismas reglas de seguridad de la capa C3, pero evaluadas sobre el estado después
-# del apply (`tofu show -json`), para medir igual a la herramienta y a la generación
-# directa, que no tiene artefacto intermedio.
+# Son las mismas reglas de seguridad de la capa C3, con los mismos criterios, pero evaluadas
+# sobre el estado después del apply (`tofu show -json`), para medir igual a la herramienta y
+# a la generación directa, que no tiene artefacto intermedio. Diferencia de forma: en el
+# estado, los buckets se relacionan por nombre y no por referencia, y un texto opcional
+# sin valor queda como "".
 package desplegado.politicas
 
 import rego.v1
@@ -53,15 +55,37 @@ kms(q) if {
 
 # --- P4: sin comodines en acciones IAM -----------------------------------------------------
 
+# Declaraciones que conceden (Allow) en policy, assume_role_policy y en cada bloque
+# inline_policy de un rol (en el estado es una lista de {name, policy}).
 deny contains {"regla": "iam-sin-comodin", "recurso": r.address} if {
 	some r in input.values.root_module.resources
 	r.mode == "managed"
-	some campo in ["policy", "inline_policy"]
-	documento := json.unmarshal(r.values[campo])
-	some declaracion in documento.Statement
-	some accion in lista(declaracion.Action)
+	some documento in documentos(r.values)
+	some declaracion in declaraciones(documento)
+	lower(object.get(declaracion, "Effect", "Allow")) == "allow"
+	some accion in lista(object.get(declaracion, "Action", []))
 	comodin(accion)
 }
+
+documentos(valores) := {d |
+	some campo in ["policy", "assume_role_policy"]
+	texto := object.get(valores, campo, "")
+	is_string(texto)
+	json.is_valid(texto)
+	d := json.unmarshal(texto)
+} | {d |
+	bloques := object.get(valores, "inline_policy", [])
+	is_array(bloques)
+	some b in bloques
+	texto := object.get(b, "policy", "")
+	is_string(texto)
+	json.is_valid(texto)
+	d := json.unmarshal(texto)
+}
+
+declaraciones(documento) := documento.Statement if is_array(documento.Statement)
+
+declaraciones(documento) := [documento.Statement] if is_object(documento.Statement)
 
 lista(x) := x if is_array(x)
 
@@ -76,17 +100,23 @@ comodin(a) if endswith(a, ":*")
 deny contains {"regla": "sg-abierto", "recurso": g.address} if {
 	some g in recursos("aws_security_group")
 	some i in g.values.ingress
-	"0.0.0.0/0" in i.cidr_blocks
-	not solo_web(i.from_port, i.to_port)
+	some cidr in array.concat(object.get(i, "cidr_blocks", []), object.get(i, "ipv6_cidr_blocks", []))
+	internet(cidr)
+	not solo_web(i.protocol, i.from_port, i.to_port)
 }
 
 deny contains {"regla": "sg-abierto", "recurso": r.address} if {
 	some r in recursos("aws_vpc_security_group_ingress_rule")
-	r.values.cidr_ipv4 == "0.0.0.0/0"
-	not solo_web(r.values.from_port, r.values.to_port)
+	some cidr in [r.values.cidr_ipv4, r.values.cidr_ipv6]
+	internet(cidr)
+	not solo_web(r.values.ip_protocol, r.values.from_port, r.values.to_port)
 }
 
-solo_web(desde, hasta) if {
+internet(cidr) if cidr in {"0.0.0.0/0", "::/0"}
+
+# Un solo puerto web. Con protocolo "-1" (todos) quedan abiertos todos los puertos.
+solo_web(protocolo, desde, hasta) if {
+	not protocolo in {"-1", "all"}
 	desde == hasta
 	desde in {80, 443}
 }
@@ -105,7 +135,10 @@ deny contains {"regla": "logs-retencion", "recurso": g.address} if {
 	not retencion_definida(g)
 }
 
-retencion_definida(g) if g.values.retention_in_days > 0
+retencion_definida(g) if {
+	is_number(g.values.retention_in_days)
+	g.values.retention_in_days > 0
+}
 
 # --- P8: bases de datos cifradas y no públicas ---------------------------------------------
 

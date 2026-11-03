@@ -1,5 +1,6 @@
 # Lista de verificación de C10 (N3). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c10
 
 import rego.v1
@@ -33,7 +34,14 @@ cumple contains "tabla" if comun.hay("aws_dynamodb_table")
 
 cumple contains "fallidos" if comun.conecta("aws_lambda_function", "dead_letter_config", "aws_sqs_queue")
 
-cumple contains "fallidos" if comun.conecta("aws_lambda_function_event_invoke_config", "destination_config", "aws_sqs_queue")
+# Con destinos asíncronos, la cola debe ser el destino en caso de fallo (on_failure).
+cumple contains "fallidos" if {
+	some r in comun.config("aws_lambda_function_event_invoke_config")
+	some d in object.get(r.expressions, "destination_config", [])
+	some f in object.get(d, "on_failure", [])
+	some ref in comun.referencias(f)
+	startswith(ref, "aws_sqs_queue.")
+}
 
 cumple contains "permisos" if {
 	"s3:GetObject" in comun.acciones_iam

@@ -1,6 +1,11 @@
 # Funciones comunes para las listas de verificación (métrica M4).
-# Se evalúan sobre el plan en JSON (`tofu show -json`), igual que las políticas de
-# intención de IaC-Eval, así que sirven para la herramienta y para la generación directa.
+# El experimento las evalúa sobre lo desplegado: `planned_values` trae los valores del
+# estado después del apply y `configuration`, las expresiones del plan posterior (con las
+# referencias entre recursos). Ver entradaDesplegada en src/experimento/intencion.ts.
+# Sirven igual para la herramienta y para la generación directa.
+#
+# En el estado, un texto opcional sin valor queda como "" (no como null): para saber si
+# un atributo tiene valor se usa con_valor.
 package intencion.comun
 
 import rego.v1
@@ -20,6 +25,12 @@ config(tipo) := [r |
 ]
 
 hay(tipo) if count(recursos(tipo)) > 0
+
+# Texto con valor (ni null ni vacío).
+con_valor(x) if {
+	is_string(x)
+	x != ""
+}
 
 # Todas las referencias de una expresión, por ejemplo "aws_sqs_queue.avisos.arn".
 referencias(expresion) := {ref |
@@ -42,19 +53,22 @@ conecta_en_algo(tipo, destino) if {
 	startswith(ref, sprintf("%s.", [destino]))
 }
 
-# Acciones IAM concedidas en documentos de política, de recursos o de data sources.
+# Acciones IAM que se conceden (solo declaraciones Allow) en los documentos de política:
+# atributo "policy" de cualquier recurso y "policy" de cada bloque inline_policy de un rol
+# (en el estado, inline_policy es una lista de {name, policy}).
 acciones_iam contains accion if {
 	some r in input.planned_values.root_module.resources
-	some campo in ["policy", "inline_policy"]
-	documento := json.unmarshal(r.values[campo])
-	some declaracion in documento.Statement
-	some accion in lista(declaracion.Action)
+	some documento in documentos(r.values)
+	some declaracion in declaraciones(documento)
+	permite(object.get(declaracion, "Effect", "Allow"))
+	some accion in lista(object.get(declaracion, "Action", []))
 }
 
 acciones_iam contains accion if {
 	some r in input.configuration.root_module.resources
 	r.type == "aws_iam_policy_document"
 	some declaracion in r.expressions.statement
+	permite(object.get(object.get(declaracion, "effect", {}), "constant_value", "Allow"))
 	some accion in declaracion.actions.constant_value
 }
 
@@ -62,8 +76,37 @@ acciones_iam contains accion if {
 	some r in input.planned_values.root_module.resources
 	r.type == "aws_iam_policy_document"
 	some declaracion in r.values.statement
+	permite(object.get(declaracion, "effect", "Allow"))
 	some accion in declaracion.actions
 }
+
+documentos(valores) := propio | en_linea if {
+	propio := {d |
+		texto := object.get(valores, "policy", "")
+		is_string(texto)
+		json.is_valid(texto)
+		d := json.unmarshal(texto)
+	}
+	en_linea := {d |
+		some bloque in lista_o_vacia(object.get(valores, "inline_policy", []))
+		is_object(bloque)
+		texto := object.get(bloque, "policy", "")
+		is_string(texto)
+		json.is_valid(texto)
+		d := json.unmarshal(texto)
+	}
+}
+
+lista_o_vacia(x) := x if is_array(x)
+
+lista_o_vacia(x) := [] if not is_array(x)
+
+# Statement puede ser una lista o un solo objeto.
+declaraciones(documento) := documento.Statement if is_array(documento.Statement)
+
+declaraciones(documento) := [documento.Statement] if is_object(documento.Statement)
+
+permite(efecto) if lower(efecto) == "allow"
 
 lista(x) := x if is_array(x)
 

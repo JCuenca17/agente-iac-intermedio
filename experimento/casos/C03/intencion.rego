@@ -1,5 +1,6 @@
 # Lista de verificación de C03 (N1). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c03
 
 import rego.v1
@@ -30,4 +31,4 @@ cumple contains "cifrado" if {
 
 cola_cifrada(q) if q.values.sqs_managed_sse_enabled == true
 
-cola_cifrada(q) if q.values.kms_master_key_id != null
+cola_cifrada(q) if comun.con_valor(q.values.kms_master_key_id)

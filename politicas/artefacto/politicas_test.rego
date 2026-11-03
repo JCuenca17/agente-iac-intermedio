@@ -102,3 +102,65 @@ test_ruta_apunta_al_recurso if {
 	v.regla == "s3-acceso-publico"
 	v.ruta == "/recursos/0"
 }
+
+# --- Formas adicionales (revisión de código) ----------------------------------------------
+
+recurso(id, tipo, atributos) := {"id": id, "tipo": tipo, "proposito": "x", "atributos": atributos}
+
+test_cola_con_kms_vacio_no_cuenta_como_cifrada if {
+	"sqs-cifrado" in reglas([recurso("q", "aws_sqs_queue", {"kms_master_key_id": ""})])
+}
+
+test_cola_con_kms_pasa if {
+	count(reglas([recurso("q", "aws_sqs_queue", {"kms_master_key_id": "alias/cola"})])) == 0
+}
+
+test_politica_como_texto_json_con_comodin if {
+	texto := json.marshal({"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "s3:*", "Resource": "*"}]})
+	"iam-sin-comodin" in reglas([recurso("p", "aws_iam_policy", {"policy": texto})])
+}
+
+test_comodin_en_deny_no_es_violacion if {
+	doc := {"Version": "2012-10-17", "Statement": [
+		{"Effect": "Deny", "Action": "s3:*", "Resource": "*"},
+		{"Effect": "Allow", "Action": "s3:GetObject", "Resource": "*"},
+	]}
+	count(reglas([recurso("p", "aws_iam_policy", {"policy": doc})])) == 0
+}
+
+test_statement_de_documento_hcl_con_comodin if {
+	"iam-sin-comodin" in reglas([recurso("d", "aws_iam_policy_document", {"statement": [{"actions": ["dynamodb:*"], "resources": ["*"]}]})])
+}
+
+test_inline_policy_con_texto_json if {
+	texto := json.marshal({"Statement": {"Effect": "Allow", "Action": "*", "Resource": "*"}})
+	"iam-sin-comodin" in reglas([recurso("r", "aws_iam_role", {"inline_policy": [{"name": "x", "policy": texto}]})])
+}
+
+test_sg_con_un_solo_objeto_ingress_abierto if {
+	"sg-abierto" in reglas([recurso("g", "aws_security_group", {"ingress": {"from_port": 22, "to_port": 22, "protocol": "tcp", "cidr_blocks": ["0.0.0.0/0"]}})])
+}
+
+test_sg_protocolo_todos_en_puerto_80 if {
+	"sg-abierto" in reglas([recurso("g", "aws_security_group", {"ingress": [{"from_port": 80, "to_port": 80, "protocol": "-1", "cidr_blocks": ["0.0.0.0/0"]}]})])
+}
+
+test_sg_abierto_por_ipv6 if {
+	"sg-abierto" in reglas([recurso("g", "aws_security_group", {"ingress": [{"from_port": 22, "to_port": 22, "protocol": "tcp", "ipv6_cidr_blocks": ["::/0"]}]})])
+}
+
+test_tabla_pitr_en_lista_pasa if {
+	count(reglas([recurso("t", "aws_dynamodb_table", {"point_in_time_recovery": [{"enabled": true}]})])) == 0
+}
+
+test_logs_retencion_como_texto if {
+	"logs-retencion" in reglas([recurso("l", "aws_cloudwatch_log_group", {"retention_in_days": "14"})])
+}
+
+test_logs_con_retencion_pasa if {
+	count(reglas([recurso("l", "aws_cloudwatch_log_group", {"retention_in_days": 14})])) == 0
+}
+
+test_base_cifrada_y_privada_pasa if {
+	count(reglas([recurso("db", "aws_db_instance", {"storage_encrypted": true, "publicly_accessible": false})])) == 0
+}

@@ -1,0 +1,788 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_iam_policy_document.confianza_lambda",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_lambda",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "2690255455",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"lambda.amazonaws.com\"\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRole\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sts:AssumeRole"
+        ],
+        "condition": [],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "lambda.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": []
+       }
+      ]
+     }
+    },
+    {
+     "address": "aws_apigatewayv2_api.api",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_api",
+     "name": "api",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_endpoint": "https://9bb9de4ee6.execute-api.us-east-1.amazonaws.com",
+      "api_key_selection_expression": "$request.header.x-api-key",
+      "arn": "arn:aws:apigateway:us-east-1::/apis/9bb9de4ee6",
+      "body": null,
+      "cors_configuration": [],
+      "credentials_arn": null,
+      "description": "",
+      "disable_execute_api_endpoint": false,
+      "execution_arn": "arn:aws:execute-api:us-east-1::9bb9de4ee6",
+      "fail_on_warnings": null,
+      "id": "9bb9de4ee6",
+      "ip_address_type": "",
+      "name": "c08-api",
+      "protocol_type": "HTTP",
+      "region": "us-east-1",
+      "route_key": null,
+      "route_selection_expression": "$request.method $request.path",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "target": null,
+      "version": ""
+     },
+     "sensitive_values": {
+      "cors_configuration": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "9bb9de4ee6",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_integration.saludo",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_integration",
+     "name": "saludo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "9bb9de4ee6",
+      "connection_id": "",
+      "connection_type": "INTERNET",
+      "content_handling_strategy": "",
+      "credentials_arn": "",
+      "description": "",
+      "id": "9ec88256",
+      "integration_method": "",
+      "integration_response_selection_expression": "",
+      "integration_subtype": "",
+      "integration_type": "AWS_PROXY",
+      "integration_uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:c08-saludo/invocations",
+      "passthrough_behavior": "",
+      "payload_format_version": "2.0",
+      "region": "us-east-1",
+      "request_parameters": null,
+      "request_templates": null,
+      "response_parameters": [],
+      "template_selection_expression": "",
+      "timeout_milliseconds": 0,
+      "tls_config": []
+     },
+     "sensitive_values": {
+      "response_parameters": [],
+      "tls_config": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.api",
+      "aws_iam_role.saludo",
+      "aws_lambda_function.saludo",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "9bb9de4ee6",
+      "id": "9ec88256",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.saludo",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "saludo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_id": "9bb9de4ee6",
+      "api_key_required": false,
+      "authorization_scopes": null,
+      "authorization_type": "NONE",
+      "authorizer_id": "",
+      "id": "14e6f9f1",
+      "model_selection_expression": "",
+      "operation_name": "",
+      "region": "us-east-1",
+      "request_models": null,
+      "request_parameter": [],
+      "route_key": "GET /saludo",
+      "route_response_selection_expression": "",
+      "target": "integrations/9ec88256"
+     },
+     "sensitive_values": {
+      "request_parameter": []
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.api",
+      "aws_apigatewayv2_integration.saludo",
+      "aws_iam_role.saludo",
+      "aws_lambda_function.saludo",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "api_id": "9bb9de4ee6",
+      "id": "14e6f9f1",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_stage.defecto",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_stage",
+     "name": "defecto",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "access_log_settings": [],
+      "api_id": "9bb9de4ee6",
+      "arn": "arn:aws:apigateway:us-east-1::/apis/9bb9de4ee6/stages/$default",
+      "auto_deploy": true,
+      "client_certificate_id": "",
+      "default_route_settings": [],
+      "deployment_id": "",
+      "description": "",
+      "execution_arn": "arn:aws:execute-api:us-east-1::9bb9de4ee6/$default",
+      "id": "$default",
+      "invoke_url": "https://9bb9de4ee6.execute-api.us-east-1.amazonaws.com/",
+      "name": "$default",
+      "region": "us-east-1",
+      "route_settings": [],
+      "stage_variables": null,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "access_log_settings": [],
+      "default_route_settings": [],
+      "route_settings": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.api"
+     ]
+    },
+    {
+     "address": "aws_iam_role.saludo",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "saludo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/c08-saludo",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+      "create_date": "2026-11-03T14:35:34Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "c08-saludo",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "c08-saludo",
+      "name_prefix": "",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA76IZLHCJSN6CVGIW"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "c08-saludo"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.saludo",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "saludo",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "architectures": [
+       "x86_64"
+      ],
+      "arn": "arn:aws:lambda:us-east-1:000000000000:function:c08-saludo",
+      "capacity_provider_config": [],
+      "code_sha256": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "code_signing_config_arn": "",
+      "dead_letter_config": [],
+      "description": "",
+      "durable_config": [],
+      "environment": [],
+      "ephemeral_storage": [
+       {
+        "size": 512
+       }
+      ],
+      "file_system_config": [],
+      "filename": "C:/Users/josel/TAIS-estudio-primario/herramienta/recursos/lambda/minima.zip",
+      "function_name": "c08-saludo",
+      "handler": "index.handler",
+      "id": "c08-saludo",
+      "image_config": [],
+      "image_uri": "",
+      "invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:c08-saludo/invocations",
+      "kms_key_arn": "",
+      "last_modified": "2026-11-03T14:35:34.874+0000",
+      "layers": null,
+      "logging_config": [
+       {
+        "application_log_level": "",
+        "log_format": "Text",
+        "log_group": "/aws/lambda/c08-saludo",
+        "system_log_level": ""
+       }
+      ],
+      "memory_size": 128,
+      "package_type": "Zip",
+      "publish": false,
+      "publish_to": null,
+      "qualified_arn": "arn:aws:lambda:us-east-1:000000000000:function:c08-saludo",
+      "qualified_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:c08-saludo/invocations",
+      "region": "us-east-1",
+      "replace_security_groups_on_destroy": null,
+      "replacement_security_group_ids": null,
+      "reserved_concurrent_executions": -1,
+      "response_streaming_invoke_arn": "arn:aws:apigateway:us-east-1:lambda:path/2021-11-15/functions/arn:aws:lambda:us-east-1:000000000000:function:c08-saludo/response-streaming-invocations",
+      "role": "arn:aws:iam::000000000000:role/c08-saludo",
+      "runtime": "python3.12",
+      "s3_bucket": null,
+      "s3_key": null,
+      "s3_object_version": null,
+      "signing_job_arn": "",
+      "signing_profile_version_arn": "",
+      "skip_destroy": false,
+      "snap_start": [],
+      "source_code_hash": "S6UC/2GyqYi0K+1e3RQQ9ShHZqpTtub0T5aOlqOgHfQ=",
+      "source_code_size": 188,
+      "source_kms_key_arn": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tenancy_config": [],
+      "timeout": 3,
+      "timeouts": null,
+      "tracing_config": [
+       {
+        "mode": "PassThrough"
+       }
+      ],
+      "use_resource_timeout_for_propagation": null,
+      "version": "$LATEST",
+      "vpc_config": []
+     },
+     "sensitive_values": {
+      "architectures": [
+       false
+      ],
+      "capacity_provider_config": [],
+      "dead_letter_config": [],
+      "durable_config": [],
+      "environment": [],
+      "ephemeral_storage": [
+       {}
+      ],
+      "file_system_config": [],
+      "image_config": [],
+      "logging_config": [
+       {}
+      ],
+      "snap_start": [],
+      "tags_all": {},
+      "tenancy_config": [],
+      "tracing_config": [
+       {}
+      ],
+      "vpc_config": []
+     },
+     "depends_on": [
+      "aws_iam_role.saludo",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "c08-saludo",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.api",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "api",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "action": "lambda:InvokeFunction",
+      "event_source_token": null,
+      "function_name": "c08-saludo",
+      "function_url_auth_type": null,
+      "id": "PermitirApiGateway",
+      "invoked_via_function_url": null,
+      "principal": "apigateway.amazonaws.com",
+      "principal_org_id": null,
+      "qualifier": "",
+      "region": "us-east-1",
+      "source_account": null,
+      "source_arn": "arn:aws:execute-api:us-east-1::9bb9de4ee6/*/*",
+      "statement_id": "PermitirApiGateway",
+      "statement_id_prefix": "",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_apigatewayv2_api.api",
+      "aws_iam_role.saludo",
+      "aws_lambda_function.saludo",
+      "data.aws_iam_policy_document.confianza_lambda"
+     ],
+     "identity": {
+      "account_id": "",
+      "function_name": "c08-saludo",
+      "qualifier": null,
+      "region": "us-east-1",
+      "statement_id": "PermitirApiGateway"
+     },
+     "identity_schema_version": 0
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_apigatewayv2_api.api",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_api",
+     "name": "api",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c08-api"
+      },
+      "protocol_type": {
+       "constant_value": "HTTP"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_integration.saludo",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_integration",
+     "name": "saludo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.api.id",
+        "aws_apigatewayv2_api.api"
+       ]
+      },
+      "integration_type": {
+       "constant_value": "AWS_PROXY"
+      },
+      "integration_uri": {
+       "references": [
+        "aws_lambda_function.saludo.invoke_arn",
+        "aws_lambda_function.saludo"
+       ]
+      },
+      "payload_format_version": {
+       "constant_value": "2.0"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_route.saludo",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_route",
+     "name": "saludo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.api.id",
+        "aws_apigatewayv2_api.api"
+       ]
+      },
+      "route_key": {
+       "constant_value": "GET /saludo"
+      },
+      "target": {
+       "references": [
+        "aws_apigatewayv2_integration.saludo.id",
+        "aws_apigatewayv2_integration.saludo"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_stage.defecto",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_stage",
+     "name": "defecto",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.api.id",
+        "aws_apigatewayv2_api.api"
+       ]
+      },
+      "auto_deploy": {
+       "constant_value": true
+      },
+      "name": {
+       "constant_value": "$default"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.saludo",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "saludo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {
+       "references": [
+        "data.aws_iam_policy_document.confianza_lambda.json",
+        "data.aws_iam_policy_document.confianza_lambda"
+       ]
+      },
+      "name": {
+       "constant_value": "c08-saludo"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_lambda_function.saludo",
+     "mode": "managed",
+     "type": "aws_lambda_function",
+     "name": "saludo",
+     "provider_config_key": "aws",
+     "expressions": {
+      "filename": {
+       "references": [
+        "var.ruta_lambda_zip"
+       ]
+      },
+      "function_name": {
+       "constant_value": "c08-saludo"
+      },
+      "handler": {
+       "constant_value": "index.handler"
+      },
+      "role": {
+       "references": [
+        "aws_iam_role.saludo.arn",
+        "aws_iam_role.saludo"
+       ]
+      },
+      "runtime": {
+       "constant_value": "python3.12"
+      },
+      "source_code_hash": {
+       "references": [
+        "var.ruta_lambda_zip"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_lambda_permission.api",
+     "mode": "managed",
+     "type": "aws_lambda_permission",
+     "name": "api",
+     "provider_config_key": "aws",
+     "expressions": {
+      "action": {
+       "constant_value": "lambda:InvokeFunction"
+      },
+      "function_name": {
+       "references": [
+        "aws_lambda_function.saludo.function_name",
+        "aws_lambda_function.saludo"
+       ]
+      },
+      "principal": {
+       "constant_value": "apigateway.amazonaws.com"
+      },
+      "source_arn": {
+       "references": [
+        "aws_apigatewayv2_api.api.execution_arn",
+        "aws_apigatewayv2_api.api"
+       ]
+      },
+      "statement_id": {
+       "constant_value": "PermitirApiGateway"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_iam_policy_document.confianza_lambda",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "confianza_lambda",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sts:AssumeRole"
+         ]
+        },
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "lambda.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

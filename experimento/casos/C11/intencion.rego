@@ -1,5 +1,6 @@
 # Lista de verificación de C11 (N3). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c11
 
 import rego.v1
@@ -37,44 +38,63 @@ ruta_por_defecto if {
 	r.values.destination_cidr_block == "0.0.0.0/0"
 }
 
+# Entradas de los grupos de seguridad (IPv4 e IPv6). Con protocolo "-1" quedan abiertos
+# todos los puertos, sea cual sea el rango escrito.
 entradas contains {"desde": d, "hasta": h, "cidr": c} if {
 	some g in comun.recursos("aws_security_group")
 	some i in g.values.ingress
-	some c in i.cidr_blocks
-	d := i.from_port
-	h := i.to_port
+	some c in array.concat(object.get(i, "cidr_blocks", []), object.get(i, "ipv6_cidr_blocks", []))
+	[d, h] := puertos(i.protocol, i.from_port, i.to_port)
 }
 
-entradas contains {"desde": r.values.from_port, "hasta": r.values.to_port, "cidr": r.values.cidr_ipv4} if {
+entradas contains {"desde": d, "hasta": h, "cidr": c} if {
 	some r in comun.recursos("aws_vpc_security_group_ingress_rule")
-	r.values.cidr_ipv4 != null
+	some c in [r.values.cidr_ipv4, r.values.cidr_ipv6]
+	comun.con_valor(c)
+	[d, h] := puertos(r.values.ip_protocol, r.values.from_port, r.values.to_port)
 }
+
+puertos(protocolo, desde, hasta) := [0, 65535] if protocolo in {"-1", "all"}
+
+puertos(protocolo, desde, hasta) := [desde, hasta] if not protocolo in {"-1", "all"}
+
+internet(cidr) if cidr in {"0.0.0.0/0", "::/0"}
 
 cumple contains "sg_web" if {
 	some e in entradas
-	e.cidr == "0.0.0.0/0"
+	internet(e.cidr)
 	e.desde <= 443
 	e.hasta >= 443
 }
 
-# Reglas dentro del grupo: el puerto está en los valores planeados y la referencia al
-# otro grupo, en la expresión de "ingress" de la configuración.
+# El 5432 se abre a otro grupo de seguridad (en el estado, la regla guarda el id del grupo)
+# y ninguna entrada lo abre a rangos de IP.
 cumple contains "sg_bd" if {
-	some g in comun.recursos("aws_security_group")
-	some i in g.values.ingress
-	i.from_port <= 5432
-	i.to_port >= 5432
-	count(i.cidr_blocks) == 0
-	some r in comun.config("aws_security_group")
-	r.address == g.address
-	some ref in comun.referencias(r.expressions.ingress)
-	startswith(ref, "aws_security_group.")
+	abierto_a_grupo(5432)
+	not abierto_a_ip(5432)
 }
 
-cumple contains "sg_bd" if {
-	some r in comun.config("aws_vpc_security_group_ingress_rule")
-	r.expressions.from_port.constant_value == 5432
-	count(comun.referencias(r.expressions.referenced_security_group_id)) > 0
+abierto_a_grupo(puerto) if {
+	some g in comun.recursos("aws_security_group")
+	some i in g.values.ingress
+	[d, h] := puertos(i.protocol, i.from_port, i.to_port)
+	d <= puerto
+	h >= puerto
+	count(object.get(i, "security_groups", [])) > 0
+}
+
+abierto_a_grupo(puerto) if {
+	some r in comun.recursos("aws_vpc_security_group_ingress_rule")
+	[d, h] := puertos(r.values.ip_protocol, r.values.from_port, r.values.to_port)
+	d <= puerto
+	h >= puerto
+	comun.con_valor(r.values.referenced_security_group_id)
+}
+
+abierto_a_ip(puerto) if {
+	some e in entradas
+	e.desde <= puerto
+	e.hasta >= puerto
 }
 
 cumple contains "sin_puertos_abiertos" if {
@@ -84,7 +104,7 @@ cumple contains "sin_puertos_abiertos" if {
 	}
 }
 
-permitida(e) if e.cidr != "0.0.0.0/0"
+permitida(e) if not internet(e.cidr)
 
 permitida(e) if {
 	e.desde == e.hasta

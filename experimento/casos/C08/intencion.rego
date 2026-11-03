@@ -1,5 +1,6 @@
 # Lista de verificación de C08 (N2). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c08
 
 import rego.v1
@@ -31,9 +32,13 @@ cumple contains "ruta" if {
 	r.values.route_key == "GET /saludo"
 }
 
+# API REST (v1): el método debe estar en el recurso /saludo.
 cumple contains "ruta" if {
+	some r in comun.recursos("aws_api_gateway_resource")
+	r.values.path_part == "saludo"
 	some m in comun.recursos("aws_api_gateway_method")
 	m.values.http_method == "GET"
+	m.values.resource_id == r.values.id
 }
 
 cumple contains "permiso" if {

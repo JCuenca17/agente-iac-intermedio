@@ -1,0 +1,778 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_iam_policy_document.sns_envia[\"facturacion\"]",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "sns_envia",
+     "index": "facturacion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "4192458031",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sqs:SendMessage\",\n      \"Resource\": \"arn:aws:sqs:us-east-1:000000000000:c06-facturacion\",\n      \"Principal\": {\n        \"Service\": \"sns.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:sns:us-east-1:000000000000:c06-eventos\"\n        }\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:c06-facturacion\",\"Principal\":{\"Service\":\"sns.amazonaws.com\"},\"Condition\":{\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:sns:us-east-1:000000000000:c06-eventos\"}}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sqs:SendMessage"
+        ],
+        "condition": [
+         {
+          "test": "ArnEquals",
+          "values": [
+           "arn:aws:sns:us-east-1:000000000000:c06-eventos"
+          ],
+          "variable": "aws:SourceArn"
+         }
+        ],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "sns.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [
+         "arn:aws:sqs:us-east-1:000000000000:c06-facturacion"
+        ],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [
+         {
+          "values": [
+           false
+          ]
+         }
+        ],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": [
+         false
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "address": "data.aws_iam_policy_document.sns_envia[\"inventario\"]",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "sns_envia",
+     "index": "inventario",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "4114816631",
+      "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"sqs:SendMessage\",\n      \"Resource\": \"arn:aws:sqs:us-east-1:000000000000:c06-inventario\",\n      \"Principal\": {\n        \"Service\": \"sns.amazonaws.com\"\n      },\n      \"Condition\": {\n        \"ArnEquals\": {\n          \"aws:SourceArn\": \"arn:aws:sns:us-east-1:000000000000:c06-eventos\"\n        }\n      }\n    }\n  ]\n}",
+      "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:c06-inventario\",\"Principal\":{\"Service\":\"sns.amazonaws.com\"},\"Condition\":{\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:sns:us-east-1:000000000000:c06-eventos\"}}}]}",
+      "override_json": null,
+      "override_policy_documents": null,
+      "policy_id": null,
+      "source_json": null,
+      "source_policy_documents": null,
+      "statement": [
+       {
+        "actions": [
+         "sqs:SendMessage"
+        ],
+        "condition": [
+         {
+          "test": "ArnEquals",
+          "values": [
+           "arn:aws:sns:us-east-1:000000000000:c06-eventos"
+          ],
+          "variable": "aws:SourceArn"
+         }
+        ],
+        "effect": "Allow",
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           "sns.amazonaws.com"
+          ],
+          "type": "Service"
+         }
+        ],
+        "resources": [
+         "arn:aws:sqs:us-east-1:000000000000:c06-inventario"
+        ],
+        "sid": ""
+       }
+      ],
+      "version": "2012-10-17"
+     },
+     "sensitive_values": {
+      "statement": [
+       {
+        "actions": [
+         false
+        ],
+        "condition": [
+         {
+          "values": [
+           false
+          ]
+         }
+        ],
+        "not_actions": [],
+        "not_principals": [],
+        "not_resources": [],
+        "principals": [
+         {
+          "identifiers": [
+           false
+          ]
+         }
+        ],
+        "resources": [
+         false
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "address": "aws_sns_topic.eventos",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "eventos",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "application_failure_feedback_role_arn": "",
+      "application_success_feedback_role_arn": "",
+      "application_success_feedback_sample_rate": 0,
+      "archive_policy": "",
+      "arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos",
+      "beginning_archive_time": "",
+      "content_based_deduplication": false,
+      "delivery_policy": "",
+      "display_name": "",
+      "fifo_throughput_scope": "",
+      "fifo_topic": false,
+      "firehose_failure_feedback_role_arn": "",
+      "firehose_success_feedback_role_arn": "",
+      "firehose_success_feedback_sample_rate": 0,
+      "http_failure_feedback_role_arn": "",
+      "http_success_feedback_role_arn": "",
+      "http_success_feedback_sample_rate": 0,
+      "id": "arn:aws:sns:us-east-1:000000000000:c06-eventos",
+      "kms_master_key_id": "",
+      "lambda_failure_feedback_role_arn": "",
+      "lambda_success_feedback_role_arn": "",
+      "lambda_success_feedback_sample_rate": 0,
+      "maximum_message_size": 0,
+      "name": "c06-eventos",
+      "name_prefix": "",
+      "owner": "000000000000",
+      "policy": "{\"Id\":\"__default_policy_ID\",\"Statement\":[{\"Action\":[\"SNS:GetTopicAttributes\",\"SNS:SetTopicAttributes\",\"SNS:AddPermission\",\"SNS:RemovePermission\",\"SNS:DeleteTopic\",\"SNS:Subscribe\",\"SNS:ListSubscriptionsByTopic\",\"SNS:Publish\"],\"Condition\":{\"StringEquals\":{\"AWS:SourceOwner\":\"000000000000\"}},\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Resource\":\"arn:aws:sns:us-east-1:000000000000:c06-eventos\",\"Sid\":\"__default_statement_ID\"}],\"Version\":\"2008-10-17\"}",
+      "region": "us-east-1",
+      "signature_version": 0,
+      "sqs_failure_feedback_role_arn": "",
+      "sqs_success_feedback_role_arn": "",
+      "sqs_success_feedback_sample_rate": 0,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "tracing_config": ""
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic_subscription.facturacion",
+     "mode": "managed",
+     "type": "aws_sns_topic_subscription",
+     "name": "facturacion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos:1c8657c1-cb56-4796-bf18-9475c218642c",
+      "confirmation_timeout_in_minutes": 1,
+      "confirmation_was_authenticated": false,
+      "delivery_policy": "",
+      "endpoint": "arn:aws:sqs:us-east-1:000000000000:c06-facturacion",
+      "endpoint_auto_confirms": false,
+      "filter_policy": "",
+      "filter_policy_scope": "",
+      "id": "arn:aws:sns:us-east-1:000000000000:c06-eventos:1c8657c1-cb56-4796-bf18-9475c218642c",
+      "owner_id": "000000000000",
+      "pending_confirmation": false,
+      "protocol": "sqs",
+      "raw_message_delivery": false,
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "replay_policy": "",
+      "subscription_role_arn": "",
+      "topic_arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_sns_topic.eventos",
+      "aws_sqs_queue.facturacion"
+     ],
+     "identity": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos:1c8657c1-cb56-4796-bf18-9475c218642c"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic_subscription.inventario",
+     "mode": "managed",
+     "type": "aws_sns_topic_subscription",
+     "name": "inventario",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos:c6cb572d-8da3-480f-813e-b101c9a92a1f",
+      "confirmation_timeout_in_minutes": 1,
+      "confirmation_was_authenticated": false,
+      "delivery_policy": "",
+      "endpoint": "arn:aws:sqs:us-east-1:000000000000:c06-inventario",
+      "endpoint_auto_confirms": false,
+      "filter_policy": "",
+      "filter_policy_scope": "",
+      "id": "arn:aws:sns:us-east-1:000000000000:c06-eventos:c6cb572d-8da3-480f-813e-b101c9a92a1f",
+      "owner_id": "000000000000",
+      "pending_confirmation": false,
+      "protocol": "sqs",
+      "raw_message_delivery": false,
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "replay_policy": "",
+      "subscription_role_arn": "",
+      "topic_arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_sns_topic.eventos",
+      "aws_sqs_queue.inventario"
+     ],
+     "identity": {
+      "arn": "arn:aws:sns:us-east-1:000000000000:c06-eventos:c6cb572d-8da3-480f-813e-b101c9a92a1f"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.facturacion",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "facturacion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:c06-facturacion",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/c06-facturacion",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "c06-facturacion",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/c06-facturacion",
+      "visibility_timeout_seconds": 30
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "url": "http://localhost:4566/000000000000/c06-facturacion"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue.inventario",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "inventario",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:sqs:us-east-1:000000000000:c06-inventario",
+      "content_based_deduplication": false,
+      "deduplication_scope": "",
+      "delay_seconds": 0,
+      "fifo_queue": false,
+      "fifo_throughput_limit": "",
+      "id": "http://localhost:4566/000000000000/c06-inventario",
+      "kms_data_key_reuse_period_seconds": 300,
+      "kms_master_key_id": "",
+      "max_message_size": 262144,
+      "message_retention_seconds": 345600,
+      "name": "c06-inventario",
+      "name_prefix": "",
+      "policy": "",
+      "receive_wait_time_seconds": 0,
+      "redrive_allow_policy": "",
+      "redrive_policy": "",
+      "region": "us-east-1",
+      "sqs_managed_sse_enabled": true,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "url": "http://localhost:4566/000000000000/c06-inventario",
+      "visibility_timeout_seconds": 30
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "url": "http://localhost:4566/000000000000/c06-inventario"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue_policy.facturacion",
+     "mode": "managed",
+     "type": "aws_sqs_queue_policy",
+     "name": "facturacion",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "id": "http://localhost:4566/000000000000/c06-facturacion",
+      "policy": "{\"Statement\":[{\"Action\":\"sqs:SendMessage\",\"Condition\":{\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:sns:us-east-1:000000000000:c06-eventos\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"sns.amazonaws.com\"},\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:c06-facturacion\"}],\"Version\":\"2012-10-17\"}",
+      "queue_url": "http://localhost:4566/000000000000/c06-facturacion",
+      "region": "us-east-1"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_sns_topic.eventos",
+      "aws_sqs_queue.facturacion",
+      "aws_sqs_queue.inventario",
+      "data.aws_iam_policy_document.sns_envia"
+     ],
+     "identity": {
+      "queue_url": "http://localhost:4566/000000000000/c06-facturacion"
+     },
+     "identity_schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue_policy.inventario",
+     "mode": "managed",
+     "type": "aws_sqs_queue_policy",
+     "name": "inventario",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "id": "http://localhost:4566/000000000000/c06-inventario",
+      "policy": "{\"Statement\":[{\"Action\":\"sqs:SendMessage\",\"Condition\":{\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:sns:us-east-1:000000000000:c06-eventos\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"sns.amazonaws.com\"},\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:c06-inventario\"}],\"Version\":\"2012-10-17\"}",
+      "queue_url": "http://localhost:4566/000000000000/c06-inventario",
+      "region": "us-east-1"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_sns_topic.eventos",
+      "aws_sqs_queue.facturacion",
+      "aws_sqs_queue.inventario",
+      "data.aws_iam_policy_document.sns_envia"
+     ],
+     "identity": {
+      "queue_url": "http://localhost:4566/000000000000/c06-inventario"
+     },
+     "identity_schema_version": 1
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_sns_topic.eventos",
+     "mode": "managed",
+     "type": "aws_sns_topic",
+     "name": "eventos",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c06-eventos"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic_subscription.facturacion",
+     "mode": "managed",
+     "type": "aws_sns_topic_subscription",
+     "name": "facturacion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "endpoint": {
+       "references": [
+        "aws_sqs_queue.facturacion.arn",
+        "aws_sqs_queue.facturacion"
+       ]
+      },
+      "protocol": {
+       "constant_value": "sqs"
+      },
+      "topic_arn": {
+       "references": [
+        "aws_sns_topic.eventos.arn",
+        "aws_sns_topic.eventos"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sns_topic_subscription.inventario",
+     "mode": "managed",
+     "type": "aws_sns_topic_subscription",
+     "name": "inventario",
+     "provider_config_key": "aws",
+     "expressions": {
+      "endpoint": {
+       "references": [
+        "aws_sqs_queue.inventario.arn",
+        "aws_sqs_queue.inventario"
+       ]
+      },
+      "protocol": {
+       "constant_value": "sqs"
+      },
+      "topic_arn": {
+       "references": [
+        "aws_sns_topic.eventos.arn",
+        "aws_sns_topic.eventos"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.facturacion",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "facturacion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c06-facturacion"
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue.inventario",
+     "mode": "managed",
+     "type": "aws_sqs_queue",
+     "name": "inventario",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "c06-inventario"
+      },
+      "sqs_managed_sse_enabled": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_sqs_queue_policy.facturacion",
+     "mode": "managed",
+     "type": "aws_sqs_queue_policy",
+     "name": "facturacion",
+     "provider_config_key": "aws",
+     "expressions": {
+      "policy": {
+       "references": [
+        "data.aws_iam_policy_document.sns_envia[\"facturacion\"].json",
+        "data.aws_iam_policy_document.sns_envia[\"facturacion\"]",
+        "data.aws_iam_policy_document.sns_envia"
+       ]
+      },
+      "queue_url": {
+       "references": [
+        "aws_sqs_queue.facturacion.id",
+        "aws_sqs_queue.facturacion"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_sqs_queue_policy.inventario",
+     "mode": "managed",
+     "type": "aws_sqs_queue_policy",
+     "name": "inventario",
+     "provider_config_key": "aws",
+     "expressions": {
+      "policy": {
+       "references": [
+        "data.aws_iam_policy_document.sns_envia[\"inventario\"].json",
+        "data.aws_iam_policy_document.sns_envia[\"inventario\"]",
+        "data.aws_iam_policy_document.sns_envia"
+       ]
+      },
+      "queue_url": {
+       "references": [
+        "aws_sqs_queue.inventario.id",
+        "aws_sqs_queue.inventario"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "data.aws_iam_policy_document.sns_envia",
+     "mode": "data",
+     "type": "aws_iam_policy_document",
+     "name": "sns_envia",
+     "provider_config_key": "aws",
+     "expressions": {
+      "statement": [
+       {
+        "actions": {
+         "constant_value": [
+          "sqs:SendMessage"
+         ]
+        },
+        "condition": [
+         {
+          "test": {
+           "constant_value": "ArnEquals"
+          },
+          "values": {
+           "references": [
+            "aws_sns_topic.eventos.arn",
+            "aws_sns_topic.eventos"
+           ]
+          },
+          "variable": {
+           "constant_value": "aws:SourceArn"
+          }
+         }
+        ],
+        "principals": [
+         {
+          "identifiers": {
+           "constant_value": [
+            "sns.amazonaws.com"
+           ]
+          },
+          "type": {
+           "constant_value": "Service"
+          }
+         }
+        ],
+        "resources": {
+         "references": [
+          "each.value"
+         ]
+        }
+       }
+      ]
+     },
+     "schema_version": 0,
+     "for_each_expression": {
+      "references": [
+       "aws_sqs_queue.facturacion.arn",
+       "aws_sqs_queue.facturacion",
+       "aws_sqs_queue.inventario.arn",
+       "aws_sqs_queue.inventario"
+      ]
+     }
+    }
+   ],
+   "variables": {
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}

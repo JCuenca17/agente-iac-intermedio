@@ -1,5 +1,6 @@
 # Lista de verificación de C02 (N1). Métrica M4: proporción de requisitos cumplidos.
-# Se evalúa sobre el plan (tofu show -json) de cualquier configuración.
+# Se evalúa sobre lo desplegado (estado) con las referencias de la configuración, para
+# cualquier configuración del experimento (ver experimento/intencion/comun.rego).
 package intencion.c02
 
 import rego.v1
@@ -20,8 +21,8 @@ cumple contains "tabla" if comun.hay("aws_dynamodb_table")
 
 cumple contains "claves" if {
 	some t in comun.recursos("aws_dynamodb_table")
-	t.values.hash_key != ""
-	t.values.range_key != ""
+	comun.con_valor(t.values.hash_key)
+	comun.con_valor(t.values.range_key)
 }
 
 cumple contains "pago_por_uso" if {
