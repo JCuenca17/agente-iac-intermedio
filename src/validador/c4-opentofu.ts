@@ -53,7 +53,12 @@ function aError(d: Diagnostico, regla: string, artefacto?: Artefacto): ErrorVali
 
 /** Errores de `tofu validate -json`. */
 export function erroresDeValidate(salida: string, artefacto?: Artefacto): ErrorValidacion[] {
-  const r = JSON.parse(salida) as { diagnostics?: Diagnostico[] };
+  let r: { diagnostics?: Diagnostico[] };
+  try {
+    r = JSON.parse(salida);
+  } catch {
+    return [];
+  }
   return (r.diagnostics ?? []).filter((d) => d.severity === "error").map((d) => aError(d, "tofu-validate", artefacto));
 }
 
@@ -61,7 +66,13 @@ function lineasJson(salida: string): Record<string, unknown>[] {
   return salida
     .split(/\r?\n/)
     .filter((l) => l.startsWith("{"))
-    .map((l) => JSON.parse(l));
+    .flatMap((l) => {
+      try {
+        return [JSON.parse(l) as Record<string, unknown>];
+      } catch {
+        return [];
+      }
+    });
 }
 
 /** Errores de `tofu plan -json` (una línea JSON por mensaje). */
@@ -102,6 +113,7 @@ export async function validarConOpenTofu(dir: string, artefacto?: Artefacto): Pr
   const validate = await tofu(["validate", "-json", "-no-color"], dir);
   const erroresValidate = erroresDeValidate(validate.salida, artefacto);
   if (erroresValidate.length) return { valido: false, errores: erroresValidate };
+  if (validate.codigo !== 0) return { valido: false, errores: [falloSinDetalle("tofu-validate", validate)] };
 
   const plan = await tofu(["plan", "-json", "-input=false", "-no-color", "-out=plan.tfplan"], dir);
   const erroresPlan = erroresDePlan(plan.salida, artefacto);
@@ -113,5 +125,21 @@ export async function validarConOpenTofu(dir: string, artefacto?: Artefacto): Pr
   }
 
   const mostrar = await tofu(["show", "-json", "plan.tfplan"], dir);
-  return { valido: true, errores: [], plan: JSON.parse(mostrar.salida), resumen: resumenDePlan(plan.salida) };
+  const planJson = leerJson(mostrar.salida);
+  if (mostrar.codigo !== 0 || planJson === undefined) return { valido: false, errores: [falloSinDetalle("tofu-show", mostrar)] };
+  return { valido: true, errores: [], plan: planJson, resumen: resumenDePlan(plan.salida) };
+}
+
+/** JSON de la salida de un comando, o undefined si no lo es. */
+export function leerJson(salida: string): unknown {
+  try {
+    return JSON.parse(salida);
+  } catch {
+    return undefined;
+  }
+}
+
+/** Error de un comando de OpenTofu que falló sin diagnósticos en JSON (por ejemplo, por tiempo límite). */
+export function falloSinDetalle(regla: string, r: { codigo: number; salida: string; error: string }): ErrorValidacion {
+  return { capa: "C4", ruta: "/", regla, mensaje: (r.error || r.salida || `código ${r.codigo}`).trim().slice(0, 500) };
 }

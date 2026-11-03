@@ -38,6 +38,20 @@ describe("evaluación de la intención de IaC-Eval", () => {
     expect(evaluarRegoIaCEval(v1, plan("x")).correcto).toBe(true);
   });
 
+  it("una política sin ninguna regla verdadera no cuenta como correcta", () => {
+    // Reglas sin default que no se activan: no aparecen en data y no hay ningún false.
+    const sinDefault = `package terraform.validation
+
+has_queue {
+    r := input.configuration.root_module.resources[_]
+    r.type == "aws_sqs_queue"
+}
+`;
+    const r = evaluarRegoIaCEval(sinDefault, plan("x"));
+    expect(r.correcto).toBe(false);
+    expect(r.error).toMatch(/ninguna regla verdadera/);
+  });
+
   it("una política inválida cuenta como incorrecta, con el error", () => {
     const r = evaluarRegoIaCEval("package x\n\nesto no es rego {", plan("x"));
     expect(r.correcto).toBe(false);

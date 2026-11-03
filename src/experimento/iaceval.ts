@@ -26,7 +26,16 @@ export function evaluarRegoIaCEval(politica: string, plan: unknown): { correcto:
       if (x && typeof x === "object") Object.values(x).forEach(recorrer);
       else hojas.push(x);
     };
-    recorrer(JSON.parse(r.stdout).result?.[0]?.expressions?.[0]?.value);
+    let valor: unknown;
+    try {
+      valor = JSON.parse(r.stdout).result?.[0]?.expressions?.[0]?.value;
+    } catch {
+      return { correcto: false, error: "opa no devolvió JSON" };
+    }
+    recorrer(valor);
+    // Una política que no produjo ninguna regla verdadera no cuenta como cumplida: sin esto,
+    // un resultado vacío (reglas sin default que no se activan) pasaría como correcto.
+    if (!hojas.includes(true)) return { correcto: false, error: "la política no produjo ninguna regla verdadera" };
     return { correcto: !hojas.includes(false), error: "" };
   } finally {
     rmSync(dir, { recursive: true, force: true });

@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { ejecutarTofu as tofu } from "../tofu.js";
-import { erroresDePlan } from "../validador/c4-opentofu.js";
+import { erroresDePlan, falloSinDetalle, leerJson } from "../validador/c4-opentofu.js";
 import type { ErrorValidacion } from "../validador/tipos.js";
 
 interface CambioPlan {
@@ -94,9 +94,17 @@ export async function desplegar(dir: string): Promise<ResultadoDespliegue> {
   if (plan.codigo !== 0) {
     return { ...vacio, aplicado: true, errores: [{ capa: "C4", ruta: "/", regla: "plan-posterior", mensaje: (plan.error || plan.salida).slice(0, 500) }] };
   }
-  const planPosterior = JSON.parse((await tofu(["show", "-json", "posterior.tfplan"], dir)).salida);
-  const { reales, cosmeticos } = clasificarCambios(planPosterior);
-  const estado = JSON.parse((await tofu(["show", "-json"], dir)).salida);
+  const mostrarPlan = await tofu(["show", "-json", "posterior.tfplan"], dir);
+  const planPosterior = leerJson(mostrarPlan.salida);
+  const mostrarEstado = await tofu(["show", "-json"], dir);
+  const estado = leerJson(mostrarEstado.salida);
+  // Si no se pudo leer el plan o el estado, lo aplicado queda en el emulador (hay que
+  // destruirlo), pero no se puede afirmar que no haya cambios pendientes.
+  if (planPosterior === undefined || estado === undefined) {
+    const fallo = planPosterior === undefined ? mostrarPlan : mostrarEstado;
+    return { ...vacio, aplicado: true, errores: [falloSinDetalle("tofu-show", fallo)] };
+  }
+  const { reales, cosmeticos } = clasificarCambios(planPosterior as Parameters<typeof clasificarCambios>[0]);
   return { aplicado: true, errores: [], sinCambios: reales.length === 0, cambiosPendientes: reales, cosmeticosIgnorados: cosmeticos, planPosterior, estado };
 }
 
