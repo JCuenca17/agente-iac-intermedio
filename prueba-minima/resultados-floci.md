@@ -1,4 +1,4 @@
-Emulador: http://localhost:4566 · Región: us-east-1 · Fecha: 2026-11-03T05:50:37.770Z
+Emulador: floci en http://localhost:4566 · Región: us-east-1 · Fecha: 2026-11-03T06:56:36.833Z
 
 | Caso | init | apply | plan sin cambios | destroy | Detalle |
 |---|---|---|---|---|---|

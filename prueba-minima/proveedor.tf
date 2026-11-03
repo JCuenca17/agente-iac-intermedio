@@ -30,7 +30,9 @@ provider "aws" {
   access_key                  = "test"
   secret_key                  = "test"
   skip_credentials_validation = true
-  skip_requesting_account_id  = true
+  # Igual que la guía oficial de Floci. Sin esta opción el proveedor usa S3 Control con la
+  # cuenta como subdominio (000000000000.localhost), que no resuelve en local.
+  skip_requesting_account_id = true
   skip_metadata_api_check     = true
   s3_use_path_style           = true
 
@@ -46,6 +48,7 @@ provider "aws" {
     kms            = var.endpoint
     lambda         = var.endpoint
     s3             = var.endpoint
+    s3control      = var.endpoint
     sns            = var.endpoint
     sqs            = var.endpoint
     sts            = var.endpoint

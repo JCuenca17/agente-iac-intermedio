@@ -4,6 +4,10 @@ import { existsSync } from "node:fs";
 export const PROVEEDORES = ["grabado", "claude-code", "anthropic"] as const;
 export type ProveedorLlm = (typeof PROVEEDORES)[number];
 
+/** Emuladores de AWS soportados. Los dos escuchan en el puerto 4566. */
+export const EMULADORES = ["floci", "ministack"] as const;
+export type Emulador = (typeof EMULADORES)[number];
+
 export interface Configuracion {
   llmProveedor: ProveedorLlm;
   llmModelo: string;
@@ -11,6 +15,7 @@ export interface Configuracion {
   anthropicApiKey?: string;
   awsEndpoint: string;
   awsRegion: string;
+  emulador: Emulador;
   maxIteraciones: number;
   limiteGastoUsd: number;
 }
@@ -45,6 +50,11 @@ export function cargarConfiguracion(entorno: Entorno = process.env): Configuraci
   }
   const llmProveedor = proveedor as ProveedorLlm;
 
+  const emulador = texto(entorno, "EMULADOR", "floci");
+  if (!(EMULADORES as readonly string[]).includes(emulador)) {
+    throw new Error(`EMULADOR debe ser uno de: ${EMULADORES.join(", ")}; se recibió "${emulador}"`);
+  }
+
   let anthropicApiKey: string | undefined;
   if (llmProveedor === "anthropic") {
     anthropicApiKey = entorno.ANTHROPIC_API_KEY?.trim();
@@ -59,6 +69,7 @@ export function cargarConfiguracion(entorno: Entorno = process.env): Configuraci
     anthropicApiKey,
     awsEndpoint: texto(entorno, "AWS_ENDPOINT", "http://localhost:4566"),
     awsRegion: texto(entorno, "AWS_REGION", "us-east-1"),
+    emulador: emulador as Emulador,
     maxIteraciones: numero(entorno, "MAX_ITERACIONES", 3, { entero: true, minimo: 1 }),
     limiteGastoUsd: numero(entorno, "LIMITE_GASTO_USD", 5, { entero: false, minimo: 0 }),
   };

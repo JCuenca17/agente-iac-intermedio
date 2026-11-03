@@ -8,6 +8,7 @@ describe("cargarConfiguracion", () => {
     expect(config.llmModelo).toBe("claude-haiku-5-5");
     expect(config.awsEndpoint).toBe("http://localhost:4566");
     expect(config.awsRegion).toBe("us-east-1");
+    expect(config.emulador).toBe("floci");
     expect(config.maxIteraciones).toBe(3);
     expect(config.limiteGastoUsd).toBe(5);
   });
@@ -18,6 +19,7 @@ describe("cargarConfiguracion", () => {
       LLM_MODELO: "claude-sonnet-5-5",
       AWS_ENDPOINT: "http://127.0.0.1:4567",
       AWS_REGION: "eu-west-1",
+      EMULADOR: "ministack",
       MAX_ITERACIONES: "5",
       LIMITE_GASTO_USD: "2.5",
     });
@@ -25,8 +27,13 @@ describe("cargarConfiguracion", () => {
     expect(config.llmModelo).toBe("claude-sonnet-5-5");
     expect(config.awsEndpoint).toBe("http://127.0.0.1:4567");
     expect(config.awsRegion).toBe("eu-west-1");
+    expect(config.emulador).toBe("ministack");
     expect(config.maxIteraciones).toBe(5);
     expect(config.limiteGastoUsd).toBe(2.5);
+  });
+
+  it("rechaza un emulador desconocido", () => {
+    expect(() => cargarConfiguracion({ EMULADOR: "localstack-pro" })).toThrow(/EMULADOR/);
   });
 
   it("rechaza un proveedor desconocido", () => {

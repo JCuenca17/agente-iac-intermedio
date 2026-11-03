@@ -73,12 +73,18 @@ else if (proveedor === "claude-code") {
 } else falla(`LLM_PROVEEDOR="${proveedor}" no es válido (grabado, claude-code o anthropic)`);
 
 console.log("Emulador");
+const emulador = process.env.EMULADOR || "floci";
+if (emulador === "floci") {
+  const v = version("docker", ["version", "--format", "{{.Server.Version}}"], /(\d+\.\d+\.\d+)/);
+  if (v) ok(`Docker ${v} (Floci corre como contenedor)`);
+  else falla("EMULADOR=floci necesita Docker en ejecución. Abre Docker Desktop, o usa EMULADOR=ministack");
+}
 const endpoint = process.env.AWS_ENDPOINT || "http://localhost:4566";
 try {
   const r = await fetch(endpoint, { signal: AbortSignal.timeout(3000) });
-  ok(`responde en ${endpoint} (HTTP ${r.status})`);
+  ok(`${emulador} responde en ${endpoint} (HTTP ${r.status})`);
 } catch {
-  falla(`no responde en ${endpoint}. Inicia MiniStack ('ministack') o Floci y vuelve a intentar`);
+  falla(`${emulador} no responde en ${endpoint}. Inicia el emulador (ver README) y vuelve a intentar`);
 }
 
 console.log(problemas === 0 ? "\nTodo listo." : `\n${problemas} problema(s) por resolver.`);

@@ -20,7 +20,7 @@ const SERVICIOS = [
   "acm", "apigateway", "apigatewayv2", "autoscaling", "cloudformation", "cloudfront", "cloudwatch",
   "cloudwatchlogs", "cognitoidentity", "cognitoidp", "dynamodb", "ec2", "ecr", "ecs", "efs", "eks",
   "elasticache", "elb", "elbv2", "events", "firehose", "iam", "kinesis", "kms", "lambda", "rds",
-  "route53", "s3", "scheduler", "secretsmanager", "sfn", "sns", "sqs", "ssm", "sts",
+  "route53", "s3", "s3control", "scheduler", "secretsmanager", "sfn", "sns", "sqs", "ssm", "sts",
 ];
 
 // Tipos de valor del main.tf.json. Se dejan abiertos porque los atributos dependen del recurso.
@@ -102,6 +102,8 @@ export function traducir(artefacto: Artefacto, esquema: EsquemaProveedor, opcion
         access_key: "test",
         secret_key: "test",
         skip_credentials_validation: true,
+        // Igual que la guía oficial de Floci: sin esto el proveedor usa S3 Control con la
+        // cuenta como subdominio (000000000000.localhost), que no resuelve en local.
         skip_requesting_account_id: true,
         skip_metadata_api_check: true,
         s3_use_path_style: true,

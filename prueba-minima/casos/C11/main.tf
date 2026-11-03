@@ -37,9 +37,9 @@ resource "aws_route_table_association" "publica" {
 }
 
 # Las reglas van dentro de cada grupo de seguridad. Con los recursos sueltos
-# aws_vpc_security_group_ingress_rule / egress_rule, MiniStack 1.5.36 deja cambios
-# pendientes después del apply (no guarda etiquetas en la regla de salida y devuelve
-# referenced_security_group_id con el número de cuenta delante). Ver resultados.md.
+# aws_vpc_security_group_egress_rule, MiniStack 1.5.36 no guarda las etiquetas de la
+# regla, y en los dos emuladores referenced_security_group_id vuelve con la cuenta delante.
+# Ver prueba-minima/README.md.
 
 resource "aws_security_group" "web" {
   name        = "c11-web"

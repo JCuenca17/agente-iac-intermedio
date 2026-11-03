@@ -28,9 +28,13 @@ Estas soluciones sirven también como referencia de cada caso en el experimento:
 | N3 | C11 | VPC, subredes, rutas, grupos de seguridad |
 | N3 | C12 | EventBridge + Lambda + SNS + CloudWatch Logs |
 
-## Limitaciones del emulador encontradas
+## Emuladores
 
-MiniStack 1.5.36 con el proveedor AWS 6.71.0:
+Los 12 casos pasan completos en los dos emuladores (`resultados-floci.md` y `resultados-ministack.md`). `EMULADOR` indica cuál está en `AWS_ENDPOINT`: con `ministack`, el estado se reinicia entre casos; Floci no tiene ese endpoint, y no hace falta porque cada caso usa nombres propios y se destruye al terminar.
 
-- `aws_vpc_security_group_egress_rule` con `ip_protocol = "-1"` no conserva las etiquetas, y `aws_vpc_security_group_ingress_rule` devuelve `referenced_security_group_id` con el número de cuenta delante (`000000000000/sg-...`). En los dos casos, `tofu plan` muestra cambios pendientes justo después del `apply`. En AWS real no pasa. Con las reglas escritas dentro de `aws_security_group` (bloques `ingress` y `egress`) el caso queda limpio, así que la referencia de C11 usa esa forma.
-- Las funciones Lambda se crean sin Docker; no se ejecutan, porque el experimento mide la infraestructura y no el código de la aplicación.
+## Diferencias encontradas
+
+- `aws_vpc_security_group_ingress_rule` con `referenced_security_group_id` deja el plan con un cambio pendiente: el valor vuelve como `000000000000/sg-...` en lugar de `sg-...`. No es un fallo del emulador. El proveedor escribe así el ID cuando no conoce la cuenta, y no la conoce porque `proveedor.tf` usa `skip_requesting_account_id = true`, igual que la guía oficial de Floci. Sin esa opción el proveedor llama a S3 Control con la cuenta como subdominio (`000000000000.localhost`), que no resuelve en local, y C01 falla. En el experimento, esta diferencia (mismo ID con la cuenta delante) se trata como cosmética al medir el plan posterior al apply, igual para todas las configuraciones.
+- `s3control` está en la lista de endpoints del emulador para que ninguna llamada salga a AWS real.
+- MiniStack 1.5.36 no guarda las etiquetas de `aws_vpc_security_group_egress_rule` con `ip_protocol = "-1"`, y el plan queda con cambios pendientes. Floci 2.4.0 no tiene ese problema. La referencia de C11 escribe las reglas dentro de `aws_security_group`, que funciona sin diferencias en los dos.
+- Las funciones Lambda se crean pero no se invocan: el experimento mide la infraestructura, no el código de la aplicación.

@@ -14,6 +14,7 @@ if (existsSync(join(raiz, ".env"))) process.loadEnvFile(join(raiz, ".env"));
 
 const endpoint = process.env.AWS_ENDPOINT || "http://localhost:4566";
 const region = process.env.AWS_REGION || "us-east-1";
+const emulador = process.env.EMULADOR || "floci";
 const dirPrueba = join(raiz, "prueba-minima");
 const dirCasos = join(dirPrueba, "casos");
 const dirTrabajo = join(dirPrueba, ".trabajo");
@@ -43,7 +44,9 @@ function primerError(salida) {
 }
 
 async function reiniciarEmulador() {
-  // MiniStack expone /_ministack/reset. Si el emulador es otro, se ignora el fallo.
+  // MiniStack expone /_ministack/reset. Floci no tiene un endpoint equivalente; no hace
+  // falta, porque cada caso usa nombres propios y se destruye al terminar.
+  if (emulador !== "ministack") return;
   try {
     await fetch(`${endpoint}/_ministack/reset`, { method: "POST" });
   } catch {
@@ -102,10 +105,10 @@ for (const caso of casos) {
 }
 
 // Si se corrieron solo algunos casos, se conservan los resultados previos de los demás.
-const archivoJson = join(dirPrueba, "resultados.json");
+const archivoJson = join(dirPrueba, `resultados-${emulador}.json`);
 if (pedidos.length > 0 && existsSync(archivoJson)) {
   const previos = JSON.parse(readFileSync(archivoJson, "utf8"));
-  if (previos.endpoint === endpoint) {
+  if (previos.emulador === emulador) {
     for (const r of previos.resultados) if (!resultados.some((x) => x.caso === r.caso)) resultados.push(r);
     resultados.sort((x, y) => x.caso.localeCompare(y.caso));
   }
@@ -113,13 +116,13 @@ if (pedidos.length > 0 && existsSync(archivoJson)) {
 
 const marca = (v) => (v ? "sí" : "no");
 const tabla = [
-  `Emulador: ${endpoint} · Región: ${region} · Fecha: ${new Date().toISOString()}`,
+  `Emulador: ${emulador} en ${endpoint} · Región: ${region} · Fecha: ${new Date().toISOString()}`,
   "",
   "| Caso | init | apply | plan sin cambios | destroy | Detalle |",
   "|---|---|---|---|---|---|",
   ...resultados.map((r) => `| ${r.caso} | ${marca(r.init)} | ${marca(r.apply)} | ${marca(r.planSinCambios)} | ${marca(r.destroy)} | ${r.error.replaceAll("|", "/")} |`),
 ].join("\n");
 
-writeFileSync(archivoJson, JSON.stringify({ endpoint, region, resultados }, null, 2));
-writeFileSync(join(dirPrueba, "resultados.md"), tabla + "\n");
+writeFileSync(archivoJson, JSON.stringify({ emulador, endpoint, region, resultados }, null, 2));
+writeFileSync(join(dirPrueba, `resultados-${emulador}.md`), tabla + "\n");
 console.log(`\n${resultados.filter((r) => r.apply && r.planSinCambios).length}/${resultados.length} casos OK`);

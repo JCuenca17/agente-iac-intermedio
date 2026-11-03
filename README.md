@@ -15,7 +15,7 @@ En desarrollo.
 | Node.js | 22 o superior | Ejecutar la herramienta |
 | OpenTofu | 1.13.1 | Validar, planificar y desplegar |
 | OPA | 1.22.0 | Políticas |
-| MiniStack (o Floci con Docker) | ver `versiones.json` | Emulador de AWS en `http://localhost:4566` |
+| Floci (con Docker) o MiniStack (sin Docker) | ver `versiones.json` | Emulador de AWS en `http://localhost:4566` |
 
 Las versiones exactas están en `versiones.json`. Todo es gratuito.
 
@@ -32,7 +32,15 @@ winget install --id open-policy-agent.opa --exact
 
 **Linux:** sigue las guías oficiales de [OpenTofu](https://opentofu.org/docs/intro/install/) y [OPA](https://www.openpolicyagent.org/docs/#running-opa).
 
-**Emulador (cualquier sistema, sin Docker):**
+**Emulador principal: Floci** (gratuito, sin cuenta). Necesita Docker; en Windows y macOS, Docker Desktop es gratuito para uso personal y educativo.
+
+```bash
+docker run -d --name floci -p 4566:4566 -v /var/run/docker.sock:/var/run/docker.sock floci/floci:2.4.0
+```
+
+En la configuración deja `EMULADOR=floci`. Para detenerlo: `docker stop floci`; para volver a iniciarlo: `docker start floci`.
+
+**Alternativa sin Docker: MiniStack.**
 
 ```bash
 python -m venv .venv-emulador
@@ -40,7 +48,7 @@ python -m venv .venv-emulador
 # macOS/Linux: .venv-emulador/bin/pip install ministack==1.5.36
 ```
 
-Para iniciarlo, ejecuta `ministack` desde ese entorno en una terminal aparte y déjala abierta. En Windows no uses `ministack -d`: el modo en segundo plano falla por una ruta de Linux.
+Ejecuta `ministack` desde ese entorno en una terminal aparte, déjala abierta y pon `EMULADOR=ministack`. En Windows no uses `ministack -d`: el modo en segundo plano falla por una ruta de Linux.
 
 **Proyecto:**
 
