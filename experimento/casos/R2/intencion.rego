@@ -137,10 +137,22 @@ cumple contains "bucket" if {
 	b.values.restrict_public_buckets == true
 }
 
+# Solo las políticas del rol (aws_iam_role_policy); la política de la clave KMS es una política
+# de recurso y su "kms:*" para la cuenta raíz es la forma estándar de AWS.
+acciones_del_rol contains accion if {
+	some r in comun.recursos("aws_iam_role_policy")
+	comun.con_valor(r.values.role)
+	json.is_valid(r.values.policy)
+	doc := json.unmarshal(r.values.policy)
+	some d in comun.declaraciones(doc)
+	comun.permite(object.get(d, "Effect", "Allow"))
+	some accion in comun.lista(object.get(d, "Action", []))
+}
+
 cumple contains "rol" if {
 	comun.hay("aws_iam_instance_profile")
-	count(comun.acciones_iam) > 0
-	every a in comun.acciones_iam {
+	count(acciones_del_rol) > 0
+	every a in acciones_del_rol {
 		a != "*"
 		not endswith(a, ":*")
 	}

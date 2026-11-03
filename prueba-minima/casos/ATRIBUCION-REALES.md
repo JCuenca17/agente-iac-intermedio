@@ -31,4 +31,4 @@ Los cambios se limitan a lo necesario para que cada proyecto se despliegue solo 
 
 ## Limitación del emulador
 
-En Floci 2.4.0, al borrar un servicio de ECS el contenedor de su tarea sigue corriendo, y el clúster no se puede eliminar (`ClusterContainsTasksException`). La herramienta elimina esos contenedores cuando reinicia el emulador después de una destrucción fallida. No afecta a M1, que se mide antes de destruir.
+En Floci 2.4.0, al borrar un servicio de ECS el contenedor de su tarea sigue corriendo y el clúster no se puede eliminar (`ClusterContainsTasksException`); tampoco se quitan los registros de las tareas en el descubrimiento de servicios (`ResourceInUse`). Por eso la destrucción de R1 falla en Floci. Cuando una destrucción falla, el experimento elimina los contenedores que Floci dejó y lo reinicia, lo que deja su estado vacío. No afecta a M1, que se mide antes de destruir.

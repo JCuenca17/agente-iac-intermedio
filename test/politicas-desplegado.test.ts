@@ -105,6 +105,13 @@ describe("M3 sobre estados reales", () => {
     ]);
   });
 
+  it("la referencia real de R2 tiene 2 violaciones: tabla sin recuperación y kms:* en la política de la clave", () => {
+    expect(violacionesDesplegado(estado("R2"))).toEqual([
+      { recurso: "aws_dynamodb_table.vault_storage", regla: "dynamodb-recuperacion" },
+      { recurso: "aws_kms_key.seal", regla: "iam-sin-comodin" },
+    ]);
+  });
+
   it("sin estado no hay violaciones", () => {
     expect(violacionesDesplegado(undefined)).toEqual([]);
   });

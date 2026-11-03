@@ -202,6 +202,23 @@ describe("M4: cada requisito falla cuando corresponde", () => {
     expect(faltan("R1", e)).toEqual([]);
   });
 
+  it("R2 no cuenta la política de la clave KMS como permiso del rol, pero sí un comodín en el rol", () => {
+    const e = entrada("R2");
+    const kms = recursos(e).find((r: { type: string }) => r.type === "aws_kms_key").values;
+    expect(kms.policy).toContain("kms:*");
+    expect(faltan("R2", e)).toEqual([]);
+    valores(e, "aws_iam_role_policy.vault_instance_s3_policy").policy = politica({ Effect: "Allow", Action: "s3:*", Resource: "*" });
+    expect(faltan("R2", e)).toEqual(["rol"]);
+  });
+
+  it("R2 detecta SSH abierto a internet en el balanceador", () => {
+    const e = entrada("R2");
+    const lb = recursos(e).find((r: { type: string }) => r.type === "aws_lb").values;
+    const g = recursos(e).find((r: { type: string; values: { id: string } }) => r.type === "aws_security_group" && lb.security_groups.includes(r.values.id)).values;
+    g.ingress.push({ from_port: 22, to_port: 22, protocol: "tcp", cidr_blocks: ["0.0.0.0/0"], ipv6_cidr_blocks: [], security_groups: [] });
+    expect(faltan("R2", e)).toEqual(["sg_balanceador"]);
+  });
+
   it("P1 con el bloqueo público incompleto lo detecta", () => {
     const e = entrada("P1");
     valores(e, "aws_s3_bucket_public_access_block.imagen").ignore_public_acls = false;
