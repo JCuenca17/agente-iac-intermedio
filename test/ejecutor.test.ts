@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { appendFileSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
@@ -132,5 +132,60 @@ describe("ejecutor del experimento", () => {
     expect(f).toHaveLength(4);
     expect(f.find((x) => x.configuracion === "T")).toMatchObject({ motivo: "error", m1: false, error: "el modelo no respondió" });
     expect(f.find((x) => x.configuracion === "B0")).toMatchObject({ m1: true });
+  });
+});
+
+describe("ejecutor: M1, errores y reanudación (revisión de código)", () => {
+  it("M1 exige aplicar sin errores y que el plan posterior no tenga cambios", async () => {
+    const d = falsas();
+    d.desplegar = async () => ({ aplicado: true, sinCambios: false, errores: [], cambiosPendientes: [], cosmeticosIgnorados: [], estado: {}, planPosterior: {} });
+    const o = opciones(d, { casos: ["C01"], configuraciones: ["T"] });
+    await ejecutarExperimento(o);
+    expect(filas(o)[0]).toMatchObject({ m1: false, aplicado: true, sinCambios: false });
+  });
+
+  it("una corrida con error conserva lo que gastó y se reintenta al reanudar", async () => {
+    const d = falsas();
+    const original = d.ejecutarCiclo;
+    let falla = true;
+    d.ejecutarCiclo = async (req, opc) => {
+      if (falla) {
+        opc.registro.anotar("llamada", { costoUsd: 0.3, uso: { entrada: 5, salida: 7, cacheEscritura: 0, cacheLectura: 0 } });
+        throw new Error("el emulador no respondió");
+      }
+      return original(req, opc);
+    };
+    const o = opciones(d, { casos: ["C01"], configuraciones: ["T"] });
+    const r1 = await ejecutarExperimento(o);
+    expect(filas(o)[0]).toMatchObject({ motivo: "error", costoUsd: 0.3, llamadas: 1, uso: { entrada: 5, salida: 7 } });
+    expect(r1.costoTotalUsd).toBeCloseTo(0.3, 10);
+
+    falla = false;
+    const r2 = await ejecutarExperimento(o);
+    expect(r2).toMatchObject({ hechas: 1, omitidas: 0 });
+    expect(r2.costoTotalUsd).toBeCloseTo(0.31, 10);
+    expect(filas(o).map((f) => f.motivo)).toEqual(["error", "valido"]);
+    expect(d.llamadas).toContain("reinicio");
+  });
+
+  it("reanuda aunque la última línea de resultados.jsonl haya quedado cortada", async () => {
+    const o = opciones(falsas(), { casos: ["C01"], configuraciones: ["T", "B0"] });
+    await ejecutarExperimento({ ...o, configuraciones: ["T"] });
+    appendFileSync(join(o.salida, "resultados.jsonl"), '{"caso":"C01","configuracion":"B0"');
+    const r = await ejecutarExperimento(o);
+    expect(r).toMatchObject({ hechas: 1, omitidas: 1 });
+  });
+
+  it("un caso que no existe se detecta antes de la primera corrida", async () => {
+    const d = falsas();
+    const o = opciones(d, {
+      casos: ["C01", "C99"],
+      cargarCaso: (id) => {
+        if (id === "C99") throw new Error("no existe C99");
+        return { id, nivel: "N1", requerimiento: "x", fuente: "propio" };
+      },
+    });
+    await expect(ejecutarExperimento(o)).rejects.toThrow("no existe C99");
+    expect(d.llamadas.filter((x) => x.startsWith("ciclo"))).toEqual([]);
   });
 });

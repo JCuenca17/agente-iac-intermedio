@@ -1,4 +1,4 @@
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { ejecutarCiclo, type OpcionesCiclo, type ResultadoCiclo } from "../ciclo/ciclo.js";
 import { desplegar, destruir, type ResultadoDespliegue } from "../despliegue/despliegue.js";
@@ -128,16 +128,52 @@ export interface ResumenEjecucion {
 
 const clave = (c: string, k: string, r: number) => `${c}|${k}|${r}`;
 
-/** Lee las corridas ya hechas para poder reanudar. */
-function leerHechas(archivo: string): Map<string, FilaResultado> {
-  const hechas = new Map<string, FilaResultado>();
-  if (!existsSync(archivo)) return hechas;
-  for (const linea of readFileSync(archivo, "utf8").split("\n")) {
-    if (!linea.trim()) continue;
-    const f = JSON.parse(linea) as FilaResultado;
-    hechas.set(clave(f.caso, f.configuracion, f.repeticion), f);
+/**
+ * Lee resultados.jsonl. Ignora una última línea cortada (el proceso pudo morir a mitad de
+ * escribirla). Las corridas que terminaron con error no cuentan como hechas: al reanudar se
+ * vuelven a intentar. El gasto de todas las filas, también las de error, se suma.
+ */
+export function leerResultados(archivo: string): { filas: FilaResultado[]; hechas: Set<string>; gastoUsd: number } {
+  const filas: FilaResultado[] = [];
+  if (existsSync(archivo)) {
+    for (const linea of readFileSync(archivo, "utf8").split("\n")) {
+      if (!linea.trim()) continue;
+      try {
+        filas.push(JSON.parse(linea) as FilaResultado);
+      } catch {
+        // Línea incompleta de una corrida interrumpida: esa corrida se repite.
+      }
+    }
   }
-  return hechas;
+  const hechas = new Set(filas.filter((f) => f.motivo !== "error").map((f) => clave(f.caso, f.configuracion, f.repeticion)));
+  return { filas, hechas, gastoUsd: filas.reduce((s, f) => s + (f.costoUsd ?? 0), 0) };
+}
+
+/** Error de una corrida que conserva lo que ya se gastó antes de fallar. */
+class ErrorCorrida extends Error {
+  constructor(
+    mensaje: string,
+    readonly gasto: { costoUsd: number; llamadas: number; uso: FilaResultado["uso"] },
+  ) {
+    super(mensaje);
+  }
+}
+
+/** Suma las llamadas al modelo anotadas en el registro de la corrida. */
+function gastoRegistrado(registro: Registro): ErrorCorrida["gasto"] {
+  const uso = { entrada: 0, salida: 0, cacheEscritura: 0, cacheLectura: 0 };
+  let costoUsd = 0;
+  let llamadas = 0;
+  for (const e of registro.eventos.filter((x) => x.evento === "llamada")) {
+    llamadas++;
+    costoUsd += Number(e.costoUsd ?? 0);
+    const u = e.uso as Partial<typeof uso> | undefined;
+    uso.entrada += u?.entrada ?? 0;
+    uso.salida += u?.salida ?? 0;
+    uso.cacheEscritura += u?.cacheEscritura ?? 0;
+    uso.cacheLectura += u?.cacheLectura ?? 0;
+  }
+  return { costoUsd, llamadas, uso };
 }
 
 function contarPorCapa(errores: ErrorValidacion[][]): { porCapa: Record<string, number>; reglas: string[] } {
@@ -152,10 +188,29 @@ function contarPorCapa(errores: ErrorValidacion[][]): { porCapa: Record<string, 
 
 /** Ejecuta una corrida: genera, despliega, mide y destruye. */
 async function ejecutarCorrida(caso: Caso, configuracion: Configuracion, repeticion: number, o: OpcionesExperimento): Promise<FilaResultado> {
-  const d = o.dependencias;
   const dir = join(o.salida, "corridas", caso.id, configuracion, `rep-${repeticion}`);
+  // Si se repite una corrida (reanudación tras un error), se parte de una carpeta limpia
+  // para no reutilizar un estado o un plan anterior.
+  rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
   const registro = new Registro(join(dir, "trazas.jsonl"));
+  try {
+    return await medirCorrida(caso, configuracion, repeticion, o, dir, registro);
+  } catch (e) {
+    registro.anotar("corrida-error", { error: (e as Error).message });
+    throw new ErrorCorrida((e as Error).message, gastoRegistrado(registro));
+  }
+}
+
+async function medirCorrida(
+  caso: Caso,
+  configuracion: Configuracion,
+  repeticion: number,
+  o: OpcionesExperimento,
+  dir: string,
+  registro: Registro,
+): Promise<FilaResultado> {
+  const d = o.dependencias;
   registro.anotar("corrida-inicio", { caso: caso.id, configuracion, repeticion });
   const inicio = Date.now();
   const proveedor = o.crearProveedor(caso.id, configuracion, repeticion);
@@ -248,20 +303,27 @@ async function ejecutarCorrida(caso: Caso, configuracion: Configuracion, repetic
 /**
  * Ejecuta el experimento. Escribe una fila por corrida en resultados.jsonl y, si se vuelve a
  * ejecutar con la misma salida, salta las corridas ya hechas. Si una corrida lanza un error
- * (por ejemplo, el modelo no responde), se registra con el error y se sigue con la siguiente.
+ * (por ejemplo, el modelo no responde), se registra con el error y lo que alcanzó a gastar,
+ * y se sigue con la siguiente; al reanudar, esa corrida se vuelve a intentar.
  */
 export async function ejecutarExperimento(o: OpcionesExperimento): Promise<ResumenEjecucion> {
   mkdirSync(o.salida, { recursive: true });
   const archivo = join(o.salida, "resultados.jsonl");
-  const hechas = leerHechas(archivo);
-  let costoTotalUsd = [...hechas.values()].reduce((s, f) => s + f.costoUsd, 0);
+  const previos = leerResultados(archivo);
+  const hechas = previos.hechas;
+  let costoTotalUsd = previos.gastoUsd;
   const total = o.casos.length * o.configuraciones.length * o.repeticiones;
   let hechasAhora = 0;
   let omitidas = 0;
 
+  // Todos los casos se leen antes de empezar: un caso mal escrito se detecta al inicio.
+  const casos = new Map(o.casos.map((id) => [id, (o.cargarCaso ?? cargarCaso)(id)]));
+  // Al reanudar, una corrida interrumpida pudo dejar recursos en el emulador.
+  if (previos.filas.length) await reiniciarSinAbortar(o);
+
   for (let repeticion = 1; repeticion <= o.repeticiones; repeticion++) {
     for (const id of o.casos) {
-      const caso = (o.cargarCaso ?? cargarCaso)(id);
+      const caso = casos.get(id)!;
       for (const configuracion of o.configuraciones) {
         if (hechas.has(clave(id, configuracion, repeticion))) {
           omitidas++;
@@ -274,12 +336,13 @@ export async function ejecutarExperimento(o: OpcionesExperimento): Promise<Resum
         try {
           fila = await ejecutarCorrida(caso, configuracion, repeticion, o);
         } catch (e) {
-          await o.dependencias.reiniciarEmulador();
+          await reiniciarSinAbortar(o);
+          const gasto = e instanceof ErrorCorrida ? e.gasto : { costoUsd: 0, llamadas: 0, uso: { entrada: 0, salida: 0, cacheEscritura: 0, cacheLectura: 0 } };
           fila = {
             caso: id, nivel: caso.nivel, configuracion, repeticion, listo: false, motivo: "error", m1: false, aplicado: false,
             sinCambios: false, erroresDespliegue: [], erroresPorCapa: {}, reglasDetectadas: [], m3: 0, violaciones: [], m4: 0,
-            faltantes: [], iteraciones: 0, llamadas: 0, consultasEsquema: 0, uso: { entrada: 0, salida: 0, cacheEscritura: 0, cacheLectura: 0 },
-            costoUsd: 0, duracionMs: 0, cosmeticosIgnorados: 0, error: (e as Error).message,
+            faltantes: [], iteraciones: 0, llamadas: gasto.llamadas, consultasEsquema: 0, uso: gasto.uso,
+            costoUsd: gasto.costoUsd, duracionMs: 0, cosmeticosIgnorados: 0, error: (e as Error).message,
           };
         }
         appendFileSync(archivo, JSON.stringify(fila) + "\n");
@@ -290,4 +353,13 @@ export async function ejecutarExperimento(o: OpcionesExperimento): Promise<Resum
     }
   }
   return { hechas: hechasAhora, omitidas, costoTotalUsd, detenidoPorGasto: false };
+}
+
+/** Reinicia el emulador; si falla, lo informa y sigue (la corrida siguiente lo notará). */
+async function reiniciarSinAbortar(o: OpcionesExperimento): Promise<void> {
+  try {
+    await o.dependencias.reiniciarEmulador();
+  } catch (e) {
+    console.error(`No se pudo reiniciar el emulador: ${(e as Error).message}`);
+  }
 }

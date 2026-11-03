@@ -11,7 +11,7 @@ function fila(caso: string, nivel: string, configuracion: string, repeticion: nu
   };
 }
 
-// T acierta en los 4 pares; B0 acierta en 1.
+// T acierta en los 4 pares; B0 acierta en 1 y en C11 terminó con error de infraestructura.
 const filas: FilaResultado[] = [
   fila("C01", "N1", "T", 1, true, { erroresPorCapa: { C2: 3 }, reglasDetectadas: ["atributo-deprecado"], iteraciones: 2, costoUsd: 0.02 }),
   fila("C01", "N1", "B0", 1, true, { m3: 2 }),
@@ -32,7 +32,9 @@ describe("resumen del experimento", () => {
     expect(t.m1.exitos).toBe(4);
     expect(t.m1.p).toBe(1);
     expect(t.m1.superior).toBe(1);
-    expect(r.porConfiguracion[1].m1.p).toBe(0.25);
+    // El intento con error no entra en n: B0 tiene 3 corridas con resultado y acierta en 1.
+    expect(r.porConfiguracion[1]).toMatchObject({ n: 3, errores: 1 });
+    expect(r.porConfiguracion[1].m1.p).toBeCloseTo(1 / 3, 10);
   });
 
   it("suma los errores por capa (M2) y cuenta las corridas con error", () => {
@@ -45,14 +47,16 @@ describe("resumen del experimento", () => {
   });
 
   it("separa M1 por nivel", () => {
-    expect(r.porNivel.find((x) => x.configuracion === "B0" && x.nivel === "N3")).toMatchObject({ n: 3, m1: 0 });
+    expect(r.porNivel.find((x) => x.configuracion === "B0" && x.nivel === "N3")).toMatchObject({ n: 2, m1: 0 });
   });
 
   it("compara por pares con McNemar y Wilcoxon", () => {
     const c = comparar(filas, "T", "B0");
-    expect(c).toMatchObject({ pares: 4, b: 3, c: 0, diferenciaM1pp: 75 });
-    expect(c.pM1).toBe(0.25); // 2 × 0.5^3
-    expect(c.diferenciaM4).toBe(0.75);
+    // Sin el par de C11, donde B0 terminó con error.
+    expect(c).toMatchObject({ pares: 3, b: 2, c: 0 });
+    expect(c.diferenciaM1pp).toBeCloseTo(66.667, 2);
+    expect(c.pM1).toBe(0.5); // 2 × 0.5^2
+    expect(c.diferenciaM4).toBeCloseTo(2 / 3, 10);
   });
 
   it("resume IaC-Eval con las métricas de S12", () => {
@@ -71,7 +75,39 @@ describe("resumen del experimento", () => {
   it("el informe en Markdown incluye las tablas", () => {
     const md = informeMarkdown(r);
     expect(md).toContain("| T | 4 | 100.0 % [");
-    expect(md).toContain("| T vs B0 | 4 | 3 | 0 | 75.0 | 0.250 |");
+    expect(md).toContain("| T vs B0 | 3 | 2 | 0 | 66.7 | 0.500 (0.500) |");
+    expect(md).toContain("Intentos con error de infraestructura: 1");
     expect(md).toContain("## M1 por nivel de dificultad");
+  });
+});
+
+describe("resumen: errores de infraestructura, M4 e IaC-Eval, Holm", () => {
+  it("si una corrida se repitió tras un error vale el último resultado, y el costo del error se suma", () => {
+    const fs = [
+      fila("C01", "N1", "T", 1, false, { motivo: "error", costoUsd: 0.5 }),
+      fila("C01", "N1", "T", 1, true, { costoUsd: 0.25 }),
+    ];
+    const c = resumir(fs).porConfiguracion[0];
+    expect(c).toMatchObject({ n: 1, errores: 1, costoTotalUsd: 0.75, costoMedioUsd: 0.25 });
+    expect(c.m1.exitos).toBe(1);
+  });
+
+  it("M4 por configuración se promedia solo en los casos propios", () => {
+    const fs = [
+      fila("C01", "N1", "T", 1, true, { m4: 0.5 }),
+      fila("IE001", "D1", "T", 1, true, { m4: 1, iaceval: { compila: true, desplegable: true, correcto: true } }),
+    ];
+    expect(resumir(fs).porConfiguracion[0].m4Media).toBe(0.5);
+  });
+
+  it("ajusta los valores p de las comparaciones con Holm", () => {
+    const r2 = resumir([...filas, fila("C01", "N1", "B1", 1, true), fila("C09", "N3", "B1", 1, true)]);
+    const b0 = r2.comparaciones.find((c) => c.contra === "B0")!;
+    const b1 = r2.comparaciones.find((c) => c.contra === "B1")!;
+    // Dos comparaciones: el menor p se multiplica por 2 y el mayor por 1 (sin bajar del anterior).
+    expect(b0.pM1).toBe(0.5);
+    expect(b1.pM1).toBe(1);
+    expect(b0.pM1Holm).toBe(1);
+    expect(b1.pM1Holm).toBe(1);
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mcnemarExacta, media, mediana, wilcoxon, wilson } from "../src/experimento/estadistica.js";
+import { holm, mcnemarExacta, media, mediana, wilcoxon, wilson } from "../src/experimento/estadistica.js";
 
 // Valores de referencia: fórmula de Wilson, binomial exacta y, para Wilcoxon con empates,
 // enumeración de las 2^n asignaciones de signo (scipy en modo exacto ignora los empates).
@@ -40,5 +40,19 @@ describe("estadística", () => {
     expect(mediana([3, 1, 2])).toBe(2);
     expect(mediana([4, 1, 2, 3])).toBe(2.5);
     expect(media([])).toBe(0);
+  });
+});
+
+describe("corrección de Holm", () => {
+  it("coincide con un ejemplo resuelto a mano", () => {
+    // p = 0.01, 0.04, 0.03 con k = 3: 0.01×3 = 0.03; 0.03×2 = 0.06; 0.04×1 = 0.04 → máx. acumulado 0.06.
+    const r = holm([0.01, 0.04, 0.03]);
+    expect(r[0]).toBeCloseTo(0.03, 12);
+    expect(r[1]).toBeCloseTo(0.06, 12);
+    expect(r[2]).toBeCloseTo(0.06, 12);
+  });
+
+  it("no pasa de 1", () => {
+    expect(holm([0.6, 0.7])).toEqual([1, 1]);
   });
 });

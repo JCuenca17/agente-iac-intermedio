@@ -69,6 +69,23 @@ export function wilcoxon(diferencias: number[]): { n: number; w: number; p: numb
   return { n, w: w2 / 2, p };
 }
 
+/**
+ * Corrección de Holm (1979) para comparaciones múltiples: ajusta una familia de valores p
+ * controlando la tasa de error de tipo I de la familia. Devuelve los ajustados en el
+ * mismo orden de entrada.
+ */
+export function holm(ps: number[]): number[] {
+  const orden = ps.map((p, i) => ({ p, i })).sort((a, b) => a.p - b.p);
+  const k = ps.length;
+  const ajustados = new Array<number>(k);
+  let maximo = 0;
+  orden.forEach(({ p, i }, j) => {
+    maximo = Math.max(maximo, Math.min(1, (k - j) * p));
+    ajustados[i] = maximo;
+  });
+  return ajustados;
+}
+
 export const media = (xs: number[]) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : 0);
 
 export function mediana(xs: number[]): number {
