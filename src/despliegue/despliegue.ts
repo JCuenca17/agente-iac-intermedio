@@ -6,6 +6,7 @@ import type { ErrorValidacion } from "../validador/tipos.js";
 
 interface CambioPlan {
   address: string;
+  type?: string;
   change: { actions: string[]; before?: Record<string, unknown> | null; after?: Record<string, unknown> | null; after_unknown?: unknown };
 }
 
@@ -18,15 +19,23 @@ export interface CambioRecurso {
  * Diferencias que no son reales sino de representación entre el proveedor y el emulador.
  * Documentadas en prueba-minima/README.md. Se aplican igual a todas las configuraciones.
  */
-function esCosmetico(atributo: string, antes: unknown, despues: unknown): boolean {
+function esCosmetico(tipo: string | undefined, atributo: string, antes: unknown, despues: unknown): boolean {
   // Con skip_requesting_account_id el proveedor no conoce la cuenta y el emulador devuelve
   // el ID del grupo con la cuenta delante: "000000000000/sg-123" frente a "sg-123".
-  return (
-    atributo === "referenced_security_group_id" &&
-    typeof antes === "string" &&
-    typeof despues === "string" &&
-    antes.replace(/^\d{12}\//, "") === despues.replace(/^\d{12}\//, "")
-  );
+  if (atributo === "referenced_security_group_id") {
+    return typeof antes === "string" && typeof despues === "string" && antes.replace(/^\d{12}\//, "") === despues.replace(/^\d{12}\//, "");
+  }
+  // Floci 2.4.0 informa toda política de autoescalado como desactivada y con cooldown de
+  // 300 s, aunque se haya creado activa y sin cooldown (P2).
+  if (tipo === "aws_autoscaling_policy") {
+    if (atributo === "enabled") return antes === false && despues === true;
+    if (atributo === "cooldown") return typeof antes === "number" && despues === null;
+  }
+  // Floci 2.4.0 no guarda los parámetros de un grupo de parámetros de RDS (P2).
+  if (tipo === "aws_db_parameter_group" && atributo === "parameter") {
+    return Array.isArray(antes) && antes.length === 0 && Array.isArray(despues) && despues.length > 0;
+  }
+  return false;
 }
 
 /** Separa los cambios pendientes del plan posterior al apply en reales y cosméticos. */
@@ -45,8 +54,8 @@ export function clasificarCambios(plan: { resource_changes?: CambioPlan[] }): { 
     const distintos = [...new Set([...Object.keys(antes), ...Object.keys(despues)])].filter(
       (k) => JSON.stringify(antes[k]) !== JSON.stringify(despues[k]),
     );
-    const reals = distintos.filter((k) => !esCosmetico(k, antes[k], despues[k]));
-    const cosms = distintos.filter((k) => esCosmetico(k, antes[k], despues[k]));
+    const reals = distintos.filter((k) => !esCosmetico(c.type, k, antes[k], despues[k]));
+    const cosms = distintos.filter((k) => esCosmetico(c.type, k, antes[k], despues[k]));
     if (reals.length) reales.push({ direccion: c.address, atributos: reals });
     else if (cosms.length) cosmeticos.push({ direccion: c.address, atributos: cosms });
     else reales.push({ direccion: c.address, atributos: ["(update)"] });

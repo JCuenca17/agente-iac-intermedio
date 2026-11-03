@@ -40,7 +40,7 @@ Doce requerimientos en tres niveles. Cada uno tiene una solución de referencia 
 | Proyecto | Arquitectura | Recursos de la referencia |
 |---|---|---|
 | P1 | Tienda serverless: API con 5 rutas, 5 funciones con rol y logs propios, 3 tablas, cola con cola de fallidos, tema de avisos, bucket de imágenes y reporte diario programado | 47 |
-| P2 | Aplicación de tres capas: red en dos zonas con NAT, balanceador, autoescalado de servidores, PostgreSQL privada y cifrada, bucket de archivos, logs, registros de flujo y alarma | Unos 41 (pendiente de verificar en Floci) |
+| P2 | Aplicación de tres capas: red en dos zonas con NAT, balanceador, autoescalado de servidores, PostgreSQL privada y cifrada, bucket de archivos, logs, registros de flujo y alarma | 40 |
 
 ### 3.3 IaC-Eval
 
@@ -89,7 +89,7 @@ Decisiones de medición (ADR-019), iguales para todas las configuraciones:
 - M3 exige el cifrado de S3 con el recurso `aws_s3_bucket_server_side_encryption_configuration`, igual que C3. Un bucket cifrado con el bloque antiguo cuenta como violación: en el estado no se distingue de un bucket sin cifrado explícito, porque todo bucket informa el cifrado por defecto del servicio.
 - En el estado, un atributo de texto opcional sin valor queda como `""` y no como `null`. Las listas de verificación y las políticas de M3 lo tratan como ausente.
 - Si una configuración no despliega, M3 y M4 valen 0.
-- La diferencia de `referenced_security_group_id` con el número de cuenta delante del mismo ID se trata como cosmética y se registra aparte.
+- Se tratan como cosméticas, y se registran aparte, las diferencias que vienen del emulador y no de la configuración: `referenced_security_group_id` con el número de cuenta delante del mismo ID, y en P2 la política de autoescalado que Floci informa como desactivada y los parámetros de RDS que no guarda. Sin esta regla, ninguna configuración de P2 podría lograr M1 en Floci, ni siquiera la referencia.
 
 ## 7. Análisis
 

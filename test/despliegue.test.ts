@@ -59,3 +59,27 @@ describe("clasificarCambios del plan posterior al apply", () => {
     expect(r.reales).toEqual([{ direccion: "aws_sqs_queue.a", atributos: ["(update)"] }]);
   });
 });
+
+describe("diferencias de Floci en P2 (ADR-019)", () => {
+  const cambio = (type: string, before: Record<string, unknown>, after: Record<string, unknown>) => ({
+    resource_changes: [{ address: `${type}.x`, type, change: { actions: ["update"], before, after } }],
+  });
+
+  it("la política de autoescalado informada como desactivada y con cooldown es cosmética", () => {
+    const r = clasificarCambios(cambio("aws_autoscaling_policy", { enabled: false, cooldown: 300, name: "cpu" }, { enabled: true, cooldown: null, name: "cpu" }));
+    expect(r).toEqual({ reales: [], cosmeticos: [{ direccion: "aws_autoscaling_policy.x", atributos: ["enabled", "cooldown"] }] });
+  });
+
+  it("los parámetros que el emulador no guardó son cosméticos", () => {
+    const r = clasificarCambios(cambio("aws_db_parameter_group", { parameter: [] }, { parameter: [{ name: "log_min_duration_statement", value: "1000", apply_method: "immediate" }] }));
+    expect(r.reales).toEqual([]);
+    expect(r.cosmeticos).toEqual([{ direccion: "aws_db_parameter_group.x", atributos: ["parameter"] }]);
+  });
+
+  it("otras diferencias en esos recursos siguen siendo reales", () => {
+    expect(clasificarCambios(cambio("aws_autoscaling_policy", { enabled: true }, { enabled: false })).reales).toHaveLength(1);
+    expect(clasificarCambios(cambio("aws_autoscaling_policy", { cooldown: 60 }, { cooldown: 120 })).reales).toHaveLength(1);
+    expect(clasificarCambios(cambio("aws_db_parameter_group", { parameter: [{ name: "a", value: "1" }] }, { parameter: [{ name: "a", value: "2" }] })).reales).toHaveLength(1);
+    expect(clasificarCambios(cambio("aws_lambda_function", { enabled: false }, { enabled: true })).reales).toHaveLength(1);
+  });
+});

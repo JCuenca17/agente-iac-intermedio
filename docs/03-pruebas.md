@@ -40,8 +40,8 @@ OpenTofu 1.13.1, OPA 1.22.0, proveedor AWS 6.71.0, Node 24 en Windows 11 y Node 
 | Políticas Rego | 30 de 30 |
 | Integración | 7 de 7 en Floci (incluye el banco de errores con el validador real) |
 | Prueba mínima | 12 de 12 casos en Floci y 12 de 12 en MiniStack |
-| Proyecto grande P1 | Despliega 47 recursos en MiniStack, sin cambios pendientes; su lista M4 se cumple al 100 % sobre el estado real |
-| Proyecto grande P2 | Pendiente en Floci; en MiniStack falla por limitaciones del emulador (sección 6) |
+| Proyecto grande P1 | Despliega 47 recursos en MiniStack y en Floci, sin cambios pendientes; su lista M4 se cumple al 100 % y M3 no tiene violaciones sobre el estado real |
+| Proyecto grande P2 | Despliega 40 recursos en Floci; su lista M4 se cumple al 100 % y M3 no tiene violaciones sobre el estado real. El plan posterior solo muestra las diferencias del emulador que ADR-019 trata como cosméticas. En MiniStack no llega a desplegar (sección 6) |
 | Instalación | Correcta en la imagen de Codespaces: OpenTofu y OPA con sumas SHA-256 verificadas; pasan las 162 pruebas unitarias y las 17 de políticas |
 | Banco de errores | 42 de 43 errores insertados detectados antes del despliegue, todos en la capa esperada; ver `04-diseno-experimental.md`, sección 8 |
 | Revisión de código | Revisión con `bmad-code-review` de `src/`: 23 problemas, todos corregidos o descartados con evidencia (sección 7) |
@@ -82,6 +82,7 @@ Detalle por archivo de pruebas unitarias:
 |---|---|---|
 | Una consulta de etiquetas de S3 Control y luego las llamadas de Chime y Redshift salieron a AWS real (rechazadas con 403, sin costo) | Prueba mínima y preparación de IaC-Eval | `s3control` en los endpoints y `AWS_ENDPOINT_URL` forzado en toda ejecución de OpenTofu (ADR-018) |
 | `referenced_security_group_id` volvía con la cuenta delante y dejaba el plan con cambios | Prueba mínima de C11 | Se identificó la causa (`skip_requesting_account_id`) y se trata como diferencia cosmética al medir (ADR-019) |
+| Floci informa la política de autoescalado de P2 como desactivada y no guarda los parámetros de RDS | Despliegue de P2 en Floci | Esas diferencias exactas se tratan como cosméticas al medir M1 (ADR-019) |
 | MiniStack no guarda las etiquetas de una regla de salida ni devuelve los grupos de destino de un autoescalado, no soporta `AttachLoadBalancerTargetGroups` y no crea la alarma de CloudWatch de P2 | Prueba mínima de C11 y de P2 | Floci como emulador principal (ADR-002); la referencia de C11 usa reglas dentro del grupo |
 | Las rutas a archivos de datos fallaban al ejecutar el código compilado en `dist/` | Ejecución desde `dist/` | Módulo único que encuentra la raíz del proyecto |
 | OpenTofu síncrono bloqueaba el proceso durante un apply de casi 3 minutos | Prueba de integración del despliegue | Ejecución asíncrona de OpenTofu |
