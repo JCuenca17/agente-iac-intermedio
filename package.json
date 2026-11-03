@@ -13,7 +13,8 @@
     "test": "vitest run && opa test politicas",
     "doctor": "node scripts/doctor.mjs",
     "prueba-minima": "node scripts/prueba-minima.mjs",
-    "esquema-proveedor": "node scripts/esquema-proveedor.mjs"
+    "esquema-proveedor": "node scripts/esquema-proveedor.mjs",
+    "test:integracion": "vitest run --config vitest.integracion.config.ts"
   },
   "license": "UNLICENSED",
   "devDependencies": {
