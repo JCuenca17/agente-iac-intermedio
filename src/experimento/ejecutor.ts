@@ -33,7 +33,7 @@ export function cargarCaso(id: string): Caso {
   }
   const dir = enRaiz("experimento", "casos", id);
   const requerimiento = readFileSync(join(dir, "requerimiento.md"), "utf8").trim();
-  const nivel = readFileSync(join(dir, "intencion.rego"), "utf8").match(/^nivel := "(N\d)"/m)?.[1] ?? "?";
+  const nivel = readFileSync(join(dir, "intencion.rego"), "utf8").match(/^nivel := "([A-Z0-9]+)"/m)?.[1] ?? "?";
   return { id, nivel, requerimiento, fuente: "propio" };
 }
 

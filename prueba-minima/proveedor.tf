@@ -11,18 +11,21 @@ terraform {
 }
 
 variable "endpoint" {
-  type    = string
-  default = "http://localhost:4566"
+  description = "URL del emulador de AWS"
+  type        = string
+  default     = "http://localhost:4566"
 }
 
 variable "region" {
-  type    = string
-  default = "us-east-1"
+  description = "Región de AWS que simula el emulador"
+  type        = string
+  default     = "us-east-1"
 }
 
 variable "ruta_lambda_zip" {
-  type    = string
-  default = "../../recursos/lambda/minima.zip"
+  description = "Ruta al paquete mínimo de las funciones Lambda"
+  type        = string
+  default     = "../../recursos/lambda/minima.zip"
 }
 
 provider "aws" {
@@ -33,8 +36,8 @@ provider "aws" {
   # Igual que la guía oficial de Floci. Sin esta opción el proveedor usa S3 Control con la
   # cuenta como subdominio (000000000000.localhost), que no resuelve en local.
   skip_requesting_account_id = true
-  skip_metadata_api_check     = true
-  s3_use_path_style           = true
+  skip_metadata_api_check    = true
+  s3_use_path_style          = true
 
   endpoints {
     apigateway     = var.endpoint
