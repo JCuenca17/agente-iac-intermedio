@@ -15,9 +15,49 @@ En desarrollo.
 | Node.js | 22 o superior | Ejecutar la herramienta |
 | OpenTofu | 1.13.1 | Validar, planificar y desplegar |
 | OPA | 1.22.0 | Políticas |
-| MiniStack o Floci | ver `versiones.json` | Emulador de AWS en `http://localhost:4566` |
+| MiniStack (o Floci con Docker) | ver `versiones.json` | Emulador de AWS en `http://localhost:4566` |
 
-Las versiones exactas están en `versiones.json`.
+Las versiones exactas están en `versiones.json`. Todo es gratuito.
+
+## Instalación
+
+**Windows (con winget):**
+
+```powershell
+winget install --id OpenTofu.Tofu --exact
+winget install --id open-policy-agent.opa --exact
+```
+
+**macOS (con Homebrew):** `brew install opentofu opa`
+
+**Linux:** sigue las guías oficiales de [OpenTofu](https://opentofu.org/docs/intro/install/) y [OPA](https://www.openpolicyagent.org/docs/#running-opa).
+
+**Emulador (cualquier sistema, sin Docker):**
+
+```bash
+python -m venv .venv-emulador
+# Windows: .venv-emulador\Scripts\pip install ministack==1.5.36
+# macOS/Linux: .venv-emulador/bin/pip install ministack==1.5.36
+```
+
+Para iniciarlo, ejecuta `ministack` desde ese entorno en una terminal aparte y déjala abierta. En Windows no uses `ministack -d`: el modo en segundo plano falla por una ruta de Linux.
+
+**Proyecto:**
+
+```bash
+npm install
+npm run esquema-proveedor   # descarga el proveedor AWS fijado y genera .cache/esquema-aws.json
+npm run doctor              # revisa que todo esté listo
+```
+
+## Comandos
+
+| Comando | Qué hace |
+|---|---|
+| `npm run doctor` | Revisa herramientas, configuración y emulador |
+| `npm run esquema-proveedor` | Genera el índice del esquema del proveedor AWS que usan el RAG y la capa C2 |
+| `npm run prueba-minima` | Despliega las 12 soluciones de referencia en el emulador (ver `prueba-minima/README.md`) |
+| `npm test` | Pruebas automáticas; no usan el emulador ni ningún modelo |
 
 ## Configuración
 

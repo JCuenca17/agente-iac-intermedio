@@ -11,7 +11,9 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "prueba-minima": "node scripts/prueba-minima.mjs"
+    "doctor": "node scripts/doctor.mjs",
+    "prueba-minima": "node scripts/prueba-minima.mjs",
+    "esquema-proveedor": "node scripts/esquema-proveedor.mjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {

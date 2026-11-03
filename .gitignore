@@ -25,3 +25,6 @@ Thumbs.db
 # Prueba mínima
 prueba-minima/.trabajo/
 prueba-minima/.cache-plugins/
+
+# Caché local (esquema del proveedor generado en cada PC)
+.cache/
