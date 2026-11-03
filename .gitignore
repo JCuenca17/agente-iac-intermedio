@@ -13,8 +13,8 @@ crash.log
 .terraform.tfstate.lock.info
 
 # Salidas de corridas y experimentos
-corridas/
-trazas/
+/corridas/
+/trazas/
 
 # Sistema y editores
 .DS_Store
