@@ -49,7 +49,7 @@ export function entornoEmulador(): NodeJS.ProcessEnv {
 export function entornoTofu(): NodeJS.ProcessEnv {
   const base: NodeJS.ProcessEnv = {};
   for (const [clave, valor] of Object.entries(process.env)) {
-    if (/^(ANTHROPIC_|CLAUDE_CODE_OAUTH|AWS_)/.test(clave)) continue;
+    if (/^(ANTHROPIC_|CLAUDE_CODE_OAUTH|AWS_|LLM_API_KEY$)/.test(clave)) continue;
     base[clave] = valor;
   }
   return { ...base, ...entornoEmulador() };

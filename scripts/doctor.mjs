@@ -77,7 +77,14 @@ else if (proveedor === "claude-code") {
 } else if (proveedor === "anthropic") {
   if (process.env.ANTHROPIC_API_KEY?.trim()) ok("LLM_PROVEEDOR=anthropic con ANTHROPIC_API_KEY definida (el consumo se cobra al dueño de esa clave)");
   else falla("LLM_PROVEEDOR=anthropic pero falta ANTHROPIC_API_KEY");
-} else falla(`LLM_PROVEEDOR="${proveedor}" no es válido (grabado, claude-code o anthropic)`);
+} else if (proveedor === "openai-compatible") {
+  const base = process.env.LLM_BASE_URL?.trim();
+  if (!base) falla("LLM_PROVEEDOR=openai-compatible pero falta LLM_BASE_URL (por ejemplo https://openrouter.ai/api/v1)");
+  else ok(`LLM_PROVEEDOR=openai-compatible con ${base} y el modelo ${process.env.LLM_MODELO || "(falta LLM_MODELO)"} (el consumo se cobra al dueño de LLM_API_KEY)`);
+  const precio = process.env.LLM_PRECIO_ENTRADA_MTOK?.trim() && process.env.LLM_PRECIO_SALIDA_MTOK?.trim();
+  const enTabla = Object.keys(JSON.parse(readFileSync(join(raiz, "precios.json"), "utf8")).modelos).includes(process.env.LLM_MODELO ?? "");
+  if (!precio && !enTabla) falla("falta el precio del modelo: define LLM_PRECIO_ENTRADA_MTOK y LLM_PRECIO_SALIDA_MTOK (0 si es gratuito)");
+} else falla(`LLM_PROVEEDOR="${proveedor}" no es válido (grabado, claude-code, anthropic u openai-compatible)`);
 
 console.log("Emulador");
 const emulador = process.env.EMULADOR || "floci";

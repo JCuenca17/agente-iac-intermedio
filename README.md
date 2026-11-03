@@ -95,7 +95,7 @@ La misma configuración (`.devcontainer/`) sirve para abrir el proyecto en un co
 ## Configuración
 
 1. Copia `.env.example` como `.env`.
-2. Elige el proveedor del modelo en `LLM_PROVEEDOR`. Con `grabado` no se usa ningún servicio de pago.
+2. Elige el proveedor del modelo en `LLM_PROVEEDOR`. Con `grabado` no se usa ningún servicio de pago. Para usar un modelo de OpenRouter, NVIDIA, Groq u Ollama, pon `LLM_PROVEEDOR=openai-compatible` y completa `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODELO` y su precio por millón de tokens (`.env.example` trae las URL de cada uno).
 3. Si usas `anthropic`, pon tu propia clave en `ANTHROPIC_API_KEY`: el gasto se cobra a tu cuenta.
 
 El archivo `.env` no se sube al repositorio.

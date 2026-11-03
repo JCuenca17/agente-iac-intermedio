@@ -35,7 +35,7 @@ flowchart LR
     herramienta -- descarga una vez --> iaceval
 ```
 
-El modelo se usa de tres formas, según quién ejecute y quién pague (ADR-000, ADR-014): respuestas grabadas (sin costo), Claude Code con la sesión de un plan, o la API de Anthropic con la clave de quien ejecuta.
+El modelo se usa de cuatro formas, según quién ejecute y quién pague (ADR-000, ADR-014, ADR-020): respuestas grabadas (sin costo), Claude Code con la sesión de un plan, la API de Anthropic con la clave de quien ejecuta, o cualquier API compatible con la de OpenAI (OpenRouter, NVIDIA, Groq u Ollama local).
 
 ## 4. Estrategia de solución
 
@@ -97,7 +97,7 @@ flowchart TB
 | Módulo | Responsabilidad | Requisitos |
 |---|---|---|
 | `src/agente` | Prompt de sistema y protocolo de respuesta del modelo: consultar el esquema o entregar el artefacto | RF-02, RF-03 |
-| `src/modelo` | Interfaz común de los proveedores (grabado, claude-code, anthropic), tokens y costo estimado | RF-14, RNF-01 |
+| `src/modelo` | Interfaz común de los proveedores (grabado, claude-code, anthropic, openai-compatible), tokens y costo estimado | RF-14, RNF-01 |
 | `src/proveedor` | Índice del esquema del proveedor y consulta por tipo de recurso | RF-03, RF-05 |
 | `src/validador/c1-estructura.ts` | C1: el artefacto cumple el JSON Schema | RF-04 |
 | `src/validador/c2-semantica.ts` | C2: tipos, atributos, deprecados, referencias, dependencias y ciclos frente al esquema del proveedor | RF-05 |
@@ -194,6 +194,7 @@ Si las iteraciones se agotan o se alcanza el límite de gasto, la corrida termin
 | [ADR-017](adr/ADR-017-evaluacion-ampliada.md) | IaC-Eval y proyectos grandes en la evaluación |
 | [ADR-018](adr/ADR-018-aislamiento-del-emulador.md) | Toda llamada de OpenTofu forzada al emulador |
 | [ADR-019](adr/ADR-019-medicion.md) | Métricas sobre lo desplegado y diferencias cosméticas |
+| [ADR-020](adr/ADR-020-proveedor-openai-compatible.md) | Proveedor compatible con la API de OpenAI |
 
 ## 10. Escenarios de calidad
 

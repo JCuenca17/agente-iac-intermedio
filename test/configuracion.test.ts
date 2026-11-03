@@ -59,3 +59,30 @@ describe("cargarConfiguracion", () => {
     expect(() => cargarConfiguracion({ LIMITE_GASTO_USD: "-1" })).toThrow(/LIMITE_GASTO_USD/);
   });
 });
+
+describe("configuración del proveedor openai-compatible (OpenRouter, NVIDIA, Groq, Ollama)", () => {
+  it("lee la URL base, la clave y el modelo", () => {
+    const c = cargarConfiguracion({
+      LLM_PROVEEDOR: "openai-compatible",
+      LLM_BASE_URL: "https://openrouter.ai/api/v1/",
+      LLM_API_KEY: "sk-or-x",
+      LLM_MODELO: "meta-llama/llama-3.3-70b-instruct",
+    });
+    expect(c).toMatchObject({ llmProveedor: "openai-compatible", llmBaseUrl: "https://openrouter.ai/api/v1", llmApiKey: "sk-or-x", llmModelo: "meta-llama/llama-3.3-70b-instruct" });
+  });
+
+  it("exige la URL base y el modelo", () => {
+    expect(() => cargarConfiguracion({ LLM_PROVEEDOR: "openai-compatible", LLM_API_KEY: "x", LLM_MODELO: "m" })).toThrow(/LLM_BASE_URL/);
+    expect(() => cargarConfiguracion({ LLM_PROVEEDOR: "openai-compatible", LLM_BASE_URL: "https://x/v1", LLM_API_KEY: "x" })).toThrow(/LLM_MODELO/);
+  });
+
+  it("exige la clave salvo en un servidor local (Ollama)", () => {
+    expect(() => cargarConfiguracion({ LLM_PROVEEDOR: "openai-compatible", LLM_BASE_URL: "https://integrate.api.nvidia.com/v1", LLM_MODELO: "m" })).toThrow(/LLM_API_KEY/);
+    const local = cargarConfiguracion({ LLM_PROVEEDOR: "openai-compatible", LLM_BASE_URL: "http://localhost:11434/v1", LLM_MODELO: "llama3.2" });
+    expect(local.llmApiKey).toBeUndefined();
+  });
+
+  it("con otros proveedores no guarda la clave de openai-compatible", () => {
+    expect(cargarConfiguracion({ LLM_PROVEEDOR: "grabado", LLM_API_KEY: "x" }).llmApiKey).toBeUndefined();
+  });
+});

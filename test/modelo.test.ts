@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { ProveedorGrabado } from "../src/modelo/grabado.js";
 import { ProveedorClaudeCode, type EjecutarClaude } from "../src/modelo/claude-code.js";
 import { ProveedorAnthropic, type ClienteMensajes } from "../src/modelo/anthropic.js";
-import { estimarCosto } from "../src/modelo/precios.js";
+import { estimarCosto, tienePrecio } from "../src/modelo/precios.js";
 
 // Ninguna prueba llama a un servicio real: los proveedores reciben un ejecutor o cliente falso.
 
@@ -143,5 +143,40 @@ describe("proveedor anthropic", () => {
     ]);
     expect(r).toMatchObject({ texto: "respuesta", motivoParada: "end_turn", uso: { entrada: 100, salida: 50, cacheEscritura: 2000, cacheLectura: 0 } });
     expect(r.costoUsd).toBeCloseTo(estimarCosto("claude-haiku-5-5", r.uso), 12);
+  });
+});
+
+describe("precios de modelos que no están en precios.json", () => {
+  const guardado = { ...process.env };
+  afterEach(() => {
+    delete process.env.LLM_PRECIO_ENTRADA_MTOK;
+    delete process.env.LLM_PRECIO_SALIDA_MTOK;
+    Object.assign(process.env, guardado);
+  });
+
+  it("usa LLM_PRECIO_ENTRADA_MTOK y LLM_PRECIO_SALIDA_MTOK; la caché leída cuenta como entrada", () => {
+    process.env.LLM_PRECIO_ENTRADA_MTOK = "0.5";
+    process.env.LLM_PRECIO_SALIDA_MTOK = "2";
+    expect(tienePrecio("meta-llama/llama-3.3-70b-instruct")).toBe(true);
+    // 1 000 000 de entrada + 500 000 leídos de caché a 0.5 = 0.75; 250 000 de salida a 2 = 0.5.
+    const costo = estimarCosto("meta-llama/llama-3.3-70b-instruct", { entrada: 1_000_000, salida: 250_000, cacheEscritura: 0, cacheLectura: 500_000 });
+    expect(costo).toBeCloseTo(1.25, 10);
+  });
+
+  it("un modelo gratuito se declara con precio 0", () => {
+    process.env.LLM_PRECIO_ENTRADA_MTOK = "0";
+    process.env.LLM_PRECIO_SALIDA_MTOK = "0";
+    expect(estimarCosto("x:free", { entrada: 9000, salida: 9000, cacheEscritura: 0, cacheLectura: 0 })).toBe(0);
+  });
+
+  it("sin precio en precios.json ni en el entorno, el modelo no tiene precio", () => {
+    expect(tienePrecio("modelo-desconocido")).toBe(false);
+    expect(() => estimarCosto("modelo-desconocido", { entrada: 1, salida: 1, cacheEscritura: 0, cacheLectura: 0 })).toThrow(/precio/);
+  });
+
+  it("precios.json tiene prioridad sobre el entorno", () => {
+    process.env.LLM_PRECIO_ENTRADA_MTOK = "100";
+    process.env.LLM_PRECIO_SALIDA_MTOK = "100";
+    expect(estimarCosto("claude-haiku-5-5", { entrada: 1_000_000, salida: 0, cacheEscritura: 0, cacheLectura: 0 })).toBeCloseTo(0.1, 10);
   });
 });

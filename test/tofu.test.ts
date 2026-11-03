@@ -10,11 +10,13 @@ afterEach(() => {
 describe("entorno y tiempo límite de OpenTofu", () => {
   it("no pasa claves de API ni variables AWS propias, y fuerza el emulador", () => {
     process.env.ANTHROPIC_API_KEY = "sk-secreta";
+    process.env.LLM_API_KEY = "sk-or-secreta";
     process.env.AWS_ENDPOINT_URL_S3 = "https://s3.amazonaws.com";
     process.env.AWS_SHARED_CREDENTIALS_FILE = "/home/x/.aws/credentials";
     process.env.AWS_ENDPOINT = " http://localhost:4567 ";
     const e = entornoTofu();
     expect(e.ANTHROPIC_API_KEY).toBeUndefined();
+    expect(e.LLM_API_KEY).toBeUndefined();
     expect(e.AWS_ENDPOINT_URL_S3).toBeUndefined();
     expect(e.AWS_SHARED_CREDENTIALS_FILE).toBeUndefined();
     expect(e.AWS_ENDPOINT_URL).toBe("http://localhost:4567");

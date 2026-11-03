@@ -1,7 +1,11 @@
 import { existsSync } from "node:fs";
 
-/** Proveedores del modelo. Solo `anthropic` cobra, y lo hace a la cuenta dueña de la clave. */
-export const PROVEEDORES = ["grabado", "claude-code", "anthropic"] as const;
+/**
+ * Proveedores del modelo. `anthropic` y `openai-compatible` cobran a la cuenta dueña de la
+ * clave. `openai-compatible` sirve para cualquier API con el formato de OpenAI
+ * (OpenRouter, NVIDIA, Groq, Ollama local...).
+ */
+export const PROVEEDORES = ["grabado", "claude-code", "anthropic", "openai-compatible"] as const;
 export type ProveedorLlm = (typeof PROVEEDORES)[number];
 
 /** Emuladores de AWS soportados. Los dos escuchan en el puerto 4566. */
@@ -13,6 +17,10 @@ export interface Configuracion {
   llmModelo: string;
   /** Solo se guarda cuando el proveedor es `anthropic`. */
   anthropicApiKey?: string;
+  /** URL base de la API con formato de OpenAI, sin la barra final (solo `openai-compatible`). */
+  llmBaseUrl?: string;
+  /** Clave de esa API (solo `openai-compatible`; no hace falta con un servidor local). */
+  llmApiKey?: string;
   awsEndpoint: string;
   awsRegion: string;
   emulador: Emulador;
@@ -67,10 +75,23 @@ export function cargarConfiguracion(entorno: Entorno = process.env): Configuraci
     }
   }
 
+  let llmBaseUrl: string | undefined;
+  let llmApiKey: string | undefined;
+  if (llmProveedor === "openai-compatible") {
+    llmBaseUrl = entorno.LLM_BASE_URL?.trim().replace(/\/+$/, "");
+    if (!llmBaseUrl) throw new Error("LLM_PROVEEDOR=openai-compatible necesita LLM_BASE_URL (por ejemplo https://openrouter.ai/api/v1)");
+    if (!entorno.LLM_MODELO?.trim()) throw new Error("LLM_PROVEEDOR=openai-compatible necesita LLM_MODELO con el nombre del modelo en ese proveedor");
+    llmApiKey = entorno.LLM_API_KEY?.trim() || undefined;
+    const local = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(llmBaseUrl + "/");
+    if (!llmApiKey && !local) throw new Error("LLM_PROVEEDOR=openai-compatible necesita LLM_API_KEY (la clave de quien paga el consumo)");
+  }
+
   return {
     llmProveedor,
     llmModelo: texto(entorno, "LLM_MODELO", "claude-haiku-5-5"),
     anthropicApiKey,
+    llmBaseUrl,
+    llmApiKey,
     awsEndpoint: texto(entorno, "AWS_ENDPOINT", "http://localhost:4566"),
     awsRegion: texto(entorno, "AWS_REGION", "us-east-1"),
     emulador: emulador as Emulador,
