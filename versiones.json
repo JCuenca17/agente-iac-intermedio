@@ -1,0 +1,10 @@
+{
+  "descripcion": "Versiones fijadas para que todos corran exactamente lo mismo. npm run doctor las compara con lo instalado.",
+  "node": ">=22",
+  "opentofu": "1.13.1",
+  "opa": "1.22.0",
+  "emuladores": {
+    "ministack": "1.5.36",
+    "floci": "2.4.0"
+  }
+}

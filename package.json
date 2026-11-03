@@ -1,0 +1,21 @@
+{
+  "name": "agente-iac-intermedio",
+  "version": "0.1.0",
+  "description": "Agente LLM que genera un artefacto intermedio de infraestructura, lo valida por capas y lo despliega con OpenTofu en un emulador de AWS",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

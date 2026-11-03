@@ -1,0 +1,23 @@
+# Dependencias y compilados
+node_modules/
+dist/
+
+# Configuración local con claves: nunca se sube
+.env
+
+# OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+.terraform.tfstate.lock.info
+
+# Salidas de corridas y experimentos
+corridas/
+trazas/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
