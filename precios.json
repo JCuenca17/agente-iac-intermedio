@@ -1,0 +1,9 @@
+{
+  "descripcion": "Precios de lista de la API de Anthropic por millón de tokens, para estimar el costo de cada corrida. Fuente: tabla de modelos de la documentación de Claude, consultada el 2026-11-02. La caché se estima con los multiplicadores estándar: escritura 1.25x y lectura 0.1x del precio de entrada.",
+  "modelos": {
+    "claude-haiku-5-5": { "entrada": 0.10, "salida": 0.50 },
+    "claude-sonnet-5-5": { "entrada": 2.00, "salida": 10.00 },
+    "claude-opus-5-5": { "entrada": 4.00, "salida": 20.00 }
+  },
+  "multiplicadores_cache": { "escritura": 1.25, "lectura": 0.1 }
+}

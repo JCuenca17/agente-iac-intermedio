@@ -23,6 +23,7 @@
     "vitest": "^3.2.7"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
     "ajv": "^8.20.0"
   }
 }
