@@ -11,7 +11,9 @@ const comandos = [
   ["Usar la herramienta", [
     ['npm run agente -- "<requerimiento>"', "Diseña, valida, muestra la revisión y, si apruebas, despliega en el emulador y lo destruye"],
     ["npm run agente -- --archivo <ruta>", "Lo mismo, con el requerimiento en un archivo (por ejemplo experimento/casos/C10/requerimiento.md)"],
-    ["npm run agente -- --ayuda", "Todas las opciones del agente (--sin-desplegar, --conservar, ablaciones...)"],
+    ["npm run agente -- --sesion tienda \"<requerimiento>\"", "Agrupa la corrida en una sesión (proyecto) para el historial de consumo"],
+    ["npm run historial [-- tienda]", "Tokens de entrada y salida y costo por sesión; con un nombre, cada corrida de esa sesión"],
+    ["npm run agente -- --ayuda", "Todas las opciones del agente (--sesion, --sin-desplegar, --conservar, ablaciones...)"],
   ]],
   ["Experimento", [
     ["npm run experimento -- --casos C01 --repeticiones 1", "Ensayo: un caso con las 6 configuraciones, para revisar costo y entorno"],

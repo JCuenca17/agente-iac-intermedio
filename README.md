@@ -85,6 +85,7 @@ La misma configuración (`.devcontainer/`) sirve para abrir el proyecto en un co
 | `npm run agente -- "<requerimiento>"` | Genera el diseño, lo valida, abre la revisión y despliega en el emulador (`--ayuda` para ver las opciones) |
 | `npm run resumen -- <carpeta>` | Resume un experimento: `resumen.md`, `resumen.json` y `resumen.html` (página con gráficos de M1 a M6 y las comparaciones, sin conexión a internet) |
 | `npm run ayuda` | Lista todos los comandos con un ejemplo de cada uno |
+| `npm run historial [-- <sesión>]` | Tokens de entrada y salida y costo estimado de las corridas del agente, por sesión (`--sesion` en `npm run agente`) |
 | `npm run doctor` | Revisa herramientas, configuración y emulador |
 | `npm run banco-errores` | Mide qué capa detecta cada uno de 43 errores insertados a mano (sin modelo) y guarda el reporte en `experimento/banco-errores/` |
 | `npm run iaceval:preparar` | Descarga IaC-Eval (versión fijada) y selecciona las tareas cuya referencia funciona en el emulador; las deja en `experimento/iaceval/` |

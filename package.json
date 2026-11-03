@@ -25,7 +25,9 @@
     "preiaceval:preparar": "tsc",
     "iaceval:preparar": "node scripts/iaceval-preparar.mjs",
     "prebanco-errores": "tsc",
-    "banco-errores": "node scripts/banco-errores.mjs"
+    "banco-errores": "node scripts/banco-errores.mjs",
+    "prehistorial": "tsc",
+    "historial": "node dist/src/historial/cli.js"
   },
   "license": "UNLICENSED",
   "devDependencies": {

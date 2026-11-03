@@ -55,12 +55,25 @@ Qué pasa en orden:
 | Opción | Efecto |
 |---|---|
 | `--archivo <ruta>` | Lee el requerimiento de un archivo |
+| `--sesion <nombre>` | Proyecto al que pertenece la corrida, para el historial de consumo (por defecto `general`) |
 | `--salida <carpeta>` | Carpeta de la corrida (por defecto `corridas/<fecha-hora>`) |
 | `--auto-aprobar` | No pregunta; aprueba el diseño (necesario si no hay terminal interactiva) |
 | `--sin-desplegar` | Se detiene después de la revisión |
 | `--conservar` | No destruye lo desplegado (hay que destruirlo después a mano) |
 | `--sin-rag`, `--sin-validador`, `--sin-retro` | Ablaciones A3, A1 y A2 |
 | `--respuestas <ruta>` | Respuestas guardadas, con `LLM_PROVEEDOR=grabado` |
+
+Al terminar cada ronda de diseño y al final de la corrida, la terminal muestra los tokens consumidos: los de entrada (con la parte que vino de la caché), los de salida, las llamadas al modelo y el costo estimado.
+
+### Historial de consumo por sesión
+
+Una sesión es un proyecto que se quiere desplegar. Cada corrida del agente se agrega a `historial/historial.jsonl` con su sesión, fecha, requerimiento, tokens, costo y resultado (el archivo no se sube al repositorio).
+
+```powershell
+npm run agente -- --sesion tienda "Necesito una API con ..."
+npm run historial                 # totales de tokens y costo por sesión
+npm run historial -- tienda       # cada corrida de la sesión tienda
+```
 
 Cada corrida deja en su carpeta `artefacto.json`, `diagrama.mmd`, `revision.html`, `resultado.json` y `trazas.jsonl` (cada llamada al modelo con sus tokens y su costo estimado, cada validación y el despliegue).
 

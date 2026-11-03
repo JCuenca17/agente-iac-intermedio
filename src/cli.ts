@@ -7,6 +7,7 @@ import { ejecutarCiclo, type ResultadoCiclo } from "./ciclo/ciclo.js";
 import { cargarArchivoEnv, cargarConfiguracion } from "./configuracion.js";
 import { desplegar, destruir } from "./despliegue/despliegue.js";
 import { generarMermaid } from "./diagrama/mermaid.js";
+import { lineaConsumo, nombreSesionValido, registrarCorrida, SESION_POR_DEFECTO } from "./historial/historial.js";
 import { crearProveedor } from "./modelo/fabrica.js";
 import { cargarEsquemaProveedor } from "./proveedor/esquema.js";
 import { generarPaginaRevision } from "./revision/pagina.js";
@@ -20,6 +21,8 @@ y, si se aprueba, lo despliega en el emulador.
 
 Opciones:
   --archivo <ruta>       Lee el requerimiento de un archivo de texto
+  --sesion <nombre>      Proyecto al que pertenece la corrida, para el historial de consumo
+                         (por defecto "general"); ver npm run historial
   --salida <carpeta>     Carpeta de la corrida (por defecto corridas/<fecha-hora>)
   --respuestas <ruta>    Respuestas grabadas (necesario con LLM_PROVEEDOR=grabado)
   --auto-aprobar         No pregunta: aprueba el diseño (para experimentos)
@@ -38,6 +41,7 @@ async function main(): Promise<number> {
     options: {
       archivo: { type: "string" },
       salida: { type: "string" },
+      sesion: { type: "string", default: SESION_POR_DEFECTO },
       respuestas: { type: "string" },
       "auto-aprobar": { type: "boolean", default: false },
       "sin-desplegar": { type: "boolean", default: false },
@@ -59,6 +63,12 @@ async function main(): Promise<number> {
     return 2;
   }
 
+  const sesion = values.sesion!.trim();
+  if (!nombreSesionValido(sesion)) {
+    console.error(`--sesion debe ser un nombre simple (letras, números, guion o guion bajo, hasta 40); se recibió "${sesion}"`);
+    return 2;
+  }
+
   if (!values["auto-aprobar"] && !process.stdin.isTTY) {
     console.error("La revisión del diseño necesita una terminal interactiva. Sin ella, usa --auto-aprobar.");
     return 2;
@@ -69,7 +79,8 @@ async function main(): Promise<number> {
   const versiones = JSON.parse(readFileSync(enRaiz("versiones.json"), "utf8"));
   const esquema = cargarEsquemaProveedor();
   const proveedor = crearProveedor(config, values.respuestas);
-  const sello = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+  const inicioCorrida = new Date().toISOString();
+  const sello = inicioCorrida.replace(/[:.]/g, "-").slice(0, 19);
   const salida = resolve(values.salida ?? join(enRaiz("corridas"), sello));
   const registro = new Registro(join(salida, "trazas.jsonl"));
 
@@ -103,7 +114,8 @@ async function main(): Promise<number> {
     total.costoUsd += ciclo.costoUsd;
     total.llamadas += ciclo.llamadas;
     for (const k of Object.keys(total.uso) as (keyof typeof total.uso)[]) total.uso[k] += ciclo.uso[k];
-    console.log(`Ciclo: ${ciclo.motivo} en ${ciclo.iteraciones} iteración(es), ${ciclo.llamadas} llamada(s), US$ ${ciclo.costoUsd.toFixed(4)}`);
+    console.log(`Ciclo: ${ciclo.motivo} en ${ciclo.iteraciones} iteración(es)`);
+    console.log(`  ${lineaConsumo(ciclo.uso, ciclo.costoUsd, ciclo.llamadas)}`);
     if (!ciclo.listo || !ciclo.artefacto) break;
 
     const mermaid = generarMermaid(ciclo.artefacto);
@@ -188,6 +200,30 @@ async function main(): Promise<number> {
   }
 
   writeFileSync(join(salida, "resultado.json"), JSON.stringify(resultado, null, 2));
+
+  // Historial de consumo por sesión (npm run historial).
+  const estado = rechazado
+    ? "rechazado"
+    : !ciclo.listo
+      ? ciclo.motivo
+      : values["sin-desplegar"]
+        ? "sin-desplegar"
+        : desplegadoBien
+          ? "desplegado"
+          : "desplegado-con-problemas";
+  registrarCorrida(enRaiz("historial", "historial.jsonl"), {
+    sesion,
+    fecha: inicioCorrida,
+    requerimiento,
+    rondas: ronda,
+    llamadas: total.llamadas,
+    uso: total.uso,
+    costoUsd: total.costoUsd,
+    resultado: estado,
+    carpeta: salida,
+  });
+  console.log(`\nConsumo de la corrida (sesión "${sesion}"): ${lineaConsumo(total.uso, total.costoUsd, total.llamadas)}`);
+  console.log("Historial por sesión: npm run historial");
   const exito = !rechazado && ciclo.listo && desplegadoBien;
   registro.anotar("corrida-fin", { listo: ciclo.listo, rechazado, exito });
   return exito ? 0 : 1;
