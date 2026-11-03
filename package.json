@@ -18,7 +18,9 @@
     "preagente": "tsc",
     "agente": "node dist/src/cli.js",
     "preexperimento": "tsc",
-    "experimento": "node dist/src/experimento/cli.js"
+    "experimento": "node dist/src/experimento/cli.js",
+    "preresumen": "tsc",
+    "resumen": "node dist/src/experimento/resumen-cli.js"
   },
   "license": "UNLICENSED",
   "devDependencies": {
