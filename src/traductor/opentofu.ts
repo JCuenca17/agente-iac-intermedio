@@ -35,6 +35,33 @@ export interface ResultadoTraduccion {
 }
 
 /**
+ * Bloques terraform y provider: el proveedor AWS fijado, apuntado al emulador con
+ * credenciales de prueba. Lo usan igual la herramienta y la generación directa (B0, B1).
+ */
+export function configuracionProveedor(opciones: OpcionesTraduccion) {
+  return {
+    terraform: {
+      required_providers: { aws: { source: "hashicorp/aws", version: opciones.versionProveedor } },
+    },
+    provider: {
+      aws: {
+        region: opciones.region,
+        access_key: "test",
+        secret_key: "test",
+        skip_credentials_validation: true,
+        // Igual que la guía oficial de Floci: sin esto el proveedor usa S3 Control con la
+        // cuenta como subdominio (000000000000.localhost), que no resuelve en local.
+        skip_requesting_account_id: true,
+        skip_metadata_api_check: true,
+        s3_use_path_style: true,
+        endpoints: Object.fromEntries(SERVICIOS.map((s) => [s, opciones.endpoint])),
+        default_tags: { tags: { proyecto: "agente-iac-intermedio" } },
+      },
+    },
+  };
+}
+
+/**
  * Traduce el artefacto intermedio a OpenTofu en formato JSON. Es determinista: no usa
  * el modelo, así que el código y el diagrama salen del mismo objeto validado.
  */
@@ -92,27 +119,7 @@ export function traducir(artefacto: Artefacto, esquema: EsquemaProveedor, opcion
     (recursos[r.tipo] ??= {})[r.id] = cuerpo;
   }
 
-  const codigo = {
-    terraform: {
-      required_providers: { aws: { source: "hashicorp/aws", version: opciones.versionProveedor } },
-    },
-    provider: {
-      aws: {
-        region: opciones.region,
-        access_key: "test",
-        secret_key: "test",
-        skip_credentials_validation: true,
-        // Igual que la guía oficial de Floci: sin esto el proveedor usa S3 Control con la
-        // cuenta como subdominio (000000000000.localhost), que no resuelve en local.
-        skip_requesting_account_id: true,
-        skip_metadata_api_check: true,
-        s3_use_path_style: true,
-        endpoints: Object.fromEntries(SERVICIOS.map((s) => [s, opciones.endpoint])),
-        default_tags: { tags: { proyecto: "agente-iac-intermedio" } },
-      },
-    },
-    resource: recursos,
-  };
+  const codigo = { ...configuracionProveedor(opciones), resource: recursos };
 
   return { codigo, archivosAuxiliares: [...auxiliares] };
 }

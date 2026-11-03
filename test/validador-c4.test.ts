@@ -63,6 +63,13 @@ describe("C4: errores de OpenTofu", () => {
     expect(erroresDePlan(lineasPlan)[0].ruta).toBe("aws_sqs_queue.cola_trabajos");
   });
 
+  it("normaliza el contexto de un archivo .tf (generación directa) a la dirección de OpenTofu", () => {
+    const salida = JSON.stringify({
+      diagnostics: [{ severity: "error", summary: "Unsupported argument", snippet: { context: 'resource "aws_sqs_queue" "trabajos"', code: "  x = 1" } }],
+    });
+    expect(erroresDeValidate(salida)[0].ruta).toBe("aws_sqs_queue.trabajos");
+  });
+
   it("lee el resumen de cambios del plan", () => {
     const linea = '{"@level":"info","type":"change_summary","changes":{"add":2,"change":0,"import":0,"remove":0,"operation":"plan"}}';
     expect(resumenDePlan(linea)).toEqual({ crear: 2, cambiar: 0, destruir: 0 });

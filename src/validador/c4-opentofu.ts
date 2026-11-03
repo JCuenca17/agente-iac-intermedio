@@ -31,7 +31,12 @@ export interface ResultadoC4 extends ResultadoValidacion {
 
 /** Ubica un diagnóstico de OpenTofu dentro del artefacto (JSON Pointer). Sin artefacto, usa la dirección. */
 function ruta(d: Diagnostico, artefacto?: Artefacto): string {
-  const direccion = d.address ?? d.snippet?.context?.replace(/^resource\./, "");
+  // El contexto viene como "resource.tipo.nombre" en main.tf.json y como
+  // 'resource "tipo" "nombre"' en archivos .tf (generación directa).
+  const contexto = d.snippet?.context
+    ?.replace(/^resource "([^"]+)" "([^"]+)".*$/, "$1.$2")
+    .replace(/^resource\./, "");
+  const direccion = d.address ?? contexto;
   if (!direccion) return "/";
   if (!artefacto) return direccion;
   const id = direccion.split(".")[1]?.replace(/\[.*$/, "");
