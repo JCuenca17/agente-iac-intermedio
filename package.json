@@ -22,7 +22,9 @@
     "preresumen": "tsc",
     "resumen": "node dist/src/experimento/resumen-cli.js",
     "preiaceval:preparar": "tsc",
-    "iaceval:preparar": "node scripts/iaceval-preparar.mjs"
+    "iaceval:preparar": "node scripts/iaceval-preparar.mjs",
+    "prebanco-errores": "tsc",
+    "banco-errores": "node scripts/banco-errores.mjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {

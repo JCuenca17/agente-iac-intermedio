@@ -99,7 +99,7 @@ Comandos: `npm run experimento` y `npm run resumen`.
 ## 8. Estudios complementarios sin costo de API
 
 - Réplica en MiniStack: se repite el experimento cambiando `EMULADOR` y `AWS_ENDPOINT`, para comprobar que los resultados no dependen de Floci.
-- Prueba del validador (pendiente de construir): un conjunto de artefactos con errores insertados a mano (atributo inexistente, atributo deprecado, referencia a un recurso no declarado, dependencia circular, violación de política, tipo inválido), unos 5 por tipo, para medir qué capa detecta cada error sin llamar al modelo.
+- Prueba del validador (`npm run banco-errores`): 40 artefactos con un solo error insertado a mano, 5 por tipo (estructura, atributo inexistente, atributo deprecado, referencia rota, dependencia circular, tipo inválido, violación de política y valor fuera de rango), a partir de los artefactos válidos de C01, C03 y C07. Se valida con las capas reales, sin modelo. Resultado (2026-11-03, MiniStack): 39 de 40 errores (98 %) se detectan antes del despliegue, todos en la capa esperada (C1: 5, C2: 25, C3: 5, C4: 4). El que no se detecta es `batch_size = 0` en el disparador de la cola: el proveedor no valida ese rango en `validate` ni en `plan`, de modo que solo fallaría al desplegar. Resultados en `experimento/banco-errores/`.
 
 ## 9. Prueba piloto
 

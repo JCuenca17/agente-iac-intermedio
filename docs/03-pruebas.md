@@ -36,13 +36,14 @@ OpenTofu 1.13.1, OPA 1.22.0, proveedor AWS 6.71.0, Node 24 en Windows 11 y Node 
 
 | Nivel | Resultado |
 |---|---|
-| Unitario | 162 de 162 pruebas, en 21 archivos |
+| Unitario | 167 de 167 pruebas, en 22 archivos |
 | Políticas Rego | 17 de 17 |
-| Integración | 6 de 6 en Floci y 6 de 6 en MiniStack |
+| Integración | 6 de 6 en Floci y 7 de 7 en MiniStack (incluye el banco de errores con el validador real) |
 | Prueba mínima | 12 de 12 casos en Floci y 12 de 12 en MiniStack |
 | Proyecto grande P1 | Despliega 47 recursos en MiniStack, sin cambios pendientes; su lista M4 se cumple al 100 % sobre el estado real |
 | Proyecto grande P2 | Pendiente en Floci; en MiniStack falla por limitaciones del emulador (sección 6) |
 | Instalación | Correcta en la imagen de Codespaces: OpenTofu y OPA con sumas SHA-256 verificadas; pasan las 162 pruebas unitarias y las 17 de políticas |
+| Banco de errores | 39 de 40 errores insertados detectados antes del despliegue, todos en la capa esperada; ver `04-diseno-experimental.md`, sección 8 |
 | Demostración | Corrida de punta a punta con respuestas grabadas: 2 iteraciones, despliegue verificado y destrucción. Piloto con Claude Haiku 5.5: 3 de 3 casos (C01, C07, C10) desplegados en la primera iteración, M4 100 %, sin violaciones |
 
 Detalle por archivo de pruebas unitarias:
@@ -50,6 +51,7 @@ Detalle por archivo de pruebas unitarias:
 | Archivo | Pruebas | Módulo |
 |---|---|---|
 | `agente.test.ts` | 13 | Agente y prompt |
+| `banco-errores.test.ts` | 5 | Banco de errores insertados |
 | `ciclo.test.ts` | 7 | Ciclo |
 | `configuracion.test.ts` | 7 | Configuración |
 | `consulta-esquema.test.ts` | 6 | Consulta al esquema (RAG) |
@@ -97,7 +99,7 @@ Requisito → módulo que lo implementa → pruebas que lo verifican. "Integraci
 | RF-02 | `src/agente`, `esquema/artefacto.schema.json` | `agente.test.ts`; piloto |
 | RF-03 | `src/proveedor/consulta.ts`, `src/agente/agente.ts` | `consulta-esquema.test.ts`, `agente.test.ts` |
 | RF-04 | `src/validador/c1-estructura.ts` | `validador-c1.test.ts` |
-| RF-05 | `src/validador/c2-semantica.ts`, `src/proveedor/esquema.ts` | `validador-c2.test.ts`; integración `ciclo.test.ts` |
+| RF-05 | `src/validador/c2-semantica.ts`, `src/proveedor/esquema.ts` | `validador-c2.test.ts`; integración `ciclo.test.ts` y `banco-errores.test.ts` |
 | RF-06 | `src/validador/c3-politicas.ts`, `politicas/artefacto` | `validador-c3.test.ts`; `opa test` (17) |
 | RF-07 | `src/traductor/opentofu.ts` | `traductor.test.ts`; integración `c4.test.ts` |
 | RF-08 | `src/validador/c4-opentofu.ts`, `src/tofu.ts` | `validador-c4.test.ts`; integración `c4.test.ts` |

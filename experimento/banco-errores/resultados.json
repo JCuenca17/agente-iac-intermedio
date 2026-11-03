@@ -1,0 +1,473 @@
+{
+  "resultados": [
+    {
+      "id": "estructura-1",
+      "tipo": "estructura",
+      "capaEsperada": "C1",
+      "capaDetecta": "C1",
+      "reglas": [
+        "required"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "estructura-2",
+      "tipo": "estructura",
+      "capaEsperada": "C1",
+      "capaDetecta": "C1",
+      "reglas": [
+        "enum"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "estructura-3",
+      "tipo": "estructura",
+      "capaEsperada": "C1",
+      "capaDetecta": "C1",
+      "reglas": [
+        "additionalProperties"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "estructura-4",
+      "tipo": "estructura",
+      "capaEsperada": "C1",
+      "capaDetecta": "C1",
+      "reglas": [
+        "pattern"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "estructura-5",
+      "tipo": "estructura",
+      "capaEsperada": "C1",
+      "capaDetecta": "C1",
+      "reglas": [
+        "const"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-inexistente-1",
+      "tipo": "atributo-inexistente",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-inexistente-2",
+      "tipo": "atributo-inexistente",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-inexistente-3",
+      "tipo": "atributo-inexistente",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-inexistente-4",
+      "tipo": "atributo-inexistente",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-inexistente-5",
+      "tipo": "atributo-inexistente",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-deprecado-1",
+      "tipo": "atributo-deprecado",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-deprecado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-deprecado-2",
+      "tipo": "atributo-deprecado",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-deprecado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-deprecado-3",
+      "tipo": "atributo-deprecado",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-deprecado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-deprecado-4",
+      "tipo": "atributo-deprecado",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-deprecado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "atributo-deprecado-5",
+      "tipo": "atributo-deprecado",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-deprecado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "referencia-rota-1",
+      "tipo": "referencia-rota",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "referencia-rota"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "referencia-rota-2",
+      "tipo": "referencia-rota",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "referencia-rota"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "referencia-rota-3",
+      "tipo": "referencia-rota",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "referencia-rota"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "referencia-rota-4",
+      "tipo": "referencia-rota",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "referencia-rota"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "referencia-rota-5",
+      "tipo": "referencia-rota",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "atributo-referenciado-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "dependencia-circular-1",
+      "tipo": "dependencia-circular",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "dependencia-circular"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "dependencia-circular-2",
+      "tipo": "dependencia-circular",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "dependencia-circular"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "dependencia-circular-3",
+      "tipo": "dependencia-circular",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "dependencia-circular"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "dependencia-circular-4",
+      "tipo": "dependencia-circular",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "dependencia-circular"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "dependencia-circular-5",
+      "tipo": "dependencia-circular",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "dependencia-circular"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "tipo-invalido-1",
+      "tipo": "tipo-invalido",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "tipo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "tipo-invalido-2",
+      "tipo": "tipo-invalido",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "tipo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "tipo-invalido-3",
+      "tipo": "tipo-invalido",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "tipo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "tipo-invalido-4",
+      "tipo": "tipo-invalido",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "tipo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "tipo-invalido-5",
+      "tipo": "tipo-invalido",
+      "capaEsperada": "C2",
+      "capaDetecta": "C2",
+      "reglas": [
+        "tipo-inexistente"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-1",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "sqs-cifrado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-2",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "s3-acceso-publico"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-3",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "s3-cifrado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-4",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "iam-sin-comodin"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-5",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "logs-retencion"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "fuera-de-rango-1",
+      "tipo": "fuera-de-rango",
+      "capaEsperada": "C4",
+      "capaDetecta": "C4",
+      "reglas": [
+        "tofu-validate"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "fuera-de-rango-2",
+      "tipo": "fuera-de-rango",
+      "capaEsperada": "C4",
+      "capaDetecta": "C4",
+      "reglas": [
+        "tofu-validate"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "fuera-de-rango-3",
+      "tipo": "fuera-de-rango",
+      "capaEsperada": "C4",
+      "capaDetecta": "C4",
+      "reglas": [
+        "tofu-validate"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "fuera-de-rango-4",
+      "tipo": "fuera-de-rango",
+      "capaEsperada": "C4",
+      "capaDetecta": null,
+      "reglas": [],
+      "enCapaEsperada": false
+    },
+    {
+      "id": "fuera-de-rango-5",
+      "tipo": "fuera-de-rango",
+      "capaEsperada": "C4",
+      "capaDetecta": "C4",
+      "reglas": [
+        "tofu-validate"
+      ],
+      "enCapaEsperada": true
+    }
+  ],
+  "porTipo": {
+    "estructura": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C1": 5
+      }
+    },
+    "atributo-inexistente": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C2": 5
+      }
+    },
+    "atributo-deprecado": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C2": 5
+      }
+    },
+    "referencia-rota": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C2": 5
+      }
+    },
+    "dependencia-circular": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C2": 5
+      }
+    },
+    "tipo-invalido": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C2": 5
+      }
+    },
+    "violacion-politica": {
+      "casos": 5,
+      "detectados": 5,
+      "enCapaEsperada": 5,
+      "porCapa": {
+        "C3": 5
+      }
+    },
+    "fuera-de-rango": {
+      "casos": 5,
+      "detectados": 4,
+      "enCapaEsperada": 4,
+      "porCapa": {
+        "C4": 4
+      }
+    }
+  },
+  "total": {
+    "casos": 40,
+    "detectados": 39,
+    "enCapaEsperada": 39
+  }
+}
