@@ -58,6 +58,14 @@ npm run esquema-proveedor   # descarga el proveedor AWS fijado y genera .cache/e
 npm run doctor              # revisa que todo esté listo
 ```
 
+## En GitHub Codespaces (sin instalar nada)
+
+1. En GitHub: botón **Code** → pestaña **Codespaces** → **Create codespace on main**. El espacio se cobra a la cuenta de quien lo crea (incluye 120 horas gratuitas al mes).
+2. Si vas a usar la API de Anthropic, guarda tu clave como secreto de Codespaces llamado `ANTHROPIC_API_KEY` (Settings → Codespaces → Secrets) y pon `LLM_PROVEEDOR=anthropic` en `.env`.
+3. Al abrirse, el espacio instala OpenTofu y OPA en las versiones fijadas (verificando sus sumas SHA-256), instala las dependencias, genera el esquema del proveedor e inicia Floci. Comprueba con `npm run doctor`.
+
+La misma configuración (`.devcontainer/`) sirve para abrir el proyecto en un contenedor local con VS Code y Docker.
+
 ## Comandos
 
 | Comando | Qué hace |

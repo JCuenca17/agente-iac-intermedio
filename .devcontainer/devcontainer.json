@@ -1,0 +1,23 @@
+{
+  "name": "agente-iac-intermedio",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postCreateCommand": "bash .devcontainer/instalar.sh",
+  "postStartCommand": "bash .devcontainer/iniciar-emulador.sh",
+  "forwardPorts": [4566],
+  "containerEnv": {
+    "EMULADOR": "floci",
+    "AWS_ENDPOINT": "http://localhost:4566"
+  },
+  "secrets": {
+    "ANTHROPIC_API_KEY": {
+      "description": "Clave de la API de Anthropic de quien paga el experimento. Solo hace falta con LLM_PROVEEDOR=anthropic."
+    }
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb"
+  }
+}
