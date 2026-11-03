@@ -8,6 +8,13 @@ Proyecto del curso Tópicos Avanzados en Ingeniería de Software, Universidad Na
 
 En desarrollo.
 
+## Documentación
+
+| Documento | Contenido |
+|---|---|
+| [`docs/00-metodologia.md`](docs/00-metodologia.md) | Metodología (Design Science Research) y evidencia de cada actividad |
+| [`docs/01-requisitos.md`](docs/01-requisitos.md) | Especificación de requisitos con su origen en la revisión sistemática |
+
 ## Requisitos
 
 | Herramienta | Versión | Para qué |
