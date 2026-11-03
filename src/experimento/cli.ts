@@ -8,6 +8,7 @@ import { crearProveedor } from "../modelo/fabrica.js";
 import { ProveedorGrabado } from "../modelo/grabado.js";
 import { cargarEsquemaProveedor } from "../proveedor/esquema.js";
 import { enRaiz } from "../rutas.js";
+import { contenedoresHuerfanos } from "./emulador.js";
 import { CONFIGURACIONES, DEPENDENCIAS_REALES, ejecutarExperimento, type Configuracion } from "./ejecutor.js";
 
 const AYUDA = `Uso: npm run experimento -- [opciones]
@@ -17,7 +18,7 @@ despliega en el emulador, mide M1-M6 y destruye. Se puede interrumpir y reanudar
 misma --salida: las corridas hechas no se repiten.
 
 Opciones:
-  --casos C01,C02        Casos (por defecto, C01-C12). "grandes" agrega P1 y P2; "iaceval", todas las tareas
+  --casos C01,C02        Casos (por defecto, C01-C12). "reales": proyectos reales (R1, R2); "grandes": propios grandes (P1, P2); "iaceval", todas las tareas
                          seleccionadas de IaC-Eval; también se pueden listar (IE264,...)
   --config T,B0,B1       Configuraciones: ${CONFIGURACIONES.join(", ")} (por defecto, todas)
   --repeticiones 3       Repeticiones de cada combinación (por defecto 3)
@@ -48,6 +49,11 @@ function crearReinicio(config: ConfigHerramienta): () => Promise<void> {
       if (!r.ok) throw new Error(`MiniStack no se reinició (HTTP ${r.status})`);
       return;
     }
+    // Floci no detiene los contenedores de tareas que crea (ECS, Redshift...) al borrar los
+    // recursos ni al reiniciarse: se eliminan para que no queden ocupando memoria.
+    const lista = spawnSync("docker", ["ps", "-a", "--format", "{{.Names}}"], { encoding: "utf8" });
+    const huerfanos = lista.status === 0 ? contenedoresHuerfanos(lista.stdout.split(/\r?\n/).filter(Boolean)) : [];
+    if (huerfanos.length) spawnSync("docker", ["rm", "-f", ...huerfanos], { encoding: "utf8" });
     const r = spawnSync("docker", ["restart", config.flociContenedor], { encoding: "utf8" });
     if (r.status !== 0) throw new Error(`docker restart ${config.flociContenedor} falló: ${(r.stderr || r.error?.message || "").trim()}`);
     await esperarEmulador(config.awsEndpoint);
@@ -73,13 +79,15 @@ async function main(): Promise<number> {
   cargarArchivoEnv(enRaiz(".env"));
   const config = cargarConfiguracion();
   const versiones = JSON.parse(readFileSync(enRaiz("versiones.json"), "utf8"));
-  const propios = readdirSync(enRaiz("experimento", "casos")).filter((c) => /^[CP]\d+$/.test(c)).sort();
+  const propios = readdirSync(enRaiz("experimento", "casos")).filter((c) => /^[CPR]\d+$/.test(c)).sort();
   const todos = propios.filter((c) => c.startsWith("C"));
   const grandes = propios.filter((c) => c.startsWith("P"));
+  const reales = propios.filter((c) => c.startsWith("R"));
   const dirIaCEval = enRaiz("experimento", "iaceval");
   const tareasIaCEval = existsSync(dirIaCEval) ? readdirSync(dirIaCEval).filter((c) => /^IE\d+$/.test(c)).sort() : [];
+  const grupos: Record<string, string[]> = { iaceval: tareasIaCEval, grandes, reales };
   const lista = values.casos
-    ? values.casos.split(",").map((c) => c.trim()).flatMap((c) => (c.toLowerCase() === "iaceval" ? tareasIaCEval : c.toLowerCase() === "grandes" ? grandes : [c.toUpperCase()]))
+    ? values.casos.split(",").map((c) => c.trim()).flatMap((c) => grupos[c.toLowerCase()] ?? [c.toUpperCase()])
     : todos;
   // Sin duplicados: la misma combinación dos veces escribiría en la misma carpeta.
   const casos = [...new Set(lista)];

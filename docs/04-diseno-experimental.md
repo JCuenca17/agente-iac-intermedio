@@ -1,6 +1,6 @@
 # Diseño experimental
 
-La evaluación sigue la forma en que evalúan los estudios de la revisión: casos de dificultad creciente, líneas base, ablaciones y métricas de despliegue en un entorno sustituto (S04, S08, S10), y se agrega la comparación con un benchmark público (IaC-Eval) y dos proyectos grandes.
+La evaluación sigue la forma en que evalúan los estudios de la revisión: casos de dificultad creciente, líneas base, ablaciones y métricas de despliegue en un entorno sustituto (S04, S08, S10), y se agrega la comparación con un benchmark público (IaC-Eval) y dos proyectos reales publicados.
 
 ## 1. Preguntas de investigación
 
@@ -35,14 +35,25 @@ Doce requerimientos en tres niveles. Cada uno tiene una solución de referencia 
 | N2, dos o tres servicios | C05-C08 | S3 + SQS; SNS + SQS; Lambda + SQS + IAM; API Gateway + Lambda |
 | N3, varios servicios | C09-C12 | API + Lambda + DynamoDB; S3 + Lambda + DynamoDB + SQS; VPC con grupos de seguridad; EventBridge + Lambda + SNS + logs |
 
-### 3.2 Proyectos grandes (P1, P2)
+### 3.2 Proyectos reales (R1, R2)
+
+Dos proyectos públicos de terceros, con su Terraform original y licencia abierta. El requerimiento de cada uno resume lo que declara su README, y la lista de verificación sale de esas funciones. Las adaptaciones para que se desplieguen solos en el emulador son mínimas y están documentadas en `prueba-minima/casos/ATRIBUCION-REALES.md`.
+
+| Proyecto | Fuente | Arquitectura | Recursos de la referencia |
+|---|---|---|---|
+| R1 | [localstack-samples/sample-terraform-ecs-apigateway](https://github.com/localstack-samples/sample-terraform-ecs-apigateway) (Apache-2.0) | APIs en contenedores: dos servicios de ECS Fargate detrás de una API HTTP con autorizador de Cognito, DynamoDB, VPC en tres zonas con NAT, enlace de VPC y descubrimiento de servicios | 57 |
+| R2 | [jcolemorrison/vault-on-aws](https://github.com/jcolemorrison/vault-on-aws) (MIT) | Clúster de HashiCorp Vault: autoescalado detrás de un balanceador con HTTPS, KMS, DynamoDB, S3 cifrado, endpoints de VPC, bastión y NAT | 56 |
+
+### 3.3 Proyectos grandes propios (P1, P2)
+
+Diseñados por el autor antes de elegir los proyectos reales. Quedan como casos adicionales ya validados y se corren solo si el presupuesto alcanza; no forman parte del análisis principal.
 
 | Proyecto | Arquitectura | Recursos de la referencia |
 |---|---|---|
 | P1 | Tienda serverless: API con 5 rutas, 5 funciones con rol y logs propios, 3 tablas, cola con cola de fallidos, tema de avisos, bucket de imágenes y reporte diario programado | 47 |
 | P2 | Aplicación de tres capas: red en dos zonas con NAT, balanceador, autoescalado de servidores, PostgreSQL privada y cifrada, bucket de archivos, logs, registros de flujo y alarma | 40 |
 
-### 3.3 IaC-Eval
+### 3.4 IaC-Eval
 
 Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público para esta tarea según S12. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política. Con 30 intentos por nivel quedaron 38 tareas: 10, 10, 6, 7, 3 y 2 en los niveles 1 a 6. Los niveles altos tienen menos porque usan servicios que el emulador no soporta o referencias que no cumplen su propia política (`experimento/iaceval/seleccion.json`). También quedan fuera las tareas que necesitan otro proveedor además de AWS (por ejemplo `archive` o `random`) o alias de proveedor, porque la herramienta configura solo el proveedor AWS fijado.
 
@@ -66,9 +77,10 @@ B1 separa el efecto del artefacto intermedio del efecto de iterar con los errore
 | Conjunto | Unidades | Configuraciones | Repeticiones | Corridas |
 |---|---|---|---|---|
 | Casos propios | 12 | 6 | 3 | 216 |
-| Proyectos grandes | 2 | T, B0, B1 | 3 | 18 |
+| Proyectos reales | 2 | T, B0, B1 | 3 | 18 |
+| Proyectos grandes propios (opcional) | 2 | T, B0, B1 | 3 | 18 |
 | IaC-Eval | 38 | T, B0, B1 | 1 (como S12) | 114 |
-| Total | | | | 348 |
+| Total | | | | 348 (366 con los propios) |
 
 ## 6. Métricas
 
@@ -108,7 +120,7 @@ La corrida se hace por etapas, siempre con la misma carpeta de salida (`--salida
 1. Comprobación del entorno: `npm run doctor` sin problemas y `npm run prueba-minima` con 12 de 12 casos.
 2. Ensayo obligatorio: `npm run experimento -- --casos C01 --repeticiones 1`, con las 6 configuraciones. Se revisa que todas terminen sin error de infraestructura y que el costo por corrida esté cerca del estimado en la sección 10. Si algo falla, se corrige antes de seguir; las corridas del ensayo no entran en el análisis.
 3. Casos propios: las 6 configuraciones, 12 casos y 3 repeticiones.
-4. Proyectos grandes: `--casos grandes --config T,B0,B1`.
+4. Proyectos reales: `--casos reales --config T,B0,B1`. Si el presupuesto alcanza, también `--casos grandes` (P1 y P2).
 5. IaC-Eval: `--casos iaceval --config T,B0,B1 --repeticiones 1`.
 6. Resumen: `npm run resumen -- <carpeta>`, que genera el informe, las comparaciones y `resumen.html`.
 
@@ -135,7 +147,7 @@ El costo lo dominan los tokens de salida, que crecen con el caso. En el piloto e
 
 ## 10. Presupuesto
 
-Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para los casos propios, US$ 0.34 para IaC-Eval y US$ 0.27 para los proyectos grandes, en total cerca de US$ 1.50. Con un margen del doble queda por debajo de US$ 3. El experimento se ejecuta con la clave de API de quien lo corre y con `LIMITE_GASTO_EXPERIMENTO_USD` como tope. Tiempo estimado: unas 10 horas, con posibilidad de reanudar.
+Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para los casos propios, US$ 0.34 para IaC-Eval y US$ 0.27 para los proyectos reales, en total cerca de US$ 1.50 (unos US$ 0.27 más con P1 y P2). Con un margen del doble queda por debajo de US$ 3. El experimento se ejecuta con la clave de API de quien lo corre y con `LIMITE_GASTO_EXPERIMENTO_USD` como tope. Tiempo estimado: unas 10 horas, con posibilidad de reanudar.
 
 ## 11. Amenazas a la validez
 

@@ -9,7 +9,7 @@ import { entradaDesplegada, evaluarIntencion } from "../src/experimento/intencio
 type Entrada = any;
 const ruta = (caso: string) => new URL(`./fixtures/desplegados/${caso}.json`, import.meta.url);
 const entrada = (caso: string): Entrada => JSON.parse(readFileSync(ruta(caso), "utf8"));
-const CASOS = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "P1", "P2"].filter((c) => existsSync(ruta(c)));
+const CASOS = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "P1", "P2", "R1", "R2"].filter((c) => existsSync(ruta(c)));
 
 const recursos = (e: Entrada) => e.planned_values.root_module.resources;
 const sinTipo = (e: Entrada, tipo: string): Entrada => {
@@ -175,6 +175,31 @@ describe("M4: cada requisito falla cuando corresponde", () => {
     expect(faltan("P2", e)).toEqual(["internet"]);
     agregar(e, "aws_route.internet", { destination_cidr_block: "0.0.0.0/0" });
     expect(faltan("P2", e)).toEqual([]);
+  });
+
+  it("R1 detecta un PUT sin autorización y servicios con IP pública", () => {
+    const sinAuth = entrada("R1");
+    const api = recursos(sinAuth).find((r: { type: string }) => r.type === "aws_apigatewayv2_api").values;
+    const cuerpo = JSON.parse(api.body);
+    delete cuerpo.paths["/petstore/pets/{petId}"].put.security;
+    delete cuerpo.paths["/foodstore/foods/{foodId}"].put.security;
+    api.body = JSON.stringify(cuerpo);
+    expect(faltan("R1", sinAuth)).toEqual(["solo_lectura_anonima"]);
+
+    const publica = entrada("R1");
+    valores(publica, "aws_ecs_service.service_petstore_pets").network_configuration[0].assign_public_ip = true;
+    expect(faltan("R1", publica)).toEqual(["privados"]);
+  });
+
+  it("R1 acepta las rutas escritas como recursos aws_apigatewayv2_route", () => {
+    const e = entrada("R1");
+    const api = recursos(e).find((r: { type: string }) => r.type === "aws_apigatewayv2_api").values;
+    api.body = "";
+    for (const [m, p, auth] of [["GET", "/foodstore/foods/{foodId}", "NONE"], ["PUT", "/foodstore/foods/{foodId}", "JWT"], ["GET", "/petstore/pets/{petId}", "NONE"], ["PUT", "/petstore/pets/{petId}", "JWT"]]) {
+      agregar(e, `aws_apigatewayv2_route.${m}${p.length}`, { route_key: `${m} ${p}`, authorization_type: auth });
+    }
+    agregar(e, "aws_apigatewayv2_authorizer.cognito", { authorizer_type: "JWT" });
+    expect(faltan("R1", e)).toEqual([]);
   });
 
   it("P1 con el bloqueo público incompleto lo detecta", () => {

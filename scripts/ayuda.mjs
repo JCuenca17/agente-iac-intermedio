@@ -16,7 +16,7 @@ const comandos = [
   ["Experimento", [
     ["npm run experimento -- --casos C01 --repeticiones 1", "Ensayo: un caso con las 6 configuraciones, para revisar costo y entorno"],
     ["npm run experimento -- --salida resultados/exp1", "Corrida completa de los casos propios (reanudable con la misma --salida)"],
-    ["npm run experimento -- --ayuda", "Todas las opciones (--casos, --config, --repeticiones, grandes, iaceval)"],
+    ["npm run experimento -- --ayuda", "Todas las opciones (--casos, --config, --repeticiones, reales, grandes, iaceval)"],
     ["npm run resumen -- <carpeta>", "Resume un experimento: resumen.md, resumen.json y resumen.html con gráficos"],
   ]],
   ["Estudios sin costo", [

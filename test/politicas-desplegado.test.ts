@@ -96,6 +96,15 @@ describe("M3 sobre estados reales", () => {
     expect(violacionesDesplegado(t)).toEqual([{ regla: "dynamodb-recuperacion", recurso: tabla.address }]);
   });
 
+  it("la referencia real de R1 no sigue las reglas de seguridad del proyecto: 3 violaciones", () => {
+    // El proyecto se escribió sin estas reglas; el modelo sí las recibe en su prompt.
+    expect(violacionesDesplegado(estado("R1"))).toEqual([
+      { recurso: "aws_dynamodb_table.dynamo_db_table_foodstore_foods", regla: "dynamodb-recuperacion" },
+      { recurso: "aws_dynamodb_table.dynamo_db_table_petstore_pets", regla: "dynamodb-recuperacion" },
+      { recurso: "aws_vpc_endpoint.dynamo_db_endpoint", regla: "iam-sin-comodin" },
+    ]);
+  });
+
   it("sin estado no hay violaciones", () => {
     expect(violacionesDesplegado(undefined)).toEqual([]);
   });

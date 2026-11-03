@@ -71,14 +71,14 @@ El experimento corre casos × configuraciones × repeticiones sin preguntar nada
 ```powershell
 npm run experimento -- --casos C01 --repeticiones 1 --salida resultados\ensayo
 npm run experimento -- --salida resultados\exp1
-npm run experimento -- --casos grandes --config T,B0,B1 --salida resultados\exp1
+npm run experimento -- --casos reales --config T,B0,B1 --salida resultados\exp1
 npm run experimento -- --casos iaceval --config T,B0,B1 --repeticiones 1 --salida resultados\exp1
 npm run resumen -- resultados\exp1
 ```
 
 | Opción | Efecto |
 |---|---|
-| `--casos` | `C01,C02,...`; `grandes` (P1 y P2); `iaceval` (las 38 tareas); por defecto, C01 a C12 |
+| `--casos` | `C01,C02,...`; `reales` (R1 y R2, proyectos públicos); `grandes` (P1 y P2, propios); `iaceval` (las 38 tareas); por defecto, C01 a C12 |
 | `--config` | `T`, `B0`, `B1`, `A1`, `A2`, `A3`; por defecto, todas |
 | `--repeticiones` | Repeticiones de cada combinación (por defecto 3) |
 | `--salida` | Carpeta de resultados |

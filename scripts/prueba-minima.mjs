@@ -24,7 +24,10 @@ const zipLambda = join(raiz, "recursos", "lambda", "minima.zip").replaceAll("\\"
 mkdirSync(cachePlugins, { recursive: true });
 
 const pedidos = process.argv.slice(2);
-const casos = readdirSync(dirCasos).filter((c) => pedidos.length === 0 || pedidos.includes(c)).sort();
+const casos = readdirSync(dirCasos, { withFileTypes: true })
+  .filter((e) => e.isDirectory() && (pedidos.length === 0 || pedidos.includes(e.name)))
+  .map((e) => e.name)
+  .sort();
 
 function tofu(args, cwd) {
   const r = spawnSync("tofu", args, {
@@ -73,7 +76,8 @@ for (const caso of casos) {
   rmSync(trabajo, { recursive: true, force: true });
   mkdirSync(trabajo, { recursive: true });
   cpSync(join(dirPrueba, "proveedor.tf"), join(trabajo, "proveedor.tf"));
-  cpSync(join(dirCasos, caso, "main.tf"), join(trabajo, "main.tf"));
+  // La carpeta completa del caso: main.tf y sus archivos auxiliares (por ejemplo, plantillas de R2).
+  cpSync(join(dirCasos, caso), trabajo, { recursive: true });
   if (existsSync(join(dirPrueba, ".terraform.lock.hcl"))) {
     cpSync(join(dirPrueba, ".terraform.lock.hcl"), join(trabajo, ".terraform.lock.hcl"));
   }

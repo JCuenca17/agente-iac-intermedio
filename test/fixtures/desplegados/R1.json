@@ -1,0 +1,4562 @@
+{
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "data.aws_availability_zones.available",
+     "mode": "data",
+     "type": "aws_availability_zones",
+     "name": "available",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "all_availability_zones": null,
+      "exclude_names": null,
+      "exclude_zone_ids": null,
+      "filter": null,
+      "group_names": [
+       "us-east-1-zg-1"
+      ],
+      "id": "us-east-1",
+      "names": [
+       "us-east-1a",
+       "us-east-1b",
+       "us-east-1c"
+      ],
+      "region": "us-east-1",
+      "state": "available",
+      "timeouts": null,
+      "zone_ids": [
+       "use1-az1",
+       "use1-az2",
+       "use1-az3"
+      ]
+     },
+     "sensitive_values": {
+      "group_names": [
+       false
+      ],
+      "names": [
+       false,
+       false,
+       false
+      ],
+      "zone_ids": [
+       false,
+       false,
+       false
+      ]
+     }
+    },
+    {
+     "address": "data.aws_region.current",
+     "mode": "data",
+     "type": "aws_region",
+     "name": "current",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "description": "US East (N. Virginia)",
+      "endpoint": "ec2.us-east-1.amazonaws.com",
+      "id": "us-east-1",
+      "name": "us-east-1",
+      "region": "us-east-1"
+     },
+     "sensitive_values": {}
+    },
+    {
+     "address": "aws_apigatewayv2_api.http_api",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_api",
+     "name": "http_api",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "api_endpoint": "https://3aba05dd4f.execute-api.us-east-1.amazonaws.com",
+      "api_key_selection_expression": "$request.header.x-api-key",
+      "arn": "arn:aws:apigateway:us-east-1::/apis/3aba05dd4f",
+      "body": "{\"components\":{\"securitySchemes\":{\"my-authorizer\":{\"flows\":{},\"type\":\"oauth2\",\"x-amazon-apigateway-authorizer\":{\"identitySource\":\"$request.header.Authorization\",\"jwtConfiguration\":{\"audience\":[\"6bfd97afb49f4c2bb4553ee0ec\"],\"issuer\":\"http://localhost.localstack.cloud:4566/us-east-1_9c3bf585b\"},\"type\":\"jwt\"}}}},\"info\":{\"title\":\"ecsapi-demo\"},\"openapi\":\"3.0.1\",\"paths\":{\"/foodstore/foods/{foodId}\":{\"get\":{\"responses\":{\"default\":{\"description\":\"Default response for GET /foodstore/foods/{foodId}\"}},\"x-amazon-apigateway-integration\":{\"connectionId\":\"985f2233d5\",\"connectionType\":\"VPC_LINK\",\"httpMethod\":\"ANY\",\"payloadFormatVersion\":\"1.0\",\"type\":\"http_proxy\",\"uri\":\"arn:aws:servicediscovery:us-east-1:000000000000:service/srv-z6p6hbkfwmziy4wg2qs4\"}},\"put\":{\"responses\":{\"default\":{\"description\":\"Default response for PUT /foodstore/foods/{foodId}\"}},\"security\":[{\"my-authorizer\":[]}],\"x-amazon-apigateway-integration\":{\"connectionId\":\"985f2233d5\",\"connectionType\":\"VPC_LINK\",\"httpMethod\":\"ANY\",\"payloadFormatVersion\":\"1.0\",\"type\":\"http_proxy\",\"uri\":\"arn:aws:servicediscovery:us-east-1:000000000000:service/srv-z6p6hbkfwmziy4wg2qs4\"}}},\"/petstore/pets/{petId}\":{\"get\":{\"responses\":{\"default\":{\"description\":\"Default response for GET /petstore/pets/{petId}\"}},\"x-amazon-apigateway-integration\":{\"connectionId\":\"985f2233d5\",\"connectionType\":\"VPC_LINK\",\"httpMethod\":\"ANY\",\"payloadFormatVersion\":\"1.0\",\"type\":\"http_proxy\",\"uri\":\"arn:aws:servicediscovery:us-east-1:000000000000:service/srv-vtbluawlc8tpm3xpavre\"}},\"put\":{\"responses\":{\"default\":{\"description\":\"Default response for PUT /petstore/pets/{petId}\"}},\"security\":[{\"my-authorizer\":[]}],\"x-amazon-apigateway-integration\":{\"connectionId\":\"985f2233d5\",\"connectionType\":\"VPC_LINK\",\"httpMethod\":\"ANY\",\"payloadFormatVersion\":\"1.0\",\"type\":\"http_proxy\",\"uri\":\"arn:aws:servicediscovery:us-east-1:000000000000:service/srv-vtbluawlc8tpm3xpavre\"}}}},\"x-amazon-apigateway-cors\":{\"allowHeaders\":[\"*\"],\"allowMethods\":[\"PUT\",\"GET\"],\"allowOrigins\":[\"https://master.d34am23lsz3nvz.amplifyapp.com\"]},\"x-amazon-apigateway-importexport-version\":\"1.0\"}",
+      "cors_configuration": [],
+      "credentials_arn": null,
+      "description": "",
+      "disable_execute_api_endpoint": false,
+      "execution_arn": "arn:aws:execute-api:us-east-1::3aba05dd4f",
+      "fail_on_warnings": null,
+      "id": "3aba05dd4f",
+      "ip_address_type": "",
+      "name": "ecsapi-demo",
+      "protocol_type": "HTTP",
+      "region": "us-east-1",
+      "route_key": null,
+      "route_selection_expression": "$request.method $request.path",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "target": null,
+      "version": ""
+     },
+     "sensitive_values": {
+      "cors_configuration": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+      "aws_cognito_user_pool.user_pool",
+      "aws_cognito_user_pool_client.user_pool_client",
+      "aws_security_group.container_security_group",
+      "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+      "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+      "aws_service_discovery_service.service_discovery_service_petstore_pets",
+      "aws_subnet.private_subnet_one",
+      "aws_subnet.private_subnet_three",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "3aba05dd4f",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_stage.http_api_stage",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_stage",
+     "name": "http_api_stage",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "access_log_settings": [],
+      "api_id": "3aba05dd4f",
+      "arn": "arn:aws:apigateway:us-east-1::/apis/3aba05dd4f/stages/$default",
+      "auto_deploy": true,
+      "client_certificate_id": "",
+      "default_route_settings": [],
+      "deployment_id": "",
+      "description": "",
+      "execution_arn": "arn:aws:execute-api:us-east-1::3aba05dd4f/$default",
+      "id": "$default",
+      "invoke_url": "https://3aba05dd4f.execute-api.us-east-1.amazonaws.com/",
+      "name": "$default",
+      "region": "us-east-1",
+      "route_settings": [],
+      "stage_variables": null,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "access_log_settings": [],
+      "default_route_settings": [],
+      "route_settings": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_apigatewayv2_api.http_api",
+      "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+      "aws_cognito_user_pool.user_pool",
+      "aws_cognito_user_pool_client.user_pool_client",
+      "aws_security_group.container_security_group",
+      "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+      "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+      "aws_service_discovery_service.service_discovery_service_petstore_pets",
+      "aws_subnet.private_subnet_one",
+      "aws_subnet.private_subnet_three",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ]
+    },
+    {
+     "address": "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_vpc_link",
+     "name": "http_api_vpc_link",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:apigateway:us-east-1::/vpclinks/985f2233d5",
+      "id": "985f2233d5",
+      "name": "ecsapi-demo",
+      "region": "us-east-1",
+      "security_group_ids": [
+       "sg-f6be5ee688fb7c03d"
+      ],
+      "subnet_ids": [
+       "subnet-257d22b9",
+       "subnet-2e506960",
+       "subnet-b002bc8e"
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "security_group_ids": [
+       false
+      ],
+      "subnet_ids": [
+       false,
+       false,
+       false
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_security_group.container_security_group",
+      "aws_subnet.private_subnet_one",
+      "aws_subnet.private_subnet_three",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ]
+    },
+    {
+     "address": "aws_cognito_user_pool.user_pool",
+     "mode": "managed",
+     "type": "aws_cognito_user_pool",
+     "name": "user_pool",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "account_recovery_setting": [],
+      "admin_create_user_config": [
+       {
+        "allow_admin_create_user_only": false,
+        "invite_message_template": []
+       }
+      ],
+      "alias_attributes": null,
+      "arn": "arn:aws:cognito-idp:us-east-1:000000000000:userpool/us-east-1_9c3bf585b",
+      "auto_verified_attributes": [
+       "email"
+      ],
+      "creation_date": "2026-11-03T16:19:41Z",
+      "custom_domain": "",
+      "deletion_protection": "INACTIVE",
+      "device_configuration": [],
+      "domain": "",
+      "email_configuration": [
+       {
+        "configuration_set": "",
+        "email_sending_account": "COGNITO_DEFAULT",
+        "from_email_address": "",
+        "reply_to_email_address": "",
+        "source_arn": ""
+       }
+      ],
+      "email_mfa_configuration": [],
+      "email_verification_message": "",
+      "email_verification_subject": "",
+      "endpoint": "cognito-idp.us-east-1.amazonaws.com/us-east-1_9c3bf585b",
+      "estimated_number_of_users": 0,
+      "id": "us-east-1_9c3bf585b",
+      "lambda_config": [],
+      "last_modified_date": "2026-11-03T16:19:41Z",
+      "mfa_configuration": "OFF",
+      "name": "user-pool",
+      "password_policy": [],
+      "region": "us-east-1",
+      "schema": [],
+      "sign_in_policy": [
+       {
+        "allowed_first_auth_factors": [
+         "PASSWORD"
+        ]
+       }
+      ],
+      "sms_authentication_message": "",
+      "sms_configuration": [
+       {
+        "external_id": null,
+        "sns_caller_arn": null,
+        "sns_region": null
+       }
+      ],
+      "sms_verification_message": "",
+      "software_token_mfa_configuration": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "user_attribute_update_settings": [],
+      "user_pool_add_ons": [],
+      "user_pool_tier": "ESSENTIALS",
+      "username_attributes": [
+       "email"
+      ],
+      "username_configuration": [
+       {
+        "case_sensitive": false
+       }
+      ],
+      "verification_message_template": [
+       {
+        "default_email_option": "",
+        "email_message": "",
+        "email_message_by_link": "",
+        "email_subject": "",
+        "email_subject_by_link": "",
+        "sms_message": ""
+       }
+      ],
+      "web_authn_configuration": []
+     },
+     "sensitive_values": {
+      "account_recovery_setting": [],
+      "admin_create_user_config": [
+       {
+        "invite_message_template": []
+       }
+      ],
+      "auto_verified_attributes": [
+       false
+      ],
+      "device_configuration": [],
+      "email_configuration": [
+       {}
+      ],
+      "email_mfa_configuration": [],
+      "lambda_config": [],
+      "password_policy": [],
+      "schema": [],
+      "sign_in_policy": [
+       {
+        "allowed_first_auth_factors": [
+         false
+        ]
+       }
+      ],
+      "sms_configuration": [
+       {}
+      ],
+      "software_token_mfa_configuration": [],
+      "tags_all": {},
+      "user_attribute_update_settings": [],
+      "user_pool_add_ons": [],
+      "username_attributes": [
+       false
+      ],
+      "username_configuration": [
+       {}
+      ],
+      "verification_message_template": [
+       {}
+      ],
+      "web_authn_configuration": []
+     }
+    },
+    {
+     "address": "aws_cognito_user_pool_client.user_pool_client",
+     "mode": "managed",
+     "type": "aws_cognito_user_pool_client",
+     "name": "user_pool_client",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "access_token_validity": 0,
+      "allowed_oauth_flows": [],
+      "allowed_oauth_flows_user_pool_client": false,
+      "allowed_oauth_scopes": [],
+      "analytics_configuration": [],
+      "auth_session_validity": 3,
+      "callback_urls": [],
+      "client_secret": "",
+      "default_redirect_uri": "",
+      "enable_propagate_additional_user_context_data": null,
+      "enable_token_revocation": true,
+      "explicit_auth_flows": [],
+      "generate_secret": false,
+      "id": "6bfd97afb49f4c2bb4553ee0ec",
+      "id_token_validity": 0,
+      "logout_urls": [],
+      "name": "user-pool-client",
+      "prevent_user_existence_errors": "ENABLED",
+      "read_attributes": [],
+      "refresh_token_rotation": [],
+      "refresh_token_validity": 0,
+      "region": "us-east-1",
+      "supported_identity_providers": [
+       "COGNITO"
+      ],
+      "token_validity_units": [],
+      "user_pool_id": "us-east-1_9c3bf585b",
+      "write_attributes": []
+     },
+     "sensitive_values": {
+      "allowed_oauth_flows": [],
+      "allowed_oauth_scopes": [],
+      "analytics_configuration": [],
+      "callback_urls": [],
+      "client_secret": true,
+      "explicit_auth_flows": [],
+      "logout_urls": [],
+      "read_attributes": [],
+      "refresh_token_rotation": [],
+      "supported_identity_providers": [
+       false
+      ],
+      "token_validity_units": [],
+      "write_attributes": []
+     },
+     "depends_on": [
+      "aws_cognito_user_pool.user_pool"
+     ]
+    },
+    {
+     "address": "aws_dynamodb_table.dynamo_db_table_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "dynamo_db_table_foodstore_foods",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:dynamodb:us-east-1:000000000000:table/FoodStoreFoods",
+      "attribute": [
+       {
+        "name": "foodId",
+        "type": "S"
+       }
+      ],
+      "billing_mode": "PAY_PER_REQUEST",
+      "deletion_protection_enabled": false,
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "hash_key": "foodId",
+      "id": "FoodStoreFoods",
+      "import_table": [],
+      "local_secondary_index": [],
+      "name": "FoodStoreFoods",
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {
+        "enabled": false,
+        "recovery_period_in_days": 0
+       }
+      ],
+      "range_key": null,
+      "read_capacity": 0,
+      "region": "us-east-1",
+      "replica": [],
+      "restore_backup_arn": null,
+      "restore_date_time": null,
+      "restore_source_name": null,
+      "restore_source_table_arn": null,
+      "restore_to_latest_time": null,
+      "server_side_encryption": [],
+      "stream_arn": "",
+      "stream_enabled": false,
+      "stream_label": "",
+      "stream_view_type": "",
+      "table_class": "STANDARD",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "ttl": [
+       {
+        "attribute_name": "",
+        "enabled": false
+       }
+      ],
+      "warm_throughput": [],
+      "write_capacity": 0
+     },
+     "sensitive_values": {
+      "attribute": [
+       {}
+      ],
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "import_table": [],
+      "local_secondary_index": [],
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {}
+      ],
+      "replica": [],
+      "server_side_encryption": [],
+      "tags_all": {},
+      "ttl": [
+       {}
+      ],
+      "warm_throughput": []
+     },
+     "identity": {
+      "account_id": "",
+      "name": "FoodStoreFoods",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_dynamodb_table.dynamo_db_table_petstore_pets",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "dynamo_db_table_petstore_pets",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:dynamodb:us-east-1:000000000000:table/PetStorePets",
+      "attribute": [
+       {
+        "name": "petId",
+        "type": "S"
+       }
+      ],
+      "billing_mode": "PAY_PER_REQUEST",
+      "deletion_protection_enabled": false,
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "hash_key": "petId",
+      "id": "PetStorePets",
+      "import_table": [],
+      "local_secondary_index": [],
+      "name": "PetStorePets",
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {
+        "enabled": false,
+        "recovery_period_in_days": 0
+       }
+      ],
+      "range_key": null,
+      "read_capacity": 0,
+      "region": "us-east-1",
+      "replica": [],
+      "restore_backup_arn": null,
+      "restore_date_time": null,
+      "restore_source_name": null,
+      "restore_source_table_arn": null,
+      "restore_to_latest_time": null,
+      "server_side_encryption": [],
+      "stream_arn": "",
+      "stream_enabled": false,
+      "stream_label": "",
+      "stream_view_type": "",
+      "table_class": "STANDARD",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "ttl": [
+       {
+        "attribute_name": "",
+        "enabled": false
+       }
+      ],
+      "warm_throughput": [],
+      "write_capacity": 0
+     },
+     "sensitive_values": {
+      "attribute": [
+       {}
+      ],
+      "global_secondary_index": [],
+      "global_table_witness": [],
+      "import_table": [],
+      "local_secondary_index": [],
+      "on_demand_throughput": [],
+      "point_in_time_recovery": [
+       {}
+      ],
+      "replica": [],
+      "server_side_encryption": [],
+      "tags_all": {},
+      "ttl": [
+       {}
+      ],
+      "warm_throughput": []
+     },
+     "identity": {
+      "account_id": "",
+      "name": "PetStorePets",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_ec2_transit_gateway.transit_gateway",
+     "mode": "managed",
+     "type": "aws_ec2_transit_gateway",
+     "name": "transit_gateway",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "amazon_side_asn": 64512,
+      "arn": "arn:aws:ec2:us-east-1:000000000000:transit-gateway/tgw-c5984dfdf1c608a58",
+      "association_default_route_table_id": "tgw-rtb-7de161a250f3db1c2",
+      "auto_accept_shared_attachments": "disable",
+      "default_route_table_association": "enable",
+      "default_route_table_propagation": "enable",
+      "description": "",
+      "dns_support": "enable",
+      "encryption_support": null,
+      "id": "tgw-c5984dfdf1c608a58",
+      "multicast_support": "disable",
+      "owner_id": "000000000000",
+      "propagation_default_route_table_id": "tgw-rtb-7de161a250f3db1c2",
+      "region": "us-east-1",
+      "security_group_referencing_support": "disable",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "transit_gateway_cidr_blocks": null,
+      "vpn_ecmp_support": "enable"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     }
+    },
+    {
+     "address": "aws_ec2_transit_gateway_vpc_attachment.gateway_attachement",
+     "mode": "managed",
+     "type": "aws_ec2_transit_gateway_vpc_attachment",
+     "name": "gateway_attachement",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "appliance_mode_support": "disable",
+      "arn": "arn:aws:ec2:us-east-1:000000000000:transit-gateway-attachment/tgw-attach-215bf7b216f9c81ce",
+      "dns_support": "enable",
+      "id": "tgw-attach-215bf7b216f9c81ce",
+      "ipv6_support": "disable",
+      "region": "us-east-1",
+      "security_group_referencing_support": "enable",
+      "subnet_ids": [
+       "subnet-257d22b9",
+       "subnet-2e506960",
+       "subnet-b002bc8e"
+      ],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "transit_gateway_default_route_table_association": true,
+      "transit_gateway_default_route_table_propagation": true,
+      "transit_gateway_id": "tgw-c5984dfdf1c608a58",
+      "vpc_id": "vpc-c73c0ac0",
+      "vpc_owner_id": "000000000000"
+     },
+     "sensitive_values": {
+      "subnet_ids": [
+       false,
+       false,
+       false
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_ec2_transit_gateway.transit_gateway",
+      "aws_subnet.private_subnet_one",
+      "aws_subnet.private_subnet_three",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ]
+    },
+    {
+     "address": "aws_ecs_cluster.ecs_cluster",
+     "mode": "managed",
+     "type": "aws_ecs_cluster",
+     "name": "ecs_cluster",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ecs:us-east-1:000000000000:cluster/ecs-cluster",
+      "configuration": [],
+      "id": "arn:aws:ecs:us-east-1:000000000000:cluster/ecs-cluster",
+      "name": "ecs-cluster",
+      "region": "us-east-1",
+      "service_connect_defaults": [],
+      "setting": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "configuration": [],
+      "service_connect_defaults": [],
+      "setting": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "ecs-cluster",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_ecs_service.service_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_ecs_service",
+     "name": "service_foodstore_foods",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "alarms": [],
+      "arn": "arn:aws:ecs:us-east-1:000000000000:service/ecs-cluster/service-foodstore-foods",
+      "availability_zone_rebalancing": "ENABLED",
+      "capacity_provider_strategy": [],
+      "cluster": "arn:aws:ecs:us-east-1:000000000000:cluster/ecs-cluster",
+      "deployment_circuit_breaker": [],
+      "deployment_configuration": [],
+      "deployment_controller": [
+       {
+        "type": "ECS"
+       }
+      ],
+      "deployment_maximum_percent": 200,
+      "deployment_minimum_healthy_percent": 100,
+      "desired_count": 3,
+      "enable_ecs_managed_tags": false,
+      "enable_execute_command": false,
+      "force_delete": null,
+      "force_new_deployment": null,
+      "health_check_grace_period_seconds": 0,
+      "iam_role": null,
+      "id": "arn:aws:ecs:us-east-1:000000000000:service/ecs-cluster/service-foodstore-foods",
+      "launch_type": "FARGATE",
+      "load_balancer": [],
+      "name": "service-foodstore-foods",
+      "network_configuration": [
+       {
+        "assign_public_ip": false,
+        "security_groups": [
+         "sg-f6be5ee688fb7c03d"
+        ],
+        "subnets": [
+         "subnet-257d22b9",
+         "subnet-2e506960",
+         "subnet-b002bc8e"
+        ]
+       }
+      ],
+      "ordered_placement_strategy": [],
+      "placement_constraints": [],
+      "platform_version": "1.4.0",
+      "propagate_tags": "NONE",
+      "region": "us-east-1",
+      "scheduling_strategy": "REPLICA",
+      "service_connect_configuration": [],
+      "service_registries": [
+       {
+        "container_name": "",
+        "container_port": 0,
+        "port": 8080,
+        "registry_arn": "arn:aws:servicediscovery:us-east-1:000000000000:service/srv-z6p6hbkfwmziy4wg2qs4"
+       }
+      ],
+      "sigint_rollback": null,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "task_definition": "arn:aws:ecs:us-east-1:000000000000:task-definition/foodstore-foods:1",
+      "timeouts": null,
+      "triggers": {},
+      "volume_configuration": [],
+      "vpc_lattice_configurations": [],
+      "wait_for_steady_state": false
+     },
+     "sensitive_values": {
+      "alarms": [],
+      "capacity_provider_strategy": [],
+      "deployment_circuit_breaker": [],
+      "deployment_configuration": [],
+      "deployment_controller": [
+       {}
+      ],
+      "load_balancer": [],
+      "network_configuration": [
+       {
+        "security_groups": [
+         false
+        ],
+        "subnets": [
+         false,
+         false,
+         false
+        ]
+       }
+      ],
+      "ordered_placement_strategy": [],
+      "placement_constraints": [],
+      "service_connect_configuration": [],
+      "service_registries": [
+       {}
+      ],
+      "tags_all": {},
+      "triggers": {},
+      "volume_configuration": [],
+      "vpc_lattice_configurations": []
+     },
+     "depends_on": [
+      "aws_dynamodb_table.dynamo_db_table_foodstore_foods",
+      "aws_ecs_cluster.ecs_cluster",
+      "aws_ecs_task_definition.task_definition_foodstore_foods",
+      "aws_iam_role.task_role_foodstore_foods",
+      "aws_security_group.container_security_group",
+      "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+      "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+      "aws_subnet.private_subnet_one",
+      "aws_subnet.private_subnet_three",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "cluster": "arn:aws:ecs:us-east-1:000000000000:cluster/ecs-cluster",
+      "name": "service-foodstore-foods",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_ecs_service.service_petstore_pets",
+     "mode": "managed",
+     "type": "aws_ecs_service",
+     "name": "service_petstore_pets",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "alarms": [],
+      "arn": "arn:aws:ecs:us-east-1:000000000000:service/ecs-cluster/service-petstore-pets",
+      "availability_zone_rebalancing": "ENABLED",
+      "capacity_provider_strategy": [],
+      "cluster": "arn:aws:ecs:us-east-1:000000000000:cluster/ecs-cluster",
+      "deployment_circuit_breaker": [],
+      "deployment_configuration": [],
+      "deployment_controller": [
+       {
+        "type": "ECS"
+       }
+      ],
+      "deployment_maximum_percent": 200,
+      "deployment_minimum_healthy_percent": 100,
+      "desired_count": 3,
+      "enable_ecs_managed_tags": false,
+      "enable_execute_command": false,
+      "force_delete": null,
+      "force_new_deployment": null,
+      "health_check_grace_period_seconds": 0,
+      "iam_role": null,
+      "id": "arn:aws:ecs:us-east-1:000000000000:service/ecs-cluster/service-petstore-pets",
+      "launch_type": "FARGATE",
+      "load_balancer": [],
+      "name": "service-petstore-pets",
+      "network_configuration": [
+       {
+        "assign_public_ip": false,
+        "security_groups": [
+         "sg-f6be5ee688fb7c03d"
+        ],
+        "subnets": [
+         "subnet-257d22b9",
+         "subnet-2e506960",
+         "subnet-b002bc8e"
+        ]
+       }
+      ],
+      "ordered_placement_strategy": [],
+      "placement_constraints": [],
+      "platform_version": "1.4.0",
+      "propagate_tags": "NONE",
+      "region": "us-east-1",
+      "scheduling_strategy": "REPLICA",
+      "service_connect_configuration": [],
+      "service_registries": [
+       {
+        "container_name": "",
+        "container_port": 0,
+        "port": 8080,
+        "registry_arn": "arn:aws:servicediscovery:us-east-1:000000000000:service/srv-vtbluawlc8tpm3xpavre"
+       }
+      ],
+      "sigint_rollback": null,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "task_definition": "arn:aws:ecs:us-east-1:000000000000:task-definition/petstore-pets:1",
+      "timeouts": null,
+      "triggers": {},
+      "volume_configuration": [],
+      "vpc_lattice_configurations": [],
+      "wait_for_steady_state": false
+     },
+     "sensitive_values": {
+      "alarms": [],
+      "capacity_provider_strategy": [],
+      "deployment_circuit_breaker": [],
+      "deployment_configuration": [],
+      "deployment_controller": [
+       {}
+      ],
+      "load_balancer": [],
+      "network_configuration": [
+       {
+        "security_groups": [
+         false
+        ],
+        "subnets": [
+         false,
+         false,
+         false
+        ]
+       }
+      ],
+      "ordered_placement_strategy": [],
+      "placement_constraints": [],
+      "service_connect_configuration": [],
+      "service_registries": [
+       {}
+      ],
+      "tags_all": {},
+      "triggers": {},
+      "volume_configuration": [],
+      "vpc_lattice_configurations": []
+     },
+     "depends_on": [
+      "aws_dynamodb_table.dynamo_db_table_petstore_pets",
+      "aws_ecs_cluster.ecs_cluster",
+      "aws_ecs_task_definition.task_definition_petstore_pets",
+      "aws_iam_role.task_role_petstore_pets",
+      "aws_security_group.container_security_group",
+      "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+      "aws_service_discovery_service.service_discovery_service_petstore_pets",
+      "aws_subnet.private_subnet_one",
+      "aws_subnet.private_subnet_three",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "cluster": "arn:aws:ecs:us-east-1:000000000000:cluster/ecs-cluster",
+      "name": "service-petstore-pets",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_ecs_task_definition.task_definition_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_ecs_task_definition",
+     "name": "task_definition_foodstore_foods",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ecs:us-east-1:000000000000:task-definition/foodstore-foods:1",
+      "arn_without_revision": "arn:aws:ecs:us-east-1:000000000000:task-definition/foodstore-foods",
+      "container_definitions": "[{\"environment\":[{\"name\":\"DynamoDBTable\",\"value\":\"FoodStoreFoods\"}],\"essential\":true,\"image\":\"localstack/ecsapi-demo-foodstore\",\"name\":\"FoodstoreFoods\",\"portMappings\":[{\"containerPort\":8080,\"hostPort\":0,\"protocol\":\"tcp\"}]}]",
+      "cpu": "256",
+      "enable_fault_injection": false,
+      "ephemeral_storage": [],
+      "execution_role_arn": "",
+      "family": "foodstore-foods",
+      "id": "foodstore-foods",
+      "ipc_mode": "",
+      "memory": "512",
+      "network_mode": "awsvpc",
+      "pid_mode": "",
+      "placement_constraints": [],
+      "proxy_configuration": [],
+      "region": "us-east-1",
+      "requires_compatibilities": [
+       "FARGATE"
+      ],
+      "revision": 1,
+      "runtime_platform": [],
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "task_role_arn": "arn:aws:iam::000000000000:role/terraform-583079d45e95d8e6a173588d6e",
+      "track_latest": false,
+      "volume": []
+     },
+     "sensitive_values": {
+      "ephemeral_storage": [],
+      "placement_constraints": [],
+      "proxy_configuration": [],
+      "requires_compatibilities": [
+       false
+      ],
+      "runtime_platform": [],
+      "tags_all": {},
+      "volume": []
+     },
+     "depends_on": [
+      "aws_dynamodb_table.dynamo_db_table_foodstore_foods",
+      "aws_iam_role.task_role_foodstore_foods"
+     ],
+     "identity": {
+      "account_id": "",
+      "family": "foodstore-foods",
+      "region": "us-east-1",
+      "revision": 1
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_ecs_task_definition.task_definition_petstore_pets",
+     "mode": "managed",
+     "type": "aws_ecs_task_definition",
+     "name": "task_definition_petstore_pets",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ecs:us-east-1:000000000000:task-definition/petstore-pets:1",
+      "arn_without_revision": "arn:aws:ecs:us-east-1:000000000000:task-definition/petstore-pets",
+      "container_definitions": "[{\"environment\":[{\"name\":\"DynamoDBTable\",\"value\":\"PetStorePets\"}],\"essential\":true,\"image\":\"localstack/ecsapi-demo-petstore\",\"name\":\"PetstorePets\",\"portMappings\":[{\"containerPort\":8080,\"hostPort\":0,\"protocol\":\"tcp\"}]}]",
+      "cpu": "256",
+      "enable_fault_injection": false,
+      "ephemeral_storage": [],
+      "execution_role_arn": "",
+      "family": "petstore-pets",
+      "id": "petstore-pets",
+      "ipc_mode": "",
+      "memory": "512",
+      "network_mode": "awsvpc",
+      "pid_mode": "",
+      "placement_constraints": [],
+      "proxy_configuration": [],
+      "region": "us-east-1",
+      "requires_compatibilities": [
+       "FARGATE"
+      ],
+      "revision": 1,
+      "runtime_platform": [],
+      "skip_destroy": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "task_role_arn": "arn:aws:iam::000000000000:role/terraform-03e0382575a03e30ea7f64a957",
+      "track_latest": false,
+      "volume": []
+     },
+     "sensitive_values": {
+      "ephemeral_storage": [],
+      "placement_constraints": [],
+      "proxy_configuration": [],
+      "requires_compatibilities": [
+       false
+      ],
+      "runtime_platform": [],
+      "tags_all": {},
+      "volume": []
+     },
+     "depends_on": [
+      "aws_dynamodb_table.dynamo_db_table_petstore_pets",
+      "aws_iam_role.task_role_petstore_pets"
+     ],
+     "identity": {
+      "account_id": "",
+      "family": "petstore-pets",
+      "region": "us-east-1",
+      "revision": 1
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat_gateway_one_attachment",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat_gateway_one_attachment",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "address": null,
+      "allocation_id": "eipalloc-35e0c4747875dbc93",
+      "arn": "arn:aws:ec2:us-east-1::elastic-ip/eipalloc-35e0c4747875dbc93",
+      "associate_with_private_ip": null,
+      "association_id": "",
+      "carrier_ip": "",
+      "customer_owned_ip": "",
+      "customer_owned_ipv4_pool": "",
+      "domain": "vpc",
+      "id": "eipalloc-35e0c4747875dbc93",
+      "instance": "",
+      "ipam_pool_id": "",
+      "network_border_group": "us-east-1",
+      "network_interface": "",
+      "private_dns": "",
+      "private_ip": "",
+      "ptr_record": "",
+      "public_dns": "ec2-203-0-113-2.compute-1.amazonaws.com",
+      "public_ip": "203.0.113.2",
+      "public_ipv4_pool": "amazon",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "eipalloc-35e0c4747875dbc93",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat_gateway_three_attachment",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat_gateway_three_attachment",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "address": null,
+      "allocation_id": "eipalloc-4f463e7a52cbbb7f4",
+      "arn": "arn:aws:ec2:us-east-1::elastic-ip/eipalloc-4f463e7a52cbbb7f4",
+      "associate_with_private_ip": null,
+      "association_id": "",
+      "carrier_ip": "",
+      "customer_owned_ip": "",
+      "customer_owned_ipv4_pool": "",
+      "domain": "vpc",
+      "id": "eipalloc-4f463e7a52cbbb7f4",
+      "instance": "",
+      "ipam_pool_id": "",
+      "network_border_group": "us-east-1",
+      "network_interface": "",
+      "private_dns": "",
+      "private_ip": "",
+      "ptr_record": "",
+      "public_dns": "ec2-203-0-113-3.compute-1.amazonaws.com",
+      "public_ip": "203.0.113.3",
+      "public_ipv4_pool": "amazon",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "eipalloc-4f463e7a52cbbb7f4",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat_gateway_two_attachment",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat_gateway_two_attachment",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "address": null,
+      "allocation_id": "eipalloc-112971a9361d33ad1",
+      "arn": "arn:aws:ec2:us-east-1::elastic-ip/eipalloc-112971a9361d33ad1",
+      "associate_with_private_ip": null,
+      "association_id": "",
+      "carrier_ip": "",
+      "customer_owned_ip": "",
+      "customer_owned_ipv4_pool": "",
+      "domain": "vpc",
+      "id": "eipalloc-112971a9361d33ad1",
+      "instance": "",
+      "ipam_pool_id": "",
+      "network_border_group": "us-east-1",
+      "network_interface": "",
+      "private_dns": "",
+      "private_ip": "",
+      "ptr_record": "",
+      "public_dns": "ec2-203-0-113-1.compute-1.amazonaws.com",
+      "public_ip": "203.0.113.1",
+      "public_ipv4_pool": "amazon",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "eipalloc-112971a9361d33ad1",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.auto_scaling_role",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "auto_scaling_role",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/terraform-f90cb3da81f00f2796c19cdf90",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"}}]}",
+      "create_date": "2026-11-03T16:19:41Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "terraform-f90cb3da81f00f2796c19cdf90",
+      "inline_policy": [],
+      "managed_policy_arns": [
+       "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+      ],
+      "max_session_duration": 3600,
+      "name": "terraform-f90cb3da81f00f2796c19cdf90",
+      "name_prefix": "terraform-",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROAE6NDJQY4RUF2GPW5"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [
+       false
+      ],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "terraform-f90cb3da81f00f2796c19cdf90"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.ecs_role",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "ecs_role",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/terraform-fe41b3191691b1200b549d5507",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":[\"sts:AssumeRole\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":[\"ecs.amazonaws.com\"]}}]}",
+      "create_date": "2026-11-03T16:19:41Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "terraform-fe41b3191691b1200b549d5507",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "terraform-fe41b3191691b1200b549d5507",
+      "name_prefix": "terraform-",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA6MILDSBX8DVYWY53"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "terraform-fe41b3191691b1200b549d5507"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.ecs_task_execution_role",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "ecs_task_execution_role",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/terraform-efec804c2c89d83bf7eb0264b0",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":[\"sts:AssumeRole\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":[\"ecs-tasks.amazonaws.com\"]}}]}",
+      "create_date": "2026-11-03T16:19:41Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "terraform-efec804c2c89d83bf7eb0264b0",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "terraform-efec804c2c89d83bf7eb0264b0",
+      "name_prefix": "terraform-",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA9KFWGC5XA781ITCI"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "terraform-efec804c2c89d83bf7eb0264b0"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.task_role_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "task_role_foodstore_foods",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/terraform-583079d45e95d8e6a173588d6e",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"}}]}",
+      "create_date": "2026-11-03T16:19:41Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "terraform-583079d45e95d8e6a173588d6e",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "terraform-583079d45e95d8e6a173588d6e",
+      "name_prefix": "terraform-",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA4JXWIF38HTY4SJLU"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "terraform-583079d45e95d8e6a173588d6e"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.task_role_petstore_pets",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "task_role_petstore_pets",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:iam::000000000000:role/terraform-03e0382575a03e30ea7f64a957",
+      "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"}}]}",
+      "create_date": "2026-11-03T16:19:41Z",
+      "description": "",
+      "force_detach_policies": false,
+      "id": "terraform-03e0382575a03e30ea7f64a957",
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "max_session_duration": 3600,
+      "name": "terraform-03e0382575a03e30ea7f64a957",
+      "name_prefix": "terraform-",
+      "path": "/",
+      "permissions_boundary": "",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "unique_id": "AROA01GJ3T45ZZHTU7MN"
+     },
+     "sensitive_values": {
+      "inline_policy": [],
+      "managed_policy_arns": [],
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "name": "terraform-03e0382575a03e30ea7f64a957"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.dynamodb-table-access",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "dynamodb-table-access",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "terraform-03e0382575a03e30ea7f64a957:dynamodb-table-access",
+      "name": "dynamodb-table-access",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:BatchGet*\",\"dynamodb:DescribeStream\",\"dynamodb:DescribeTable\",\"dynamodb:Get*\",\"dynamodb:Query\",\"dynamodb:Scan\",\"dynamodb:BatchWrite*\",\"dynamodb:CreateTable\",\"dynamodb:Delete*\",\"dynamodb:Update*\",\"dynamodb:PutItem\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+      "role": "terraform-03e0382575a03e30ea7f64a957"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_iam_role.task_role_petstore_pets"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "dynamodb-table-access",
+      "role": "terraform-03e0382575a03e30ea7f64a957"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.dynamodb_table_access",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "dynamodb_table_access",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "terraform-03e0382575a03e30ea7f64a957:dynamodb-table-access",
+      "name": "dynamodb-table-access",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:BatchGet*\",\"dynamodb:DescribeStream\",\"dynamodb:DescribeTable\",\"dynamodb:Get*\",\"dynamodb:Query\",\"dynamodb:Scan\",\"dynamodb:BatchWrite*\",\"dynamodb:CreateTable\",\"dynamodb:Delete*\",\"dynamodb:Update*\",\"dynamodb:PutItem\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+      "role": "terraform-03e0382575a03e30ea7f64a957"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_iam_role.task_role_petstore_pets"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "dynamodb-table-access",
+      "role": "terraform-03e0382575a03e30ea7f64a957"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.ecs_role_policy",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "ecs_role_policy",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "terraform-fe41b3191691b1200b549d5507:ecs-service",
+      "name": "ecs-service",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"ec2:AttachNetworkInterface\",\"ec2:CreateNetworkInterface\",\"ec2:CreateNetworkInterfacePermission\",\"ec2:DeleteNetworkInterface\",\"ec2:DeleteNetworkInterfacePermission\",\"ec2:Describe*\",\"ec2:DetachNetworkInterface\",\"elasticloadbalancing:DeregisterInstancesFromLoadBalancer\",\"elasticloadbalancing:DeregisterTargets\",\"elasticloadbalancing:Describe*\",\"elasticloadbalancing:RegisterInstancesWithLoadBalancer\",\"elasticloadbalancing:RegisterTargets\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+      "role": "terraform-fe41b3191691b1200b549d5507"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_iam_role.ecs_role"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "ecs-service",
+      "role": "terraform-fe41b3191691b1200b549d5507"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.ecs_task_execution_policy",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "ecs_task_execution_policy",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "id": "terraform-efec804c2c89d83bf7eb0264b0:ecs-task-execution-policy",
+      "name": "ecs-task-execution-policy",
+      "name_prefix": "",
+      "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"ecr:GetAuthorizationToken\",\"ecr:BatchCheckLayerAvailability\",\"ecr:GetDownloadUrlForLayer\",\"ecr:BatchGetImage\",\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+      "role": "terraform-efec804c2c89d83bf7eb0264b0"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_iam_role.ecs_task_execution_role"
+     ],
+     "identity": {
+      "account_id": "",
+      "name": "ecs-task-execution-policy",
+      "role": "terraform-efec804c2c89d83bf7eb0264b0"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_internet_gateway.internet_gateway",
+     "mode": "managed",
+     "type": "aws_internet_gateway",
+     "name": "internet_gateway",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:internet-gateway/igw-c9ef72fb",
+      "id": "igw-c9ef72fb",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": ""
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "igw-c9ef72fb",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.nat_gateway_one",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "nat_gateway_one",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "allocation_id": "eipalloc-35e0c4747875dbc93",
+      "association_id": null,
+      "auto_provision_zones": null,
+      "auto_scaling_ips": null,
+      "availability_mode": "",
+      "availability_zone_address": [],
+      "connectivity_type": "public",
+      "id": "nat-3297157f4c456a3c7",
+      "network_interface_id": null,
+      "private_ip": null,
+      "public_ip": null,
+      "region": "us-east-1",
+      "regional_nat_gateway_address": [],
+      "regional_nat_gateway_auto_mode": null,
+      "route_table_id": null,
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_address_count": null,
+      "secondary_private_ip_addresses": [],
+      "subnet_id": "subnet-8cfcff86",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "availability_zone_address": [],
+      "regional_nat_gateway_address": [],
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_addresses": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_eip.nat_gateway_one_attachment",
+      "aws_subnet.public_subnet_one",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "nat-3297157f4c456a3c7",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.nat_gateway_three",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "nat_gateway_three",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "allocation_id": "eipalloc-4f463e7a52cbbb7f4",
+      "association_id": null,
+      "auto_provision_zones": null,
+      "auto_scaling_ips": null,
+      "availability_mode": "",
+      "availability_zone_address": [],
+      "connectivity_type": "public",
+      "id": "nat-a14c9ff8e2368dcbb",
+      "network_interface_id": null,
+      "private_ip": null,
+      "public_ip": null,
+      "region": "us-east-1",
+      "regional_nat_gateway_address": [],
+      "regional_nat_gateway_auto_mode": null,
+      "route_table_id": null,
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_address_count": null,
+      "secondary_private_ip_addresses": [],
+      "subnet_id": "subnet-238632f5",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "availability_zone_address": [],
+      "regional_nat_gateway_address": [],
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_addresses": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_eip.nat_gateway_three_attachment",
+      "aws_subnet.public_subnet_three",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "nat-a14c9ff8e2368dcbb",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.nat_gateway_two",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "nat_gateway_two",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "allocation_id": "eipalloc-112971a9361d33ad1",
+      "association_id": null,
+      "auto_provision_zones": null,
+      "auto_scaling_ips": null,
+      "availability_mode": "",
+      "availability_zone_address": [],
+      "connectivity_type": "public",
+      "id": "nat-cdbd60d8d24c8ede4",
+      "network_interface_id": null,
+      "private_ip": null,
+      "public_ip": null,
+      "region": "us-east-1",
+      "regional_nat_gateway_address": [],
+      "regional_nat_gateway_auto_mode": null,
+      "route_table_id": null,
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_address_count": null,
+      "secondary_private_ip_addresses": [],
+      "subnet_id": "subnet-6e0810fc",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "availability_zone_address": [],
+      "regional_nat_gateway_address": [],
+      "secondary_allocation_ids": [],
+      "secondary_private_ip_addresses": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_eip.nat_gateway_two_attachment",
+      "aws_subnet.public_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "nat-cdbd60d8d24c8ede4",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route.private_route_one",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "private_route_one",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "carrier_gateway_id": "",
+      "core_network_arn": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": "",
+      "destination_prefix_list_id": "",
+      "egress_only_gateway_id": "",
+      "gateway_id": "",
+      "id": "r-rtb-d19a63e41080289494",
+      "instance_id": "",
+      "instance_owner_id": "",
+      "local_gateway_id": "",
+      "nat_gateway_id": "nat-3297157f4c456a3c7",
+      "network_interface_id": "",
+      "odb_network_arn": "",
+      "origin": "CreateRoute",
+      "region": "us-east-1",
+      "route_table_id": "rtb-d19a63e4",
+      "state": "active",
+      "timeouts": null,
+      "transit_gateway_id": "",
+      "vpc_endpoint_id": "",
+      "vpc_peering_connection_id": ""
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_eip.nat_gateway_one_attachment",
+      "aws_nat_gateway.nat_gateway_one",
+      "aws_route_table.private_route_table_one",
+      "aws_subnet.public_subnet_one",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": null,
+      "destination_prefix_list_id": null,
+      "region": "us-east-1",
+      "route_table_id": "rtb-d19a63e4"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route.private_route_three",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "private_route_three",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "carrier_gateway_id": "",
+      "core_network_arn": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": "",
+      "destination_prefix_list_id": "",
+      "egress_only_gateway_id": "",
+      "gateway_id": "",
+      "id": "r-rtb-f768f5f31080289494",
+      "instance_id": "",
+      "instance_owner_id": "",
+      "local_gateway_id": "",
+      "nat_gateway_id": "nat-a14c9ff8e2368dcbb",
+      "network_interface_id": "",
+      "odb_network_arn": "",
+      "origin": "CreateRoute",
+      "region": "us-east-1",
+      "route_table_id": "rtb-f768f5f3",
+      "state": "active",
+      "timeouts": null,
+      "transit_gateway_id": "",
+      "vpc_endpoint_id": "",
+      "vpc_peering_connection_id": ""
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_eip.nat_gateway_three_attachment",
+      "aws_nat_gateway.nat_gateway_three",
+      "aws_route_table.private_route_table_three",
+      "aws_subnet.public_subnet_three",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": null,
+      "destination_prefix_list_id": null,
+      "region": "us-east-1",
+      "route_table_id": "rtb-f768f5f3"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route.private_route_two",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "private_route_two",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "carrier_gateway_id": "",
+      "core_network_arn": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": "",
+      "destination_prefix_list_id": "",
+      "egress_only_gateway_id": "",
+      "gateway_id": "",
+      "id": "r-rtb-ddaeead91080289494",
+      "instance_id": "",
+      "instance_owner_id": "",
+      "local_gateway_id": "",
+      "nat_gateway_id": "nat-cdbd60d8d24c8ede4",
+      "network_interface_id": "",
+      "odb_network_arn": "",
+      "origin": "CreateRoute",
+      "region": "us-east-1",
+      "route_table_id": "rtb-ddaeead9",
+      "state": "active",
+      "timeouts": null,
+      "transit_gateway_id": "",
+      "vpc_endpoint_id": "",
+      "vpc_peering_connection_id": ""
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_eip.nat_gateway_two_attachment",
+      "aws_nat_gateway.nat_gateway_two",
+      "aws_route_table.private_route_table_two",
+      "aws_subnet.public_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": null,
+      "destination_prefix_list_id": null,
+      "region": "us-east-1",
+      "route_table_id": "rtb-ddaeead9"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route.public_route",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "public_route",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "carrier_gateway_id": "",
+      "core_network_arn": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": "",
+      "destination_prefix_list_id": "",
+      "egress_only_gateway_id": "",
+      "gateway_id": "igw-c9ef72fb",
+      "id": "r-rtb-ed5132ef1080289494",
+      "instance_id": "",
+      "instance_owner_id": "",
+      "local_gateway_id": "",
+      "nat_gateway_id": "",
+      "network_interface_id": "",
+      "odb_network_arn": "",
+      "origin": "CreateRoute",
+      "region": "us-east-1",
+      "route_table_id": "rtb-ed5132ef",
+      "state": "active",
+      "timeouts": null,
+      "transit_gateway_id": "",
+      "vpc_endpoint_id": "",
+      "vpc_peering_connection_id": ""
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_internet_gateway.internet_gateway",
+      "aws_route_table.public_route_table",
+      "aws_vpc.vpc"
+     ],
+     "identity": {
+      "account_id": "",
+      "destination_cidr_block": "0.0.0.0/0",
+      "destination_ipv6_cidr_block": null,
+      "destination_prefix_list_id": null,
+      "region": "us-east-1",
+      "route_table_id": "rtb-ed5132ef"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table.private_route_table_one",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "private_route_table_one",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-d19a63e4",
+      "id": "rtb-d19a63e4",
+      "owner_id": "000000000000",
+      "propagating_vgws": [],
+      "region": "us-east-1",
+      "route": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "propagating_vgws": [],
+      "route": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtb-d19a63e4",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table.private_route_table_three",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "private_route_table_three",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-f768f5f3",
+      "id": "rtb-f768f5f3",
+      "owner_id": "000000000000",
+      "propagating_vgws": [],
+      "region": "us-east-1",
+      "route": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "propagating_vgws": [],
+      "route": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtb-f768f5f3",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table.private_route_table_two",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "private_route_table_two",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-ddaeead9",
+      "id": "rtb-ddaeead9",
+      "owner_id": "000000000000",
+      "propagating_vgws": [],
+      "region": "us-east-1",
+      "route": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "propagating_vgws": [],
+      "route": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtb-ddaeead9",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table.public_route_table",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "public_route_table",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:route-table/rtb-ed5132ef",
+      "id": "rtb-ed5132ef",
+      "owner_id": "000000000000",
+      "propagating_vgws": [],
+      "region": "us-east-1",
+      "route": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "propagating_vgws": [],
+      "route": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtb-ed5132ef",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.private_route_table_one_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "private_route_table_one_association",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-b079c85b",
+      "region": "us-east-1",
+      "route_table_id": "rtb-d19a63e4",
+      "subnet_id": "subnet-b002bc8e",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_route_table.private_route_table_one",
+      "aws_subnet.private_subnet_one",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-b079c85b",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.private_route_table_three_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "private_route_table_three_association",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-da1b9bf7",
+      "region": "us-east-1",
+      "route_table_id": "rtb-f768f5f3",
+      "subnet_id": "subnet-2e506960",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_route_table.private_route_table_three",
+      "aws_subnet.private_subnet_three",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-da1b9bf7",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.private_route_table_two_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "private_route_table_two_association",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-4f2c6d10",
+      "region": "us-east-1",
+      "route_table_id": "rtb-ddaeead9",
+      "subnet_id": "subnet-257d22b9",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_route_table.private_route_table_two",
+      "aws_subnet.private_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-4f2c6d10",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.public_subnet_one_route_table_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "public_subnet_one_route_table_association",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-d3708026",
+      "region": "us-east-1",
+      "route_table_id": "rtb-ed5132ef",
+      "subnet_id": "subnet-8cfcff86",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_route_table.public_route_table",
+      "aws_subnet.public_subnet_one",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-d3708026",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.public_subnet_three_route_table_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "public_subnet_three_route_table_association",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-0a7747aa",
+      "region": "us-east-1",
+      "route_table_id": "rtb-ed5132ef",
+      "subnet_id": "subnet-238632f5",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_route_table.public_route_table",
+      "aws_subnet.public_subnet_three",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-0a7747aa",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.public_subnet_two_route_table_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "public_subnet_two_route_table_association",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "gateway_id": "",
+      "id": "rtbassoc-2e77e9eb",
+      "region": "us-east-1",
+      "route_table_id": "rtb-ed5132ef",
+      "subnet_id": "subnet-6e0810fc",
+      "timeouts": null
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_route_table.public_route_table",
+      "aws_subnet.public_subnet_two",
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "rtbassoc-2e77e9eb",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_security_group.container_security_group",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "container_security_group",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:security-group/sg-f6be5ee688fb7c03d",
+      "description": "Access to the Fargate containers",
+      "egress": [],
+      "id": "sg-f6be5ee688fb7c03d",
+      "ingress": [],
+      "name": "terraform-31ffd13cd9cce71130cf537337",
+      "name_prefix": "terraform-",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "revoke_rules_on_delete": false,
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "egress": [],
+      "ingress": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "sg-f6be5ee688fb7c03d",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_security_group_rule.container_security_group_self_ingress",
+     "mode": "managed",
+     "type": "aws_security_group_rule",
+     "name": "container_security_group_self_ingress",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 2,
+     "values": {
+      "cidr_blocks": null,
+      "description": null,
+      "from_port": 8080,
+      "id": "sgrule-708888253",
+      "ipv6_cidr_blocks": null,
+      "prefix_list_ids": null,
+      "protocol": "tcp",
+      "region": "us-east-1",
+      "security_group_id": "sg-f6be5ee688fb7c03d",
+      "security_group_rule_id": "sgr-6b473690ed21da0d7",
+      "self": true,
+      "source_security_group_id": null,
+      "timeouts": null,
+      "to_port": 8080,
+      "type": "ingress"
+     },
+     "sensitive_values": {},
+     "depends_on": [
+      "aws_security_group.container_security_group",
+      "aws_vpc.vpc"
+     ]
+    },
+    {
+     "address": "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+     "mode": "managed",
+     "type": "aws_service_discovery_private_dns_namespace",
+     "name": "private_dns_namespace",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:servicediscovery:us-east-1:000000000000:namespace/ns-afjs1gucx0hpk46miavx",
+      "description": "",
+      "hosted_zone": "ZCIM805BBQZXZ99",
+      "id": "ns-afjs1gucx0hpk46miavx",
+      "name": "example.com",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "vpc": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc"
+     ]
+    },
+    {
+     "address": "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_service_discovery_service",
+     "name": "service_discovery_service_foodstore_foods",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:servicediscovery:us-east-1:000000000000:service/srv-z6p6hbkfwmziy4wg2qs4",
+      "description": "",
+      "dns_config": [
+       {
+        "dns_records": [
+         {
+          "ttl": 60,
+          "type": "SRV"
+         }
+        ],
+        "namespace_id": "ns-afjs1gucx0hpk46miavx",
+        "routing_policy": "MULTIVALUE"
+       }
+      ],
+      "force_destroy": false,
+      "health_check_config": [],
+      "health_check_custom_config": [
+       {
+        "failure_threshold": 1
+       }
+      ],
+      "id": "srv-z6p6hbkfwmziy4wg2qs4",
+      "name": "foods.foodstore",
+      "namespace_id": "ns-afjs1gucx0hpk46miavx",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "type": "DNS_HTTP"
+     },
+     "sensitive_values": {
+      "dns_config": [
+       {
+        "dns_records": [
+         {}
+        ]
+       }
+      ],
+      "health_check_config": [],
+      "health_check_custom_config": [
+       {}
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+      "aws_vpc.vpc"
+     ]
+    },
+    {
+     "address": "aws_service_discovery_service.service_discovery_service_petstore_pets",
+     "mode": "managed",
+     "type": "aws_service_discovery_service",
+     "name": "service_discovery_service_petstore_pets",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:servicediscovery:us-east-1:000000000000:service/srv-vtbluawlc8tpm3xpavre",
+      "description": "",
+      "dns_config": [
+       {
+        "dns_records": [
+         {
+          "ttl": 60,
+          "type": "SRV"
+         }
+        ],
+        "namespace_id": "ns-afjs1gucx0hpk46miavx",
+        "routing_policy": "MULTIVALUE"
+       }
+      ],
+      "force_destroy": false,
+      "health_check_config": [],
+      "health_check_custom_config": [
+       {
+        "failure_threshold": 1
+       }
+      ],
+      "id": "srv-vtbluawlc8tpm3xpavre",
+      "name": "pets.petstore",
+      "namespace_id": "ns-afjs1gucx0hpk46miavx",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "type": "DNS_HTTP"
+     },
+     "sensitive_values": {
+      "dns_config": [
+       {
+        "dns_records": [
+         {}
+        ]
+       }
+      ],
+      "health_check_config": [],
+      "health_check_custom_config": [
+       {}
+      ],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+      "aws_vpc.vpc"
+     ]
+    },
+    {
+     "address": "aws_subnet.private_subnet_one",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "private_subnet_one",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-b002bc8e",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1a",
+      "availability_zone_id": "use1-az1",
+      "cidr_block": "10.0.100.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-b002bc8e",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": false,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-b002bc8e",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.private_subnet_three",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "private_subnet_three",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-2e506960",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1c",
+      "availability_zone_id": "use1-az3",
+      "cidr_block": "10.0.102.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-2e506960",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": false,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-2e506960",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.private_subnet_two",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "private_subnet_two",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-257d22b9",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1b",
+      "availability_zone_id": "use1-az2",
+      "cidr_block": "10.0.101.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-257d22b9",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": false,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-257d22b9",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.public_subnet_one",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "public_subnet_one",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-8cfcff86",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1a",
+      "availability_zone_id": "use1-az1",
+      "cidr_block": "10.0.0.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-8cfcff86",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": true,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-8cfcff86",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.public_subnet_three",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "public_subnet_three",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-238632f5",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1c",
+      "availability_zone_id": "use1-az3",
+      "cidr_block": "10.0.2.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-238632f5",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": true,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-238632f5",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_subnet.public_subnet_two",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "public_subnet_two",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:subnet/subnet-6e0810fc",
+      "assign_ipv6_address_on_creation": false,
+      "availability_zone": "us-east-1b",
+      "availability_zone_id": "use1-az2",
+      "cidr_block": "10.0.1.0/24",
+      "customer_owned_ipv4_pool": "",
+      "enable_dns64": false,
+      "enable_lni_at_device_index": 0,
+      "enable_resource_name_dns_a_record_on_launch": false,
+      "enable_resource_name_dns_aaaa_record_on_launch": false,
+      "id": "subnet-6e0810fc",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_association_id": "",
+      "ipv6_ipam_pool_id": null,
+      "ipv6_native": false,
+      "ipv6_netmask_length": null,
+      "map_customer_owned_ip_on_launch": false,
+      "map_public_ip_on_launch": true,
+      "outpost_arn": "",
+      "owner_id": "000000000000",
+      "private_dns_hostname_type_on_launch": "",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_vpc.vpc",
+      "data.aws_availability_zones.available"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "subnet-6e0810fc",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_vpc.vpc",
+     "mode": "managed",
+     "type": "aws_vpc",
+     "name": "vpc",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 1,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1:000000000000:vpc/vpc-c73c0ac0",
+      "assign_generated_ipv6_cidr_block": false,
+      "cidr_block": "10.0.0.0/16",
+      "default_network_acl_id": "acl-e39452724468a729b",
+      "default_route_table_id": "rtb-f74f1c1ccdb30db23",
+      "default_security_group_id": "sg-cbfb61587a8d44b51",
+      "dhcp_options_id": "dopt-default",
+      "enable_dns_hostnames": true,
+      "enable_dns_support": true,
+      "enable_network_address_usage_metrics": false,
+      "id": "vpc-c73c0ac0",
+      "instance_tenancy": "default",
+      "ipv4_ipam_pool_id": null,
+      "ipv4_netmask_length": null,
+      "ipv6_association_id": "",
+      "ipv6_cidr_block": "",
+      "ipv6_cidr_block_network_border_group": "",
+      "ipv6_ipam_pool_id": "",
+      "ipv6_netmask_length": 0,
+      "main_route_table_id": "rtb-f74f1c1ccdb30db23",
+      "owner_id": "000000000000",
+      "region": "us-east-1",
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      }
+     },
+     "sensitive_values": {
+      "tags_all": {}
+     },
+     "identity": {
+      "account_id": "",
+      "id": "vpc-c73c0ac0",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    },
+    {
+     "address": "aws_vpc_endpoint.dynamo_db_endpoint",
+     "mode": "managed",
+     "type": "aws_vpc_endpoint",
+     "name": "dynamo_db_endpoint",
+     "provider_name": "registry.opentofu.org/hashicorp/aws",
+     "schema_version": 0,
+     "values": {
+      "arn": "arn:aws:ec2:us-east-1::vpc-endpoint/vpce-9a74ab80e3058ae91",
+      "auto_accept": null,
+      "cidr_blocks": [
+       "3.218.182.0/24",
+       "52.94.0.0/22"
+      ],
+      "dns_entry": [],
+      "dns_options": [],
+      "id": "vpce-9a74ab80e3058ae91",
+      "ip_address_type": "ipv4",
+      "network_interface_ids": [],
+      "owner_id": "",
+      "policy": "{\"Statement\":[{\"Action\":\"*\",\"Effect\":\"Allow\",\"Principal\":\"*\",\"Resource\":\"*\"}],\"Version\":\"2012-10-17\"}",
+      "prefix_list_id": "pl-02cd2c6b",
+      "private_dns_enabled": false,
+      "region": "us-east-1",
+      "requester_managed": false,
+      "resource_configuration_arn": "",
+      "route_table_ids": [
+       "rtb-d19a63e4",
+       "rtb-ddaeead9",
+       "rtb-f768f5f3"
+      ],
+      "security_group_ids": [],
+      "service_name": "com.amazonaws.us-east-1.dynamodb",
+      "service_network_arn": "",
+      "service_region": "",
+      "state": "available",
+      "subnet_configuration": [],
+      "subnet_ids": [],
+      "tags": null,
+      "tags_all": {
+       "proyecto": "agente-iac-intermedio"
+      },
+      "timeouts": null,
+      "vpc_endpoint_type": "Gateway",
+      "vpc_id": "vpc-c73c0ac0"
+     },
+     "sensitive_values": {
+      "cidr_blocks": [
+       false,
+       false
+      ],
+      "dns_entry": [],
+      "dns_options": [],
+      "network_interface_ids": [],
+      "route_table_ids": [
+       false,
+       false,
+       false
+      ],
+      "security_group_ids": [],
+      "subnet_configuration": [],
+      "subnet_ids": [],
+      "tags_all": {}
+     },
+     "depends_on": [
+      "aws_route_table.private_route_table_one",
+      "aws_route_table.private_route_table_three",
+      "aws_route_table.private_route_table_two",
+      "aws_vpc.vpc",
+      "data.aws_region.current"
+     ],
+     "identity": {
+      "account_id": "",
+      "id": "vpce-9a74ab80e3058ae91",
+      "region": "us-east-1"
+     },
+     "identity_schema_version": 0
+    }
+   ]
+  }
+ },
+ "configuration": {
+  "provider_config": {
+   "aws": {
+    "name": "aws",
+    "full_name": "registry.opentofu.org/hashicorp/aws",
+    "version_constraint": "~> 6.0",
+    "expressions": {
+     "access_key": {
+      "constant_value": "test"
+     },
+     "default_tags": [
+      {
+       "tags": {
+        "constant_value": {
+         "proyecto": "agente-iac-intermedio"
+        }
+       }
+      }
+     ],
+     "endpoints": [
+      {
+       "apigateway": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "apigatewayv2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatch": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "cloudwatchlogs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "dynamodb": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "ec2": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "events": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "iam": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "kms": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "lambda": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "s3control": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sns": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sqs": {
+        "references": [
+         "var.endpoint"
+        ]
+       },
+       "sts": {
+        "references": [
+         "var.endpoint"
+        ]
+       }
+      }
+     ],
+     "region": {
+      "references": [
+       "var.region"
+      ]
+     },
+     "s3_use_path_style": {
+      "constant_value": true
+     },
+     "secret_key": {
+      "constant_value": "test"
+     },
+     "skip_credentials_validation": {
+      "constant_value": true
+     },
+     "skip_metadata_api_check": {
+      "constant_value": true
+     },
+     "skip_requesting_account_id": {
+      "constant_value": true
+     }
+    }
+   }
+  },
+  "root_module": {
+   "outputs": {
+    "api_id": {
+     "expression": {
+      "references": [
+       "aws_apigatewayv2_api.http_api.id",
+       "aws_apigatewayv2_api.http_api"
+      ]
+     },
+     "description": "The ID of the HTTP API"
+    },
+    "api_invoke_url": {
+     "expression": {
+      "references": [
+       "aws_apigatewayv2_api.http_api.id",
+       "aws_apigatewayv2_api.http_api",
+       "data.aws_region.current.region",
+       "data.aws_region.current"
+      ]
+     },
+     "description": "Invoke URL for the HTTP API"
+    },
+    "api_invoke_url_foodstore_foods": {
+     "expression": {
+      "references": [
+       "aws_apigatewayv2_api.http_api.id",
+       "aws_apigatewayv2_api.http_api",
+       "data.aws_region.current.region",
+       "data.aws_region.current"
+      ]
+     },
+     "description": "Invoke URL for the HTTP API for the service Foodstore Foods"
+    },
+    "api_invoke_url_petstore_pets": {
+     "expression": {
+      "references": [
+       "aws_apigatewayv2_api.http_api.id",
+       "aws_apigatewayv2_api.http_api",
+       "data.aws_region.current.region",
+       "data.aws_region.current"
+      ]
+     },
+     "description": "Invoke URL for the HTTP API for the service Petstore Pets"
+    },
+    "api_test_page": {
+     "sensitive": true,
+     "expression": {
+      "references": [
+       "data.aws_region.current.region",
+       "data.aws_region.current",
+       "aws_apigatewayv2_api.http_api.id",
+       "aws_apigatewayv2_api.http_api",
+       "aws_cognito_user_pool.user_pool.id",
+       "aws_cognito_user_pool.user_pool",
+       "aws_cognito_user_pool_client.user_pool_client.id",
+       "aws_cognito_user_pool_client.user_pool_client"
+      ]
+     },
+     "description": "The URL of the sample web app client, used to test the sample API"
+    },
+    "container_security_group": {
+     "expression": {
+      "references": [
+       "aws_security_group.container_security_group.id",
+       "aws_security_group.container_security_group"
+      ]
+     },
+     "description": "A security group used to allow Fargate containers to receive traffic"
+    },
+    "ecs_cluster_name": {
+     "expression": {
+      "references": [
+       "aws_ecs_cluster.ecs_cluster.arn",
+       "aws_ecs_cluster.ecs_cluster"
+      ]
+     },
+     "description": "The name of the ECS cluster"
+    },
+    "private_dns_namespace": {
+     "expression": {
+      "references": [
+       "aws_service_discovery_private_dns_namespace.private_dns_namespace.id",
+       "aws_service_discovery_private_dns_namespace.private_dns_namespace"
+      ]
+     },
+     "description": "The ID of the private DNS namespace."
+    },
+    "vpc_id": {
+     "expression": {
+      "references": [
+       "aws_vpc.vpc.id",
+       "aws_vpc.vpc"
+      ]
+     },
+     "description": "The ID of the VPC that this stack is deployed in"
+    }
+   },
+   "resources": [
+    {
+     "address": "aws_apigatewayv2_api.http_api",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_api",
+     "name": "http_api",
+     "provider_config_key": "aws",
+     "expressions": {
+      "body": {
+       "references": [
+        "var.environment_name",
+        "aws_cognito_user_pool_client.user_pool_client.id",
+        "aws_cognito_user_pool_client.user_pool_client",
+        "aws_cognito_user_pool.user_pool.id",
+        "aws_cognito_user_pool.user_pool",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link.id",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+        "aws_service_discovery_service.service_discovery_service_foodstore_foods.arn",
+        "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link.id",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+        "aws_service_discovery_service.service_discovery_service_foodstore_foods.arn",
+        "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link.id",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+        "aws_service_discovery_service.service_discovery_service_petstore_pets.arn",
+        "aws_service_discovery_service.service_discovery_service_petstore_pets",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link.id",
+        "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+        "aws_service_discovery_service.service_discovery_service_petstore_pets.arn",
+        "aws_service_discovery_service.service_discovery_service_petstore_pets"
+       ]
+      },
+      "name": {
+       "references": [
+        "var.environment_name"
+       ]
+      },
+      "protocol_type": {
+       "constant_value": "HTTP"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_stage.http_api_stage",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_stage",
+     "name": "http_api_stage",
+     "provider_config_key": "aws",
+     "expressions": {
+      "api_id": {
+       "references": [
+        "aws_apigatewayv2_api.http_api.id",
+        "aws_apigatewayv2_api.http_api"
+       ]
+      },
+      "auto_deploy": {
+       "constant_value": true
+      },
+      "name": {
+       "constant_value": "$default"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_apigatewayv2_vpc_link.http_api_vpc_link",
+     "mode": "managed",
+     "type": "aws_apigatewayv2_vpc_link",
+     "name": "http_api_vpc_link",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "references": [
+        "var.environment_name"
+       ]
+      },
+      "security_group_ids": {
+       "references": [
+        "aws_security_group.container_security_group.id",
+        "aws_security_group.container_security_group"
+       ]
+      },
+      "subnet_ids": {
+       "references": [
+        "aws_subnet.private_subnet_one.id",
+        "aws_subnet.private_subnet_one",
+        "aws_subnet.private_subnet_two.id",
+        "aws_subnet.private_subnet_two",
+        "aws_subnet.private_subnet_three.id",
+        "aws_subnet.private_subnet_three"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_cognito_user_pool.user_pool",
+     "mode": "managed",
+     "type": "aws_cognito_user_pool",
+     "name": "user_pool",
+     "provider_config_key": "aws",
+     "expressions": {
+      "auto_verified_attributes": {
+       "constant_value": [
+        "email"
+       ]
+      },
+      "name": {
+       "constant_value": "user-pool"
+      },
+      "username_attributes": {
+       "constant_value": [
+        "email"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_cognito_user_pool_client.user_pool_client",
+     "mode": "managed",
+     "type": "aws_cognito_user_pool_client",
+     "name": "user_pool_client",
+     "provider_config_key": "aws",
+     "expressions": {
+      "generate_secret": {
+       "constant_value": false
+      },
+      "name": {
+       "constant_value": "user-pool-client"
+      },
+      "prevent_user_existence_errors": {
+       "constant_value": "ENABLED"
+      },
+      "supported_identity_providers": {
+       "constant_value": [
+        "COGNITO"
+       ]
+      },
+      "user_pool_id": {
+       "references": [
+        "aws_cognito_user_pool.user_pool.id",
+        "aws_cognito_user_pool.user_pool"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_dynamodb_table.dynamo_db_table_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "dynamo_db_table_foodstore_foods",
+     "provider_config_key": "aws",
+     "expressions": {
+      "attribute": [
+       {
+        "name": {
+         "constant_value": "foodId"
+        },
+        "type": {
+         "constant_value": "S"
+        }
+       }
+      ],
+      "billing_mode": {
+       "constant_value": "PAY_PER_REQUEST"
+      },
+      "hash_key": {
+       "constant_value": "foodId"
+      },
+      "name": {
+       "constant_value": "FoodStoreFoods"
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_dynamodb_table.dynamo_db_table_petstore_pets",
+     "mode": "managed",
+     "type": "aws_dynamodb_table",
+     "name": "dynamo_db_table_petstore_pets",
+     "provider_config_key": "aws",
+     "expressions": {
+      "attribute": [
+       {
+        "name": {
+         "constant_value": "petId"
+        },
+        "type": {
+         "constant_value": "S"
+        }
+       }
+      ],
+      "billing_mode": {
+       "constant_value": "PAY_PER_REQUEST"
+      },
+      "hash_key": {
+       "constant_value": "petId"
+      },
+      "name": {
+       "constant_value": "PetStorePets"
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_ec2_transit_gateway.transit_gateway",
+     "mode": "managed",
+     "type": "aws_ec2_transit_gateway",
+     "name": "transit_gateway",
+     "provider_config_key": "aws",
+     "schema_version": 0
+    },
+    {
+     "address": "aws_ec2_transit_gateway_vpc_attachment.gateway_attachement",
+     "mode": "managed",
+     "type": "aws_ec2_transit_gateway_vpc_attachment",
+     "name": "gateway_attachement",
+     "provider_config_key": "aws",
+     "expressions": {
+      "subnet_ids": {
+       "references": [
+        "aws_subnet.private_subnet_one.id",
+        "aws_subnet.private_subnet_one",
+        "aws_subnet.private_subnet_two.id",
+        "aws_subnet.private_subnet_two",
+        "aws_subnet.private_subnet_three.id",
+        "aws_subnet.private_subnet_three"
+       ]
+      },
+      "transit_gateway_id": {
+       "references": [
+        "aws_ec2_transit_gateway.transit_gateway.id",
+        "aws_ec2_transit_gateway.transit_gateway"
+       ]
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_ecs_cluster.ecs_cluster",
+     "mode": "managed",
+     "type": "aws_ecs_cluster",
+     "name": "ecs_cluster",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "ecs-cluster"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_ecs_service.service_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_ecs_service",
+     "name": "service_foodstore_foods",
+     "provider_config_key": "aws",
+     "expressions": {
+      "cluster": {
+       "references": [
+        "aws_ecs_cluster.ecs_cluster.arn",
+        "aws_ecs_cluster.ecs_cluster"
+       ]
+      },
+      "desired_count": {
+       "constant_value": 3
+      },
+      "launch_type": {
+       "constant_value": "FARGATE"
+      },
+      "name": {
+       "constant_value": "service-foodstore-foods"
+      },
+      "network_configuration": [
+       {
+        "assign_public_ip": {
+         "constant_value": false
+        },
+        "security_groups": {
+         "references": [
+          "aws_security_group.container_security_group.id",
+          "aws_security_group.container_security_group"
+         ]
+        },
+        "subnets": {
+         "references": [
+          "aws_subnet.private_subnet_one.id",
+          "aws_subnet.private_subnet_one",
+          "aws_subnet.private_subnet_two.id",
+          "aws_subnet.private_subnet_two",
+          "aws_subnet.private_subnet_three.id",
+          "aws_subnet.private_subnet_three"
+         ]
+        }
+       }
+      ],
+      "service_registries": [
+       {
+        "port": {
+         "constant_value": 8080
+        },
+        "registry_arn": {
+         "references": [
+          "aws_service_discovery_service.service_discovery_service_foodstore_foods.arn",
+          "aws_service_discovery_service.service_discovery_service_foodstore_foods"
+         ]
+        }
+       }
+      ],
+      "task_definition": {
+       "references": [
+        "aws_ecs_task_definition.task_definition_foodstore_foods.arn",
+        "aws_ecs_task_definition.task_definition_foodstore_foods"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_ecs_service.service_petstore_pets",
+     "mode": "managed",
+     "type": "aws_ecs_service",
+     "name": "service_petstore_pets",
+     "provider_config_key": "aws",
+     "expressions": {
+      "cluster": {
+       "references": [
+        "aws_ecs_cluster.ecs_cluster.arn",
+        "aws_ecs_cluster.ecs_cluster"
+       ]
+      },
+      "desired_count": {
+       "constant_value": 3
+      },
+      "launch_type": {
+       "constant_value": "FARGATE"
+      },
+      "name": {
+       "constant_value": "service-petstore-pets"
+      },
+      "network_configuration": [
+       {
+        "assign_public_ip": {
+         "constant_value": false
+        },
+        "security_groups": {
+         "references": [
+          "aws_security_group.container_security_group.id",
+          "aws_security_group.container_security_group"
+         ]
+        },
+        "subnets": {
+         "references": [
+          "aws_subnet.private_subnet_one.id",
+          "aws_subnet.private_subnet_one",
+          "aws_subnet.private_subnet_two.id",
+          "aws_subnet.private_subnet_two",
+          "aws_subnet.private_subnet_three.id",
+          "aws_subnet.private_subnet_three"
+         ]
+        }
+       }
+      ],
+      "service_registries": [
+       {
+        "port": {
+         "constant_value": 8080
+        },
+        "registry_arn": {
+         "references": [
+          "aws_service_discovery_service.service_discovery_service_petstore_pets.arn",
+          "aws_service_discovery_service.service_discovery_service_petstore_pets"
+         ]
+        }
+       }
+      ],
+      "task_definition": {
+       "references": [
+        "aws_ecs_task_definition.task_definition_petstore_pets.arn",
+        "aws_ecs_task_definition.task_definition_petstore_pets"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_ecs_task_definition.task_definition_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_ecs_task_definition",
+     "name": "task_definition_foodstore_foods",
+     "provider_config_key": "aws",
+     "expressions": {
+      "container_definitions": {
+       "references": [
+        "aws_dynamodb_table.dynamo_db_table_foodstore_foods.name",
+        "aws_dynamodb_table.dynamo_db_table_foodstore_foods"
+       ]
+      },
+      "cpu": {
+       "constant_value": "256"
+      },
+      "family": {
+       "constant_value": "foodstore-foods"
+      },
+      "memory": {
+       "constant_value": "512"
+      },
+      "network_mode": {
+       "constant_value": "awsvpc"
+      },
+      "requires_compatibilities": {
+       "constant_value": [
+        "FARGATE"
+       ]
+      },
+      "task_role_arn": {
+       "references": [
+        "aws_iam_role.task_role_foodstore_foods.arn",
+        "aws_iam_role.task_role_foodstore_foods"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_ecs_task_definition.task_definition_petstore_pets",
+     "mode": "managed",
+     "type": "aws_ecs_task_definition",
+     "name": "task_definition_petstore_pets",
+     "provider_config_key": "aws",
+     "expressions": {
+      "container_definitions": {
+       "references": [
+        "aws_dynamodb_table.dynamo_db_table_petstore_pets.name",
+        "aws_dynamodb_table.dynamo_db_table_petstore_pets"
+       ]
+      },
+      "cpu": {
+       "constant_value": "256"
+      },
+      "family": {
+       "constant_value": "petstore-pets"
+      },
+      "memory": {
+       "constant_value": "512"
+      },
+      "network_mode": {
+       "constant_value": "awsvpc"
+      },
+      "requires_compatibilities": {
+       "constant_value": [
+        "FARGATE"
+       ]
+      },
+      "task_role_arn": {
+       "references": [
+        "aws_iam_role.task_role_petstore_pets.arn",
+        "aws_iam_role.task_role_petstore_pets"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_eip.nat_gateway_one_attachment",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat_gateway_one_attachment",
+     "provider_config_key": "aws",
+     "expressions": {
+      "domain": {
+       "constant_value": "vpc"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat_gateway_three_attachment",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat_gateway_three_attachment",
+     "provider_config_key": "aws",
+     "expressions": {
+      "domain": {
+       "constant_value": "vpc"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_eip.nat_gateway_two_attachment",
+     "mode": "managed",
+     "type": "aws_eip",
+     "name": "nat_gateway_two_attachment",
+     "provider_config_key": "aws",
+     "expressions": {
+      "domain": {
+       "constant_value": "vpc"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.auto_scaling_role",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "auto_scaling_role",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {},
+      "managed_policy_arns": {
+       "constant_value": [
+        "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.ecs_role",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "ecs_role",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {},
+      "path": {
+       "constant_value": "/"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.ecs_task_execution_role",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "ecs_task_execution_role",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {},
+      "path": {
+       "constant_value": "/"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.task_role_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "task_role_foodstore_foods",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {}
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role.task_role_petstore_pets",
+     "mode": "managed",
+     "type": "aws_iam_role",
+     "name": "task_role_petstore_pets",
+     "provider_config_key": "aws",
+     "expressions": {
+      "assume_role_policy": {}
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.dynamodb-table-access",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "dynamodb-table-access",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "dynamodb-table-access"
+      },
+      "policy": {},
+      "role": {
+       "references": [
+        "aws_iam_role.task_role_petstore_pets.id",
+        "aws_iam_role.task_role_petstore_pets"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.dynamodb_table_access",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "dynamodb_table_access",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "dynamodb-table-access"
+      },
+      "policy": {},
+      "role": {
+       "references": [
+        "aws_iam_role.task_role_petstore_pets.id",
+        "aws_iam_role.task_role_petstore_pets"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.ecs_role_policy",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "ecs_role_policy",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "ecs-service"
+      },
+      "policy": {},
+      "role": {
+       "references": [
+        "aws_iam_role.ecs_role.id",
+        "aws_iam_role.ecs_role"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_iam_role_policy.ecs_task_execution_policy",
+     "mode": "managed",
+     "type": "aws_iam_role_policy",
+     "name": "ecs_task_execution_policy",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "constant_value": "ecs-task-execution-policy"
+      },
+      "policy": {},
+      "role": {
+       "references": [
+        "aws_iam_role.ecs_task_execution_role.id",
+        "aws_iam_role.ecs_task_execution_role"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_internet_gateway.internet_gateway",
+     "mode": "managed",
+     "type": "aws_internet_gateway",
+     "name": "internet_gateway",
+     "provider_config_key": "aws",
+     "schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.nat_gateway_one",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "nat_gateway_one",
+     "provider_config_key": "aws",
+     "expressions": {
+      "allocation_id": {
+       "references": [
+        "aws_eip.nat_gateway_one_attachment.allocation_id",
+        "aws_eip.nat_gateway_one_attachment"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.public_subnet_one.id",
+        "aws_subnet.public_subnet_one"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.nat_gateway_three",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "nat_gateway_three",
+     "provider_config_key": "aws",
+     "expressions": {
+      "allocation_id": {
+       "references": [
+        "aws_eip.nat_gateway_three_attachment.allocation_id",
+        "aws_eip.nat_gateway_three_attachment"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.public_subnet_three.id",
+        "aws_subnet.public_subnet_three"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_nat_gateway.nat_gateway_two",
+     "mode": "managed",
+     "type": "aws_nat_gateway",
+     "name": "nat_gateway_two",
+     "provider_config_key": "aws",
+     "expressions": {
+      "allocation_id": {
+       "references": [
+        "aws_eip.nat_gateway_two_attachment.allocation_id",
+        "aws_eip.nat_gateway_two_attachment"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.public_subnet_two.id",
+        "aws_subnet.public_subnet_two"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route.private_route_one",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "private_route_one",
+     "provider_config_key": "aws",
+     "expressions": {
+      "destination_cidr_block": {
+       "constant_value": "0.0.0.0/0"
+      },
+      "nat_gateway_id": {
+       "references": [
+        "aws_nat_gateway.nat_gateway_one.id",
+        "aws_nat_gateway.nat_gateway_one"
+       ]
+      },
+      "route_table_id": {
+       "references": [
+        "aws_route_table.private_route_table_one.id",
+        "aws_route_table.private_route_table_one"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route.private_route_three",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "private_route_three",
+     "provider_config_key": "aws",
+     "expressions": {
+      "destination_cidr_block": {
+       "constant_value": "0.0.0.0/0"
+      },
+      "nat_gateway_id": {
+       "references": [
+        "aws_nat_gateway.nat_gateway_three.id",
+        "aws_nat_gateway.nat_gateway_three"
+       ]
+      },
+      "route_table_id": {
+       "references": [
+        "aws_route_table.private_route_table_three.id",
+        "aws_route_table.private_route_table_three"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route.private_route_two",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "private_route_two",
+     "provider_config_key": "aws",
+     "expressions": {
+      "destination_cidr_block": {
+       "constant_value": "0.0.0.0/0"
+      },
+      "nat_gateway_id": {
+       "references": [
+        "aws_nat_gateway.nat_gateway_two.id",
+        "aws_nat_gateway.nat_gateway_two"
+       ]
+      },
+      "route_table_id": {
+       "references": [
+        "aws_route_table.private_route_table_two.id",
+        "aws_route_table.private_route_table_two"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route.public_route",
+     "mode": "managed",
+     "type": "aws_route",
+     "name": "public_route",
+     "provider_config_key": "aws",
+     "expressions": {
+      "destination_cidr_block": {
+       "constant_value": "0.0.0.0/0"
+      },
+      "gateway_id": {
+       "references": [
+        "aws_internet_gateway.internet_gateway.id",
+        "aws_internet_gateway.internet_gateway"
+       ]
+      },
+      "route_table_id": {
+       "references": [
+        "aws_route_table.public_route_table.id",
+        "aws_route_table.public_route_table"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table.private_route_table_one",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "private_route_table_one",
+     "provider_config_key": "aws",
+     "expressions": {
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table.private_route_table_three",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "private_route_table_three",
+     "provider_config_key": "aws",
+     "expressions": {
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table.private_route_table_two",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "private_route_table_two",
+     "provider_config_key": "aws",
+     "expressions": {
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table.public_route_table",
+     "mode": "managed",
+     "type": "aws_route_table",
+     "name": "public_route_table",
+     "provider_config_key": "aws",
+     "expressions": {
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.private_route_table_one_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "private_route_table_one_association",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.private_route_table_one.id",
+        "aws_route_table.private_route_table_one"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.private_subnet_one.id",
+        "aws_subnet.private_subnet_one"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.private_route_table_three_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "private_route_table_three_association",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.private_route_table_three.id",
+        "aws_route_table.private_route_table_three"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.private_subnet_three.id",
+        "aws_subnet.private_subnet_three"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.private_route_table_two_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "private_route_table_two_association",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.private_route_table_two.id",
+        "aws_route_table.private_route_table_two"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.private_subnet_two.id",
+        "aws_subnet.private_subnet_two"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.public_subnet_one_route_table_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "public_subnet_one_route_table_association",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.public_route_table.id",
+        "aws_route_table.public_route_table"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.public_subnet_one.id",
+        "aws_subnet.public_subnet_one"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.public_subnet_three_route_table_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "public_subnet_three_route_table_association",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.public_route_table.id",
+        "aws_route_table.public_route_table"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.public_subnet_three.id",
+        "aws_subnet.public_subnet_three"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_route_table_association.public_subnet_two_route_table_association",
+     "mode": "managed",
+     "type": "aws_route_table_association",
+     "name": "public_subnet_two_route_table_association",
+     "provider_config_key": "aws",
+     "expressions": {
+      "route_table_id": {
+       "references": [
+        "aws_route_table.public_route_table.id",
+        "aws_route_table.public_route_table"
+       ]
+      },
+      "subnet_id": {
+       "references": [
+        "aws_subnet.public_subnet_two.id",
+        "aws_subnet.public_subnet_two"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_security_group.container_security_group",
+     "mode": "managed",
+     "type": "aws_security_group",
+     "name": "container_security_group",
+     "provider_config_key": "aws",
+     "expressions": {
+      "description": {
+       "constant_value": "Access to the Fargate containers"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_security_group_rule.container_security_group_self_ingress",
+     "mode": "managed",
+     "type": "aws_security_group_rule",
+     "name": "container_security_group_self_ingress",
+     "provider_config_key": "aws",
+     "expressions": {
+      "from_port": {
+       "constant_value": 8080
+      },
+      "protocol": {
+       "constant_value": "tcp"
+      },
+      "security_group_id": {
+       "references": [
+        "aws_security_group.container_security_group.id",
+        "aws_security_group.container_security_group"
+       ]
+      },
+      "self": {
+       "constant_value": true
+      },
+      "to_port": {
+       "constant_value": 8080
+      },
+      "type": {
+       "constant_value": "ingress"
+      }
+     },
+     "schema_version": 2
+    },
+    {
+     "address": "aws_service_discovery_private_dns_namespace.private_dns_namespace",
+     "mode": "managed",
+     "type": "aws_service_discovery_private_dns_namespace",
+     "name": "private_dns_namespace",
+     "provider_config_key": "aws",
+     "expressions": {
+      "name": {
+       "references": [
+        "var.private_dns_namespace_name"
+       ]
+      },
+      "vpc": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_service_discovery_service.service_discovery_service_foodstore_foods",
+     "mode": "managed",
+     "type": "aws_service_discovery_service",
+     "name": "service_discovery_service_foodstore_foods",
+     "provider_config_key": "aws",
+     "expressions": {
+      "dns_config": [
+       {
+        "dns_records": [
+         {
+          "ttl": {
+           "constant_value": 60
+          },
+          "type": {
+           "constant_value": "SRV"
+          }
+         }
+        ],
+        "namespace_id": {
+         "references": [
+          "aws_service_discovery_private_dns_namespace.private_dns_namespace.id",
+          "aws_service_discovery_private_dns_namespace.private_dns_namespace"
+         ]
+        }
+       }
+      ],
+      "health_check_custom_config": [
+       {
+        "failure_threshold": {
+         "constant_value": 1
+        }
+       }
+      ],
+      "name": {
+       "constant_value": "foods.foodstore"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_service_discovery_service.service_discovery_service_petstore_pets",
+     "mode": "managed",
+     "type": "aws_service_discovery_service",
+     "name": "service_discovery_service_petstore_pets",
+     "provider_config_key": "aws",
+     "expressions": {
+      "dns_config": [
+       {
+        "dns_records": [
+         {
+          "ttl": {
+           "constant_value": 60
+          },
+          "type": {
+           "constant_value": "SRV"
+          }
+         }
+        ],
+        "namespace_id": {
+         "references": [
+          "aws_service_discovery_private_dns_namespace.private_dns_namespace.id",
+          "aws_service_discovery_private_dns_namespace.private_dns_namespace"
+         ]
+        }
+       }
+      ],
+      "health_check_custom_config": [
+       {
+        "failure_threshold": {
+         "constant_value": 1
+        }
+       }
+      ],
+      "name": {
+       "constant_value": "pets.petstore"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "aws_subnet.private_subnet_one",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "private_subnet_one",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "data.aws_availability_zones.available.names",
+        "data.aws_availability_zones.available"
+       ]
+      },
+      "cidr_block": {
+       "constant_value": "10.0.100.0/24"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_subnet.private_subnet_three",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "private_subnet_three",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "data.aws_availability_zones.available.names",
+        "data.aws_availability_zones.available"
+       ]
+      },
+      "cidr_block": {
+       "constant_value": "10.0.102.0/24"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_subnet.private_subnet_two",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "private_subnet_two",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "data.aws_availability_zones.available.names",
+        "data.aws_availability_zones.available"
+       ]
+      },
+      "cidr_block": {
+       "constant_value": "10.0.101.0/24"
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_subnet.public_subnet_one",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "public_subnet_one",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "data.aws_availability_zones.available.names",
+        "data.aws_availability_zones.available"
+       ]
+      },
+      "cidr_block": {
+       "constant_value": "10.0.0.0/24"
+      },
+      "map_public_ip_on_launch": {
+       "constant_value": true
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_subnet.public_subnet_three",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "public_subnet_three",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "data.aws_availability_zones.available.names",
+        "data.aws_availability_zones.available"
+       ]
+      },
+      "cidr_block": {
+       "constant_value": "10.0.2.0/24"
+      },
+      "map_public_ip_on_launch": {
+       "constant_value": true
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_subnet.public_subnet_two",
+     "mode": "managed",
+     "type": "aws_subnet",
+     "name": "public_subnet_two",
+     "provider_config_key": "aws",
+     "expressions": {
+      "availability_zone": {
+       "references": [
+        "data.aws_availability_zones.available.names",
+        "data.aws_availability_zones.available"
+       ]
+      },
+      "cidr_block": {
+       "constant_value": "10.0.1.0/24"
+      },
+      "map_public_ip_on_launch": {
+       "constant_value": true
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_vpc.vpc",
+     "mode": "managed",
+     "type": "aws_vpc",
+     "name": "vpc",
+     "provider_config_key": "aws",
+     "expressions": {
+      "cidr_block": {
+       "constant_value": "10.0.0.0/16"
+      },
+      "enable_dns_hostnames": {
+       "constant_value": true
+      },
+      "enable_dns_support": {
+       "constant_value": true
+      }
+     },
+     "schema_version": 1
+    },
+    {
+     "address": "aws_vpc_endpoint.dynamo_db_endpoint",
+     "mode": "managed",
+     "type": "aws_vpc_endpoint",
+     "name": "dynamo_db_endpoint",
+     "provider_config_key": "aws",
+     "expressions": {
+      "policy": {},
+      "route_table_ids": {
+       "references": [
+        "aws_route_table.private_route_table_one.id",
+        "aws_route_table.private_route_table_one",
+        "aws_route_table.private_route_table_two.id",
+        "aws_route_table.private_route_table_two",
+        "aws_route_table.private_route_table_three.id",
+        "aws_route_table.private_route_table_three"
+       ]
+      },
+      "service_name": {
+       "references": [
+        "data.aws_region.current.region",
+        "data.aws_region.current"
+       ]
+      },
+      "vpc_id": {
+       "references": [
+        "aws_vpc.vpc.id",
+        "aws_vpc.vpc"
+       ]
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_availability_zones.available",
+     "mode": "data",
+     "type": "aws_availability_zones",
+     "name": "available",
+     "provider_config_key": "aws",
+     "expressions": {
+      "state": {
+       "constant_value": "available"
+      }
+     },
+     "schema_version": 0
+    },
+    {
+     "address": "data.aws_region.current",
+     "mode": "data",
+     "type": "aws_region",
+     "name": "current",
+     "provider_config_key": "aws",
+     "expressions": {
+      "region": {
+       "constant_value": "us-east-1"
+      }
+     },
+     "schema_version": 0
+    }
+   ],
+   "variables": {
+    "auto_scaling_target_value_foodstore_foods": {
+     "type": "string",
+     "default": "50",
+     "description": "Target CPU utilizatio (%) for ECS services auto scaling"
+    },
+    "auto_scaling_target_value_petstore_pets": {
+     "type": "string",
+     "default": "50",
+     "description": "Target CPU utilizatio (%) for ECS services auto scaling"
+    },
+    "endpoint": {
+     "type": "string",
+     "default": "http://localhost:4566",
+     "description": "URL del emulador de AWS"
+    },
+    "environment_name": {
+     "type": "string",
+     "default": "ecsapi-demo",
+     "description": "A friendly environment name that will be used for namespacing all cluster resources. Example: staging, qa, or production"
+    },
+    "max_containers_foodstore_foods": {
+     "type": "string",
+     "default": "30",
+     "description": "Maximum number of ECS tasks per ECS service"
+    },
+    "max_containers_petstore_pets": {
+     "type": "string",
+     "default": "30",
+     "description": "Maximum number of ECS tasks per ECS service"
+    },
+    "min_containers_foodstore_foods": {
+     "type": "string",
+     "default": "3",
+     "description": "Minimum number of ECS tasks per ECS service"
+    },
+    "min_containers_petstore_pets": {
+     "type": "string",
+     "default": "3",
+     "description": "Minimum number of ECS tasks per ECS service"
+    },
+    "private_dns_namespace_name": {
+     "type": "string",
+     "default": "example.com",
+     "description": "The private DNS name that identifies the name that you want to use to locate your resources"
+    },
+    "region": {
+     "type": "string",
+     "default": "us-east-1",
+     "description": "Región de AWS que simula el emulador"
+    },
+    "ruta_lambda_zip": {
+     "type": "string",
+     "default": "../../recursos/lambda/minima.zip",
+     "description": "Ruta al paquete mínimo de las funciones Lambda"
+    }
+   }
+  }
+ }
+}
