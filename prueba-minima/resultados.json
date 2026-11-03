@@ -1,0 +1,102 @@
+{
+  "endpoint": "http://localhost:4566",
+  "region": "us-east-1",
+  "resultados": [
+    {
+      "caso": "C01",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C02",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C03",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C04",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C05",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C06",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C07",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C08",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C09",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C10",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C11",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    },
+    {
+      "caso": "C12",
+      "init": true,
+      "apply": true,
+      "planSinCambios": true,
+      "destroy": true,
+      "error": ""
+    }
+  ]
+}

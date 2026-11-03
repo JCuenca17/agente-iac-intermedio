@@ -21,3 +21,7 @@ trazas/
 Thumbs.db
 .vscode/
 .idea/
+
+# Prueba mínima
+prueba-minima/.trabajo/
+prueba-minima/.cache-plugins/

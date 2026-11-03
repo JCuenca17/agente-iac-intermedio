@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prueba-minima": "node scripts/prueba-minima.mjs"
   },
   "license": "UNLICENSED",
   "devDependencies": {

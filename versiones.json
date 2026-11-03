@@ -3,6 +3,7 @@
   "node": ">=22",
   "opentofu": "1.13.1",
   "opa": "1.22.0",
+  "proveedor_aws": "6.71.0",
   "emuladores": {
     "ministack": "1.5.36",
     "floci": "2.4.0"
