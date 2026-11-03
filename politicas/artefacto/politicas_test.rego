@@ -164,3 +164,13 @@ test_logs_con_retencion_pasa if {
 test_base_cifrada_y_privada_pasa if {
 	count(reglas([recurso("db", "aws_db_instance", {"storage_encrypted": true, "publicly_accessible": false})])) == 0
 }
+
+test_politica_de_clave_kms_no_es_politica_iam if {
+	doc := {"Statement": [{"Effect": "Allow", "Principal": {"AWS": "arn:aws:iam::000000000000:root"}, "Action": "kms:*", "Resource": "*"}]}
+	count(reglas([recurso("k", "aws_kms_key", {"policy": doc})])) == 0
+}
+
+test_politica_de_rol_con_comodin if {
+	doc := {"Statement": [{"Effect": "Allow", "Action": "kms:*", "Resource": "*"}]}
+	"iam-sin-comodin" in reglas([recurso("p", "aws_iam_role_policy", {"role": "x", "policy": doc})])
+}

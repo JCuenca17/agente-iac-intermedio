@@ -96,20 +96,22 @@ describe("M3 sobre estados reales", () => {
     expect(violacionesDesplegado(t)).toEqual([{ regla: "dynamodb-recuperacion", recurso: tabla.address }]);
   });
 
-  it("la referencia real de R1 no sigue las reglas de seguridad del proyecto: 3 violaciones", () => {
-    // El proyecto se escribió sin estas reglas; el modelo sí las recibe en su prompt.
+  it("la referencia real de R1 no sigue las reglas de seguridad del proyecto: 2 tablas sin recuperación", () => {
+    // El proyecto se escribió sin estas reglas; el modelo sí las recibe en su prompt. La política
+    // por defecto de su endpoint de VPC ("*") no es una política IAM y no cuenta.
     expect(violacionesDesplegado(estado("R1"))).toEqual([
       { recurso: "aws_dynamodb_table.dynamo_db_table_foodstore_foods", regla: "dynamodb-recuperacion" },
       { recurso: "aws_dynamodb_table.dynamo_db_table_petstore_pets", regla: "dynamodb-recuperacion" },
-      { recurso: "aws_vpc_endpoint.dynamo_db_endpoint", regla: "iam-sin-comodin" },
     ]);
   });
 
-  it("la referencia real de R2 tiene 2 violaciones: tabla sin recuperación y kms:* en la política de la clave", () => {
-    expect(violacionesDesplegado(estado("R2"))).toEqual([
-      { recurso: "aws_dynamodb_table.vault_storage", regla: "dynamodb-recuperacion" },
-      { recurso: "aws_kms_key.seal", regla: "iam-sin-comodin" },
-    ]);
+  it("la referencia real de R2 tiene 1 violación: tabla sin recuperación", () => {
+    // El "kms:*" para la cuenta raíz en la política de la clave es la política por defecto de AWS
+    // y no es una política IAM, así que no cuenta; un comodín en el rol sí contaría.
+    expect(violacionesDesplegado(estado("R2"))).toEqual([{ recurso: "aws_dynamodb_table.vault_storage", regla: "dynamodb-recuperacion" }]);
+    const conComodin = estado("R2");
+    valores(conComodin, "aws_iam_role_policy.vault_instance_s3_policy").policy = politica({ Effect: "Allow", Action: "s3:*", Resource: "*" });
+    expect(violacionesDesplegado(conComodin)).toContainEqual({ regla: "iam-sin-comodin", recurso: "aws_iam_role_policy.vault_instance_s3_policy" });
   });
 
   it("sin estado no hay violaciones", () => {

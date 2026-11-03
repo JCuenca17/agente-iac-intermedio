@@ -60,11 +60,24 @@ kms(q) if {
 deny contains {"regla": "iam-sin-comodin", "recurso": r.address} if {
 	some r in input.values.root_module.resources
 	r.mode == "managed"
+	r.type in tipos_iam
 	some documento in documentos(r.values)
 	some declaracion in declaraciones(documento)
 	lower(object.get(declaracion, "Effect", "Allow")) == "allow"
 	some accion in lista(object.get(declaracion, "Action", []))
 	comodin(accion)
+}
+
+# Recursos que son políticas IAM (de identidades y de confianza de roles). Las políticas de
+# recurso (claves KMS, endpoints de VPC, colas, buckets...) no entran: la política por defecto de
+# AWS para una clave KMS da "kms:*" a la cuenta raíz y no concede permisos por sí misma.
+tipos_iam := {
+	"aws_iam_policy",
+	"aws_iam_role_policy",
+	"aws_iam_user_policy",
+	"aws_iam_group_policy",
+	"aws_iam_role",
+	"aws_iam_policy_document",
 }
 
 documentos(valores) := {d |

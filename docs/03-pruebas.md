@@ -36,12 +36,12 @@ OpenTofu 1.13.1, OPA 1.22.0, proveedor AWS 6.71.0, Node 24 en Windows 11 y Node 
 
 | Nivel | Resultado |
 |---|---|
-| Unitario | 231 de 231 pruebas, en 24 archivos |
-| Políticas Rego | 30 de 30 |
+| Unitario | 271 de 271 pruebas, en 27 archivos |
+| Políticas Rego | 32 de 32 |
 | Integración | 7 de 7 en Floci (incluye el banco de errores con el validador real) |
 | Prueba mínima | 12 de 12 casos en Floci y 12 de 12 en MiniStack |
-| Proyecto real R1 | Despliega 57 recursos en Floci sin cambios pendientes; su lista M4 se cumple al 100 % sobre el estado real. La referencia tiene 3 violaciones de las reglas de seguridad del proyecto (dos tablas sin recuperación ante borrado y `*` en la política del endpoint de VPC). En Floci la destrucción falla por una limitación del emulador y el experimento lo reinicia (sección 6) |
-| Proyecto real R2 | Despliega 56 recursos en Floci sin cambios pendientes y se destruye; su lista M4 se cumple al 100 % sobre el estado real. La referencia tiene 2 violaciones de las reglas de seguridad del proyecto (tabla sin recuperación ante borrado y `kms:*` en la política de la clave), porque se escribió sin ellas |
+| Proyecto real R1 | Despliega 57 recursos en Floci sin cambios pendientes; su lista M4 se cumple al 100 % sobre el estado real. La referencia tiene 2 violaciones de las reglas de seguridad del proyecto: dos tablas sin recuperación ante borrado. En Floci la destrucción falla por una limitación del emulador y el experimento lo reinicia (sección 6) |
+| Proyecto real R2 | Despliega 56 recursos en Floci sin cambios pendientes y se destruye; su lista M4 se cumple al 100 % sobre el estado real. La referencia tiene 1 violación de las reglas de seguridad del proyecto (tabla sin recuperación ante borrado), porque se escribió sin ellas |
 | Proyecto grande P1 | Despliega 47 recursos en MiniStack y en Floci, sin cambios pendientes; su lista M4 se cumple al 100 % y M3 no tiene violaciones sobre el estado real |
 | Proyecto grande P2 | Despliega 40 recursos en Floci; su lista M4 se cumple al 100 % y M3 no tiene violaciones sobre el estado real. El plan posterior solo muestra las diferencias del emulador que ADR-019 trata como cosméticas. En MiniStack no llega a desplegar (sección 6) |
 | Instalación | Correcta en la imagen de Codespaces: OpenTofu y OPA con sumas SHA-256 verificadas; pasan las 162 pruebas unitarias y las 17 de políticas |
@@ -87,6 +87,7 @@ Detalle por archivo de pruebas unitarias:
 | En Floci, al borrar un servicio de ECS el contenedor de la tarea sigue corriendo, el clúster no se puede eliminar y los registros del descubrimiento de servicios no se quitan | Despliegue de R1 | Ante una destrucción fallida, el experimento elimina esos contenedores y reinicia Floci, que queda vacío |
 | El proyecto real R1 declaraba un grupo de seguridad con el ID de otro grupo como VPC (error de su traducción desde CloudFormation) | Despliegue de R1 | Se reemplazó por la regla que define la plantilla de CloudFormation del mismo proyecto; documentado en `ATRIBUCION-REALES.md` |
 | La regla "rol" de R2 contaba la política de la clave KMS como permiso del rol | Evaluación de M4 sobre el estado real de R2 | Solo se revisan las políticas del rol |
+| La regla de comodines (C3 y M3) revisaba el atributo `policy` de cualquier recurso, también las políticas de recurso: marcaba la política por defecto de AWS de una clave KMS (`kms:*` para la cuenta raíz) y la de un endpoint de VPC | Revisión de las violaciones de las referencias reales R1 y R2 | La regla revisa solo políticas IAM (de roles, usuarios, grupos, `aws_iam_policy` y documentos de política), como dice su texto; igual en C3, M3 y en las acciones IAM de M4 |
 | Floci informa la política de autoescalado de P2 como desactivada y no guarda los parámetros de RDS | Despliegue de P2 en Floci | Esas diferencias exactas se tratan como cosméticas al medir M1 (ADR-019) |
 | MiniStack no guarda las etiquetas de una regla de salida ni devuelve los grupos de destino de un autoescalado, no soporta `AttachLoadBalancerTargetGroups` y no crea la alarma de CloudWatch de P2 | Prueba mínima de C11 y de P2 | Floci como emulador principal (ADR-002); la referencia de C11 usa reglas dentro del grupo |
 | Las rutas a archivos de datos fallaban al ejecutar el código compilado en `dist/` | Ejecución desde `dist/` | Módulo único que encuentra la raíz del proyecto |

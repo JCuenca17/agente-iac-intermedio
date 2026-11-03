@@ -80,8 +80,21 @@ deny contains v if {
 
 atributos_politica := {"policy", "assume_role_policy", "inline_policy", "statement"}
 
+# Recursos que son políticas IAM (de identidades y de confianza de roles). Las políticas de
+# recurso (claves KMS, endpoints de VPC, colas, buckets...) no entran: la política por defecto de
+# AWS para una clave KMS da "kms:*" a la cuenta raíz y no concede permisos por sí misma.
+tipos_iam := {
+	"aws_iam_policy",
+	"aws_iam_role_policy",
+	"aws_iam_user_policy",
+	"aws_iam_group_policy",
+	"aws_iam_role",
+	"aws_iam_policy_document",
+}
+
 deny contains v if {
 	some i, r in input.recursos
+	r.tipo in tipos_iam
 	some nombre in atributos_politica
 	some documento in documentos(object.get(r.atributos, nombre, null))
 	walk(documento, [_, declaracion])
