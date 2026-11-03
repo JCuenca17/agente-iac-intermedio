@@ -1,0 +1,1932 @@
+{
+ "fuente": "registry.opentofu.org/hashicorp/aws",
+ "version": "6.71.0",
+ "recursos": {
+  "aws_sqs_queue": {
+   "atributos": {
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "content_based_deduplication": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "deduplication_scope": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "delay_seconds": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "fifo_queue": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "fifo_throughput_limit": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "kms_data_key_reuse_period_seconds": {
+     "tipo": "number",
+     "opcional": true,
+     "calculado": true
+    },
+    "kms_master_key_id": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "max_message_size": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "message_retention_seconds": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "name": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "name_prefix": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "policy": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "receive_wait_time_seconds": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "redrive_allow_policy": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "redrive_policy": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "sqs_managed_sse_enabled": {
+     "tipo": "bool",
+     "opcional": true,
+     "calculado": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "url": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "visibility_timeout_seconds": {
+     "tipo": "number",
+     "opcional": true
+    }
+   },
+   "bloques": {
+    "timeouts": {
+     "anidamiento": "single",
+     "atributos": {
+      "create": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "delete": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "update": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    }
+   }
+  },
+  "aws_s3_bucket": {
+   "atributos": {
+    "acceleration_status": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true,
+     "deprecado": true
+    },
+    "acl": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true,
+     "deprecado": true
+    },
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "bucket": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "bucket_domain_name": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "bucket_namespace": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "bucket_prefix": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "bucket_region": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "bucket_regional_domain_name": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "force_destroy": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "hosted_zone_id": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "object_lock_enabled": {
+     "tipo": "bool",
+     "opcional": true,
+     "calculado": true
+    },
+    "policy": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true,
+     "deprecado": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "request_payer": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true,
+     "deprecado": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "website_domain": {
+     "tipo": "string",
+     "calculado": true,
+     "deprecado": true
+    },
+    "website_endpoint": {
+     "tipo": "string",
+     "calculado": true,
+     "deprecado": true
+    }
+   },
+   "bloques": {
+    "cors_rule": {
+     "anidamiento": "list",
+     "deprecado": true,
+     "atributos": {
+      "allowed_headers": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "opcional": true
+      },
+      "allowed_methods": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "requerido": true
+      },
+      "allowed_origins": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "requerido": true
+      },
+      "expose_headers": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "opcional": true
+      },
+      "max_age_seconds": {
+       "tipo": "number",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "grant": {
+     "anidamiento": "set",
+     "deprecado": true,
+     "atributos": {
+      "id": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "permissions": {
+       "tipo": [
+        "set",
+        "string"
+       ],
+       "requerido": true
+      },
+      "type": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "uri": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "lifecycle_rule": {
+     "anidamiento": "list",
+     "deprecado": true,
+     "atributos": {
+      "abort_incomplete_multipart_upload_days": {
+       "tipo": "number",
+       "opcional": true
+      },
+      "enabled": {
+       "tipo": "bool",
+       "requerido": true
+      },
+      "id": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      },
+      "prefix": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "tags": {
+       "tipo": [
+        "map",
+        "string"
+       ],
+       "opcional": true
+      }
+     },
+     "bloques": {
+      "expiration": {
+       "anidamiento": "list",
+       "max": 1,
+       "atributos": {
+        "date": {
+         "tipo": "string",
+         "opcional": true
+        },
+        "days": {
+         "tipo": "number",
+         "opcional": true
+        },
+        "expired_object_delete_marker": {
+         "tipo": "bool",
+         "opcional": true
+        }
+       },
+       "bloques": {}
+      },
+      "noncurrent_version_expiration": {
+       "anidamiento": "list",
+       "max": 1,
+       "atributos": {
+        "days": {
+         "tipo": "number",
+         "opcional": true
+        }
+       },
+       "bloques": {}
+      },
+      "noncurrent_version_transition": {
+       "anidamiento": "set",
+       "atributos": {
+        "days": {
+         "tipo": "number",
+         "opcional": true
+        },
+        "storage_class": {
+         "tipo": "string",
+         "requerido": true
+        }
+       },
+       "bloques": {}
+      },
+      "transition": {
+       "anidamiento": "set",
+       "atributos": {
+        "date": {
+         "tipo": "string",
+         "opcional": true
+        },
+        "days": {
+         "tipo": "number",
+         "opcional": true
+        },
+        "storage_class": {
+         "tipo": "string",
+         "requerido": true
+        }
+       },
+       "bloques": {}
+      }
+     }
+    },
+    "logging": {
+     "anidamiento": "list",
+     "max": 1,
+     "deprecado": true,
+     "atributos": {
+      "target_bucket": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "target_prefix": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "object_lock_configuration": {
+     "anidamiento": "list",
+     "max": 1,
+     "deprecado": true,
+     "atributos": {
+      "object_lock_enabled": {
+       "tipo": "string",
+       "opcional": true,
+       "deprecado": true
+      }
+     },
+     "bloques": {
+      "rule": {
+       "anidamiento": "list",
+       "max": 1,
+       "deprecado": true,
+       "atributos": {},
+       "bloques": {
+        "default_retention": {
+         "anidamiento": "list",
+         "min": 1,
+         "max": 1,
+         "atributos": {
+          "days": {
+           "tipo": "number",
+           "opcional": true
+          },
+          "mode": {
+           "tipo": "string",
+           "requerido": true
+          },
+          "years": {
+           "tipo": "number",
+           "opcional": true
+          }
+         },
+         "bloques": {}
+        }
+       }
+      }
+     }
+    },
+    "replication_configuration": {
+     "anidamiento": "list",
+     "max": 1,
+     "deprecado": true,
+     "atributos": {
+      "role": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {
+      "rules": {
+       "anidamiento": "set",
+       "min": 1,
+       "atributos": {
+        "delete_marker_replication_status": {
+         "tipo": "string",
+         "opcional": true
+        },
+        "id": {
+         "tipo": "string",
+         "opcional": true
+        },
+        "prefix": {
+         "tipo": "string",
+         "opcional": true
+        },
+        "priority": {
+         "tipo": "number",
+         "opcional": true
+        },
+        "status": {
+         "tipo": "string",
+         "requerido": true
+        }
+       },
+       "bloques": {
+        "destination": {
+         "anidamiento": "list",
+         "min": 1,
+         "max": 1,
+         "atributos": {
+          "account_id": {
+           "tipo": "string",
+           "opcional": true
+          },
+          "bucket": {
+           "tipo": "string",
+           "requerido": true
+          },
+          "replica_kms_key_id": {
+           "tipo": "string",
+           "opcional": true
+          },
+          "storage_class": {
+           "tipo": "string",
+           "opcional": true
+          }
+         },
+         "bloques": {
+          "access_control_translation": {
+           "anidamiento": "list",
+           "max": 1,
+           "atributos": {
+            "owner": {
+             "tipo": "string",
+             "requerido": true
+            }
+           },
+           "bloques": {}
+          },
+          "metrics": {
+           "anidamiento": "list",
+           "max": 1,
+           "atributos": {
+            "minutes": {
+             "tipo": "number",
+             "opcional": true
+            },
+            "status": {
+             "tipo": "string",
+             "opcional": true
+            }
+           },
+           "bloques": {}
+          },
+          "replication_time": {
+           "anidamiento": "list",
+           "max": 1,
+           "atributos": {
+            "minutes": {
+             "tipo": "number",
+             "opcional": true
+            },
+            "status": {
+             "tipo": "string",
+             "opcional": true
+            }
+           },
+           "bloques": {}
+          }
+         }
+        },
+        "filter": {
+         "anidamiento": "list",
+         "max": 1,
+         "atributos": {
+          "prefix": {
+           "tipo": "string",
+           "opcional": true
+          },
+          "tags": {
+           "tipo": [
+            "map",
+            "string"
+           ],
+           "opcional": true
+          }
+         },
+         "bloques": {}
+        },
+        "source_selection_criteria": {
+         "anidamiento": "list",
+         "max": 1,
+         "atributos": {},
+         "bloques": {
+          "sse_kms_encrypted_objects": {
+           "anidamiento": "list",
+           "max": 1,
+           "atributos": {
+            "enabled": {
+             "tipo": "bool",
+             "requerido": true
+            }
+           },
+           "bloques": {}
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "server_side_encryption_configuration": {
+     "anidamiento": "list",
+     "max": 1,
+     "deprecado": true,
+     "atributos": {},
+     "bloques": {
+      "rule": {
+       "anidamiento": "list",
+       "min": 1,
+       "max": 1,
+       "atributos": {
+        "bucket_key_enabled": {
+         "tipo": "bool",
+         "opcional": true
+        }
+       },
+       "bloques": {
+        "apply_server_side_encryption_by_default": {
+         "anidamiento": "list",
+         "min": 1,
+         "max": 1,
+         "atributos": {
+          "kms_master_key_id": {
+           "tipo": "string",
+           "opcional": true
+          },
+          "sse_algorithm": {
+           "tipo": "string",
+           "requerido": true
+          }
+         },
+         "bloques": {}
+        }
+       }
+      }
+     }
+    },
+    "timeouts": {
+     "anidamiento": "single",
+     "atributos": {
+      "create": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "delete": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "read": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "update": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "versioning": {
+     "anidamiento": "list",
+     "max": 1,
+     "deprecado": true,
+     "atributos": {
+      "enabled": {
+       "tipo": "bool",
+       "opcional": true
+      },
+      "mfa_delete": {
+       "tipo": "bool",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "website": {
+     "anidamiento": "list",
+     "max": 1,
+     "deprecado": true,
+     "atributos": {
+      "error_document": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "index_document": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "redirect_all_requests_to": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "routing_rules": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    }
+   }
+  },
+  "aws_s3_bucket_versioning": {
+   "atributos": {
+    "bucket": {
+     "tipo": "string",
+     "requerido": true
+    },
+    "expected_bucket_owner": {
+     "tipo": "string",
+     "opcional": true,
+     "deprecado": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "mfa": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    }
+   },
+   "bloques": {
+    "versioning_configuration": {
+     "anidamiento": "list",
+     "min": 1,
+     "max": 1,
+     "atributos": {
+      "mfa_delete": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      },
+      "status": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    }
+   }
+  },
+  "aws_lambda_function": {
+   "atributos": {
+    "architectures": {
+     "tipo": [
+      "list",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "code_sha256": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "code_signing_config_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "description": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "filename": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "function_name": {
+     "tipo": "string",
+     "requerido": true
+    },
+    "handler": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "image_uri": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "invoke_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "kms_key_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "last_modified": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "layers": {
+     "tipo": [
+      "list",
+      "string"
+     ],
+     "opcional": true
+    },
+    "memory_size": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "package_type": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "publish": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "publish_to": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "qualified_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "qualified_invoke_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "replace_security_groups_on_destroy": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "replacement_security_group_ids": {
+     "tipo": [
+      "set",
+      "string"
+     ],
+     "opcional": true
+    },
+    "reserved_concurrent_executions": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "response_streaming_invoke_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "role": {
+     "tipo": "string",
+     "requerido": true
+    },
+    "runtime": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "s3_bucket": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "s3_key": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "s3_object_version": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "signing_job_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "signing_profile_version_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "skip_destroy": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "source_code_hash": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "source_code_size": {
+     "tipo": "number",
+     "calculado": true
+    },
+    "source_kms_key_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "timeout": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "use_resource_timeout_for_propagation": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "version": {
+     "tipo": "string",
+     "calculado": true
+    }
+   },
+   "bloques": {
+    "capacity_provider_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {},
+     "bloques": {
+      "lambda_managed_instances_capacity_provider_config": {
+       "anidamiento": "list",
+       "min": 1,
+       "max": 1,
+       "atributos": {
+        "capacity_provider_arn": {
+         "tipo": "string",
+         "requerido": true
+        },
+        "execution_environment_memory_gib_per_vcpu": {
+         "tipo": "number",
+         "opcional": true,
+         "calculado": true
+        },
+        "per_execution_environment_max_concurrency": {
+         "tipo": "number",
+         "opcional": true,
+         "calculado": true
+        }
+       },
+       "bloques": {}
+      }
+     }
+    },
+    "dead_letter_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "target_arn": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    },
+    "durable_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "execution_timeout": {
+       "tipo": "number",
+       "requerido": true
+      },
+      "kms_key_arn": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      },
+      "retention_period": {
+       "tipo": "number",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "environment": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "variables": {
+       "tipo": [
+        "map",
+        "string"
+       ],
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "ephemeral_storage": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "size": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "file_system_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "arn": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "local_mount_path": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    },
+    "image_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "command": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "opcional": true
+      },
+      "entry_point": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "opcional": true
+      },
+      "working_directory": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "logging_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "application_log_level": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "log_format": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "log_group": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      },
+      "system_log_level": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "snap_start": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "apply_on": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "optimization_status": {
+       "tipo": "string",
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "tenancy_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "tenant_isolation_mode": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    },
+    "timeouts": {
+     "anidamiento": "single",
+     "atributos": {
+      "create": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "delete": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "update": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "tracing_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "mode": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    },
+    "vpc_config": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "ipv6_allowed_for_dual_stack": {
+       "tipo": "bool",
+       "opcional": true
+      },
+      "security_group_ids": {
+       "tipo": [
+        "set",
+        "string"
+       ],
+       "requerido": true
+      },
+      "subnet_ids": {
+       "tipo": [
+        "set",
+        "string"
+       ],
+       "requerido": true
+      },
+      "vpc_id": {
+       "tipo": "string",
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    }
+   }
+  },
+  "aws_iam_role": {
+   "atributos": {
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "assume_role_policy": {
+     "tipo": "string",
+     "requerido": true
+    },
+    "create_date": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "description": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "force_detach_policies": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "managed_policy_arns": {
+     "tipo": [
+      "set",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true,
+     "deprecado": true
+    },
+    "max_session_duration": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "name": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "name_prefix": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "path": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "permissions_boundary": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "unique_id": {
+     "tipo": "string",
+     "calculado": true
+    }
+   },
+   "bloques": {
+    "inline_policy": {
+     "anidamiento": "set",
+     "deprecado": true,
+     "atributos": {
+      "name": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "policy": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    }
+   }
+  },
+  "aws_dynamodb_table": {
+   "atributos": {
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "billing_mode": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "deletion_protection_enabled": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "hash_key": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "name": {
+     "tipo": "string",
+     "requerido": true
+    },
+    "range_key": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "read_capacity": {
+     "tipo": "number",
+     "opcional": true,
+     "calculado": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "restore_backup_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "restore_date_time": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "restore_source_name": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "restore_source_table_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "restore_to_latest_time": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "stream_arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "stream_enabled": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "stream_label": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "stream_view_type": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "table_class": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "write_capacity": {
+     "tipo": "number",
+     "opcional": true,
+     "calculado": true
+    }
+   },
+   "bloques": {
+    "attribute": {
+     "anidamiento": "set",
+     "atributos": {
+      "name": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "type": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    },
+    "global_secondary_index": {
+     "anidamiento": "set",
+     "atributos": {
+      "hash_key": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true,
+       "deprecado": true
+      },
+      "name": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "non_key_attributes": {
+       "tipo": [
+        "set",
+        "string"
+       ],
+       "opcional": true
+      },
+      "projection_type": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "range_key": {
+       "tipo": "string",
+       "opcional": true,
+       "deprecado": true
+      },
+      "read_capacity": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      },
+      "write_capacity": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {
+      "key_schema": {
+       "anidamiento": "list",
+       "atributos": {
+        "attribute_name": {
+         "tipo": "string",
+         "requerido": true
+        },
+        "key_type": {
+         "tipo": "string",
+         "requerido": true
+        }
+       },
+       "bloques": {}
+      },
+      "on_demand_throughput": {
+       "anidamiento": "list",
+       "max": 1,
+       "atributos": {
+        "max_read_request_units": {
+         "tipo": "number",
+         "opcional": true,
+         "calculado": true
+        },
+        "max_write_request_units": {
+         "tipo": "number",
+         "opcional": true,
+         "calculado": true
+        }
+       },
+       "bloques": {}
+      },
+      "warm_throughput": {
+       "anidamiento": "list",
+       "max": 1,
+       "atributos": {
+        "read_units_per_second": {
+         "tipo": "number",
+         "opcional": true,
+         "calculado": true
+        },
+        "write_units_per_second": {
+         "tipo": "number",
+         "opcional": true,
+         "calculado": true
+        }
+       },
+       "bloques": {}
+      }
+     }
+    },
+    "global_table_witness": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "region_name": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "import_table": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "input_compression_type": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "input_format": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {
+      "input_format_options": {
+       "anidamiento": "list",
+       "max": 1,
+       "atributos": {},
+       "bloques": {
+        "csv": {
+         "anidamiento": "list",
+         "max": 1,
+         "atributos": {
+          "delimiter": {
+           "tipo": "string",
+           "opcional": true
+          },
+          "header_list": {
+           "tipo": [
+            "set",
+            "string"
+           ],
+           "opcional": true
+          }
+         },
+         "bloques": {}
+        }
+       }
+      },
+      "s3_bucket_source": {
+       "anidamiento": "list",
+       "min": 1,
+       "max": 1,
+       "atributos": {
+        "bucket": {
+         "tipo": "string",
+         "requerido": true
+        },
+        "bucket_owner": {
+         "tipo": "string",
+         "opcional": true
+        },
+        "key_prefix": {
+         "tipo": "string",
+         "opcional": true
+        }
+       },
+       "bloques": {}
+      }
+     }
+    },
+    "local_secondary_index": {
+     "anidamiento": "set",
+     "atributos": {
+      "name": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "non_key_attributes": {
+       "tipo": [
+        "list",
+        "string"
+       ],
+       "opcional": true
+      },
+      "projection_type": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "range_key": {
+       "tipo": "string",
+       "requerido": true
+      }
+     },
+     "bloques": {}
+    },
+    "on_demand_throughput": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "max_read_request_units": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      },
+      "max_write_request_units": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "point_in_time_recovery": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "enabled": {
+       "tipo": "bool",
+       "requerido": true
+      },
+      "recovery_period_in_days": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "replica": {
+     "anidamiento": "set",
+     "atributos": {
+      "arn": {
+       "tipo": "string",
+       "calculado": true
+      },
+      "consistency_mode": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "deletion_protection_enabled": {
+       "tipo": "bool",
+       "opcional": true,
+       "calculado": true
+      },
+      "kms_key_arn": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      },
+      "point_in_time_recovery": {
+       "tipo": "bool",
+       "opcional": true
+      },
+      "propagate_tags": {
+       "tipo": "bool",
+       "opcional": true
+      },
+      "region_name": {
+       "tipo": "string",
+       "requerido": true
+      },
+      "stream_arn": {
+       "tipo": "string",
+       "calculado": true
+      },
+      "stream_label": {
+       "tipo": "string",
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "server_side_encryption": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "enabled": {
+       "tipo": "bool",
+       "requerido": true
+      },
+      "kms_key_arn": {
+       "tipo": "string",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    },
+    "timeouts": {
+     "anidamiento": "single",
+     "atributos": {
+      "create": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "delete": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "update": {
+       "tipo": "string",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "ttl": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "attribute_name": {
+       "tipo": "string",
+       "opcional": true
+      },
+      "enabled": {
+       "tipo": "bool",
+       "opcional": true
+      }
+     },
+     "bloques": {}
+    },
+    "warm_throughput": {
+     "anidamiento": "list",
+     "max": 1,
+     "atributos": {
+      "read_units_per_second": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      },
+      "write_units_per_second": {
+       "tipo": "number",
+       "opcional": true,
+       "calculado": true
+      }
+     },
+     "bloques": {}
+    }
+   }
+  },
+  "aws_sns_topic": {
+   "atributos": {
+    "application_failure_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "application_success_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "application_success_feedback_sample_rate": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "archive_policy": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "beginning_archive_time": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "content_based_deduplication": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "delivery_policy": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "display_name": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "fifo_throughput_scope": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "fifo_topic": {
+     "tipo": "bool",
+     "opcional": true
+    },
+    "firehose_failure_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "firehose_success_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "firehose_success_feedback_sample_rate": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "http_failure_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "http_success_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "http_success_feedback_sample_rate": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "kms_master_key_id": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "lambda_failure_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "lambda_success_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "lambda_success_feedback_sample_rate": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "maximum_message_size": {
+     "tipo": "number",
+     "opcional": true,
+     "calculado": true
+    },
+    "name": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "name_prefix": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "owner": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "policy": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "signature_version": {
+     "tipo": "number",
+     "opcional": true,
+     "calculado": true
+    },
+    "sqs_failure_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "sqs_success_feedback_role_arn": {
+     "tipo": "string",
+     "opcional": true
+    },
+    "sqs_success_feedback_sample_rate": {
+     "tipo": "number",
+     "opcional": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    },
+    "tracing_config": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    }
+   },
+   "bloques": {}
+  },
+  "aws_media_store_container": {
+   "deprecado": true,
+   "atributos": {
+    "arn": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "endpoint": {
+     "tipo": "string",
+     "calculado": true
+    },
+    "id": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "name": {
+     "tipo": "string",
+     "requerido": true
+    },
+    "region": {
+     "tipo": "string",
+     "opcional": true,
+     "calculado": true
+    },
+    "tags": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true
+    },
+    "tags_all": {
+     "tipo": [
+      "map",
+      "string"
+     ],
+     "opcional": true,
+     "calculado": true
+    }
+   },
+   "bloques": {}
+  }
+ }
+}
