@@ -8,6 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "ayuda": "node scripts/ayuda.mjs",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run && opa test politicas",

@@ -15,9 +15,10 @@ En desarrollo.
 | [`docs/00-metodologia.md`](docs/00-metodologia.md) | Metodología (Design Science Research) y evidencia de cada actividad |
 | [`docs/01-requisitos.md`](docs/01-requisitos.md) | Especificación de requisitos con su origen en la revisión sistemática |
 | [`docs/02-arquitectura.md`](docs/02-arquitectura.md) | Arquitectura (arc42 resumido): contexto, contenedores, componentes, ejecución, despliegue y riesgos |
-| [`docs/adr/`](docs/adr/) | Una ficha por decisión técnica (ADR-000 a ADR-019) con alternativas y consecuencias |
+| [`docs/adr/`](docs/adr/) | Una ficha por decisión técnica (ADR-000 a ADR-020) con alternativas y consecuencias |
 | [`docs/03-pruebas.md`](docs/03-pruebas.md) | Plan y reporte de pruebas, defectos encontrados y matriz de trazabilidad requisito → módulo → prueba |
 | [`docs/04-diseno-experimental.md`](docs/04-diseno-experimental.md) | Diseño experimental: preguntas, casos, configuraciones, métricas, análisis, piloto, presupuesto y amenazas a la validez |
+| [`docs/05-manual-de-uso.md`](docs/05-manual-de-uso.md) | Manual de uso: configuración, todos los comandos con sus opciones y ejemplos, y problemas frecuentes. `npm run ayuda` los lista en la terminal |
 
 ## Requisitos
 
@@ -83,8 +84,9 @@ La misma configuración (`.devcontainer/`) sirve para abrir el proyecto en un co
 |---|---|
 | `npm run agente -- "<requerimiento>"` | Genera el diseño, lo valida, abre la revisión y despliega en el emulador (`--ayuda` para ver las opciones) |
 | `npm run resumen -- <carpeta>` | Resume un experimento: `resumen.md`, `resumen.json` y `resumen.html` (página con gráficos de M1 a M6 y las comparaciones, sin conexión a internet) |
+| `npm run ayuda` | Lista todos los comandos con un ejemplo de cada uno |
 | `npm run doctor` | Revisa herramientas, configuración y emulador |
-| `npm run banco-errores` | Mide qué capa detecta cada uno de 40 errores insertados a mano (sin modelo) y guarda el reporte en `experimento/banco-errores/` |
+| `npm run banco-errores` | Mide qué capa detecta cada uno de 43 errores insertados a mano (sin modelo) y guarda el reporte en `experimento/banco-errores/` |
 | `npm run iaceval:preparar` | Descarga IaC-Eval (versión fijada) y selecciona las tareas cuya referencia funciona en el emulador; las deja en `experimento/iaceval/` |
 | `npm run resumen -- resultados/<fecha>` | Resume un experimento: métricas por configuración y nivel, intervalos de confianza y comparaciones pareadas (escribe `resumen.md` y `resumen.json`) |
 | `npm run experimento -- --casos C01,C02 --config T,B0 --repeticiones 3` | Ejecuta el experimento y guarda una fila por corrida en `resultados/<fecha>/resultados.jsonl`; se puede reanudar (`--ayuda` para ver las opciones) |
