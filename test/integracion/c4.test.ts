@@ -24,21 +24,21 @@ const nuevoDir = () => {
 afterAll(() => dirs.forEach((d) => rmSync(d, { recursive: true, force: true })));
 
 describe("C4 contra el emulador", () => {
-  it("valida y planifica el artefacto de C03 sin errores", () => {
+  it("valida y planifica el artefacto de C03 sin errores", async () => {
     const dir = nuevoDir();
     prepararDirectorio(dir, traducir(c03, esquema, opciones));
-    const r = validarConOpenTofu(dir, c03);
+    const r = await validarConOpenTofu(dir, c03);
     expect(r.errores).toEqual([]);
     expect(r.resumen).toEqual({ crear: 2, cambiar: 0, destruir: 0 });
     expect(r.plan).toHaveProperty("planned_values");
   });
 
-  it("ubica en el artefacto un valor fuera de rango (lo detecta validate, antes del plan)", () => {
+  it("ubica en el artefacto un valor fuera de rango (lo detecta validate, antes del plan)", async () => {
     const a = structuredClone(c03);
     a.recursos[1].atributos.delay_seconds = 99999;
     const dir = nuevoDir();
     prepararDirectorio(dir, traducir(a, esquema, opciones));
-    const r = validarConOpenTofu(dir, a);
+    const r = await validarConOpenTofu(dir, a);
     expect(r.valido).toBe(false);
     expect(r.errores[0]).toMatchObject({ capa: "C4", ruta: "/recursos/1/atributos/delay_seconds", regla: "tofu-validate" });
   });

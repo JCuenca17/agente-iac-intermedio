@@ -1,14 +1,13 @@
-import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { escaparPuntero, type Artefacto } from "../artefacto/tipos.js";
 import { ZIP_LAMBDA, type ResultadoTraduccion } from "../traductor/opentofu.js";
 import type { ErrorValidacion, ResultadoValidacion } from "./tipos.js";
 import { enRaiz } from "../rutas.js";
+import { ejecutarTofu as tofu } from "../tofu.js";
 
 const LOCK = enRaiz("prueba-minima", ".terraform.lock.hcl");
 const ZIP = enRaiz("recursos", "lambda", "minima.zip");
-const CACHE_PLUGINS = enRaiz(".cache", "plugins");
 
 interface Diagnostico {
   severity: string;
@@ -74,17 +73,6 @@ export function resumenDePlan(salida: string): ResumenPlan | undefined {
   return { crear: c.add, cambiar: c.change, destruir: c.remove };
 }
 
-function tofu(args: string[], dir: string) {
-  mkdirSync(CACHE_PLUGINS, { recursive: true });
-  const r = spawnSync("tofu", args, {
-    cwd: dir,
-    encoding: "utf8",
-    maxBuffer: 256 * 1024 * 1024,
-    env: { ...process.env, TF_PLUGIN_CACHE_DIR: CACHE_PLUGINS, TF_IN_AUTOMATION: "1" },
-  });
-  if (r.error) throw new Error(`No se pudo ejecutar tofu: ${r.error.message}. Revisa la instalación con npm run doctor`);
-  return { codigo: r.status ?? 1, salida: r.stdout ?? "", error: r.stderr ?? "" };
-}
 
 /** Escribe main.tf.json, el lock del proveedor fijado y los archivos auxiliares en `dir`. */
 export function prepararDirectorio(dir: string, traduccion: ResultadoTraduccion): void {
@@ -98,19 +86,19 @@ export function prepararDirectorio(dir: string, traduccion: ResultadoTraduccion)
  * C4: `tofu init`, `tofu validate` y `tofu plan` contra el emulador, sin crear nada.
  * Si todo sale bien, devuelve también el plan en JSON.
  */
-export function validarConOpenTofu(dir: string, artefacto?: Artefacto): ResultadoC4 {
+export async function validarConOpenTofu(dir: string, artefacto?: Artefacto): Promise<ResultadoC4> {
   if (!existsSync(join(dir, ".terraform"))) {
-    const init = tofu(["init", "-input=false", "-no-color"], dir);
+    const init = await tofu(["init", "-input=false", "-no-color"], dir);
     if (init.codigo !== 0) {
       return { valido: false, errores: [{ capa: "C4", ruta: "/", regla: "tofu-init", mensaje: (init.error || init.salida).trim().slice(0, 500) }] };
     }
   }
 
-  const validate = tofu(["validate", "-json", "-no-color"], dir);
+  const validate = await tofu(["validate", "-json", "-no-color"], dir);
   const erroresValidate = erroresDeValidate(validate.salida, artefacto);
   if (erroresValidate.length) return { valido: false, errores: erroresValidate };
 
-  const plan = tofu(["plan", "-json", "-input=false", "-no-color", "-out=plan.tfplan"], dir);
+  const plan = await tofu(["plan", "-json", "-input=false", "-no-color", "-out=plan.tfplan"], dir);
   const erroresPlan = erroresDePlan(plan.salida, artefacto);
   if (plan.codigo !== 0 || erroresPlan.length) {
     const errores = erroresPlan.length
@@ -119,6 +107,6 @@ export function validarConOpenTofu(dir: string, artefacto?: Artefacto): Resultad
     return { valido: false, errores };
   }
 
-  const mostrar = tofu(["show", "-json", "plan.tfplan"], dir);
+  const mostrar = await tofu(["show", "-json", "plan.tfplan"], dir);
   return { valido: true, errores: [], plan: JSON.parse(mostrar.salida), resumen: resumenDePlan(plan.salida) };
 }
