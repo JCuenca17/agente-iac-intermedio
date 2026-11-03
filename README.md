@@ -17,6 +17,7 @@ En desarrollo.
 | [`docs/02-arquitectura.md`](docs/02-arquitectura.md) | Arquitectura (arc42 resumido): contexto, contenedores, componentes, ejecución, despliegue y riesgos |
 | [`docs/adr/`](docs/adr/) | Una ficha por decisión técnica (ADR-000 a ADR-019) con alternativas y consecuencias |
 | [`docs/03-pruebas.md`](docs/03-pruebas.md) | Plan y reporte de pruebas, defectos encontrados y matriz de trazabilidad requisito → módulo → prueba |
+| [`docs/04-diseno-experimental.md`](docs/04-diseno-experimental.md) | Diseño experimental: preguntas, casos, configuraciones, métricas, análisis, piloto, presupuesto y amenazas a la validez |
 
 ## Requisitos
 
