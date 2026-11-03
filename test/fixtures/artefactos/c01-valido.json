@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "resumen": "Bucket privado para respaldos, con versionado, cifrado del lado del servidor y bloqueo de acceso público.",
+  "recursos": [
+    {
+      "id": "respaldos",
+      "tipo": "aws_s3_bucket",
+      "proposito": "Guarda los respaldos.",
+      "requisito": "bucket para respaldos",
+      "atributos": { "bucket": "c01-respaldos" }
+    },
+    {
+      "id": "respaldos_versionado",
+      "tipo": "aws_s3_bucket_versioning",
+      "proposito": "Conserva versiones anteriores de cada respaldo.",
+      "requisito": "con versionado",
+      "atributos": { "bucket": "${ref:respaldos.id}", "versioning_configuration": { "status": "Enabled" } }
+    },
+    {
+      "id": "respaldos_cifrado",
+      "tipo": "aws_s3_bucket_server_side_encryption_configuration",
+      "proposito": "Cifra los objetos en reposo.",
+      "requisito": "cifrado",
+      "atributos": {
+        "bucket": "${ref:respaldos.id}",
+        "rule": { "apply_server_side_encryption_by_default": { "sse_algorithm": "AES256" } }
+      }
+    },
+    {
+      "id": "respaldos_bloqueo",
+      "tipo": "aws_s3_bucket_public_access_block",
+      "proposito": "Impide cualquier acceso público.",
+      "requisito": "privado",
+      "atributos": {
+        "bucket": "${ref:respaldos.id}",
+        "block_public_acls": true,
+        "block_public_policy": true,
+        "ignore_public_acls": true,
+        "restrict_public_buckets": true
+      }
+    }
+  ],
+  "relaciones": [
+    { "origen": "respaldos_versionado", "destino": "respaldos", "tipo": "protege" },
+    { "origen": "respaldos_cifrado", "destino": "respaldos", "tipo": "protege" },
+    { "origen": "respaldos_bloqueo", "destino": "respaldos", "tipo": "protege" }
+  ]
+}

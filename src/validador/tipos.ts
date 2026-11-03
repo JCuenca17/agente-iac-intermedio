@@ -1,5 +1,8 @@
-/** Capas del validador, de la más barata a la más costosa. */
-export type Capa = "C1" | "C2" | "C3" | "C4";
+/**
+ * Capas del validador, de la más barata a la más costosa. C0 no es una capa de validación:
+ * marca una respuesta del modelo que ni siquiera se pudo leer como artefacto.
+ */
+export type Capa = "C0" | "C1" | "C2" | "C3" | "C4";
 
 /**
  * Un error encontrado por alguna capa. Se usa tanto para el reporte a la persona

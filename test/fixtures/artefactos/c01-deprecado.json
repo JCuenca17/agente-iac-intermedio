@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "resumen": "Bucket para respaldos con versionado y cifrado (forma antigua del proveedor).",
+  "recursos": [
+    {
+      "id": "respaldos",
+      "tipo": "aws_s3_bucket",
+      "proposito": "Guarda los respaldos.",
+      "atributos": {
+        "bucket": "c01-respaldos",
+        "acl": "private",
+        "versioning": { "enabled": true },
+        "server_side_encryption_configuration": {
+          "rule": { "apply_server_side_encryption_by_default": { "sse_algorithm": "AES256" } }
+        }
+      }
+    }
+  ],
+  "relaciones": []
+}
