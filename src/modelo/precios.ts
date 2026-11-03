@@ -7,6 +7,9 @@ const precios = JSON.parse(readFileSync(enRaiz("precios.json"), "utf8")) as {
   multiplicadores_cache: { escritura: number; lectura: number };
 };
 
+/** true si precios.json tiene el precio del modelo. */
+export const tienePrecio = (modelo: string): boolean => modelo in precios.modelos;
+
 /** Costo estimado en USD a precio de lista. Si el modelo no está en precios.json, lanza un error. */
 export function estimarCosto(modelo: string, uso: UsoTokens): number {
   const p = precios.modelos[modelo];

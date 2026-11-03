@@ -2,10 +2,16 @@ import type { Configuracion } from "../configuracion.js";
 import { ProveedorAnthropic } from "./anthropic.js";
 import { ProveedorClaudeCode } from "./claude-code.js";
 import { ProveedorGrabado } from "./grabado.js";
+import { tienePrecio } from "./precios.js";
 import type { ProveedorModelo } from "./tipos.js";
 
 /** Crea el proveedor del modelo indicado en la configuración. */
 export function crearProveedor(config: Configuracion, archivoRespuestas?: string): ProveedorModelo {
+  // Sin precio no se puede medir el costo ni aplicar los límites de gasto: se avisa antes de
+  // la primera llamada, no después de que la API ya cobró.
+  if (config.llmProveedor !== "grabado" && !tienePrecio(config.llmModelo)) {
+    throw new Error(`No hay precio para el modelo "${config.llmModelo}" en precios.json; agrégalo antes de usarlo`);
+  }
   switch (config.llmProveedor) {
     case "grabado":
       if (!archivoRespuestas) {

@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { enRaiz } from "../rutas.js";
+import { TIEMPO_LIMITE_OPA_MS } from "../tofu.js";
 
 export interface Violacion {
   regla: string;
@@ -15,7 +16,7 @@ const DIR = enRaiz("politicas", "desplegado");
 export function violacionesDesplegado(estado: unknown): Violacion[] {
   const r = spawnSync("opa", ["eval", "--stdin-input", "--format", "json", "-d", DIR, "data.desplegado.politicas.deny"], {
     input: JSON.stringify(estado ?? {}),
-    encoding: "utf8",
+    encoding: "utf8", timeout: TIEMPO_LIMITE_OPA_MS,
     maxBuffer: 256 * 1024 * 1024,
   });
   if (r.error) throw new Error(`No se pudo ejecutar opa: ${r.error.message}`);

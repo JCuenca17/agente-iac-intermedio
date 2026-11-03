@@ -36,7 +36,7 @@ const ejecutarReal: EjecutarClaude = (args, entrada, env) => {
   // proyecto ni su memoria: el contexto debe ser solo el prompt de la herramienta.
   const cwd = mkdtempSync(join(tmpdir(), "agente-iac-claude-"));
   try {
-    const r = spawnSync(resolverClaude(), args, { cwd, input: entrada, env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    const r = spawnSync(resolverClaude(), args, { cwd, input: entrada, env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 600_000 });
     if (r.error) throw new Error(`No se pudo ejecutar claude: ${r.error.message}. Indica la ruta con CLAUDE_BIN`);
     return { codigo: r.status ?? 1, salida: r.stdout ?? "", error: r.stderr ?? "" };
   } finally {

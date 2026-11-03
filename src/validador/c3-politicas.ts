@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { enRaiz } from "../rutas.js";
 import type { ErrorValidacion, ResultadoValidacion } from "./tipos.js";
+import { TIEMPO_LIMITE_OPA_MS } from "../tofu.js";
 
 const DIR_POLITICAS = enRaiz("politicas", "artefacto");
 const CONSULTA = "data.artefacto.politicas.deny";
@@ -18,7 +19,7 @@ interface Violacion {
 export function validarPoliticas(artefacto: unknown, dirPoliticas = DIR_POLITICAS): ResultadoValidacion {
   const r = spawnSync("opa", ["eval", "--stdin-input", "--format", "json", "-d", dirPoliticas, CONSULTA], {
     input: JSON.stringify(artefacto),
-    encoding: "utf8",
+    encoding: "utf8", timeout: TIEMPO_LIMITE_OPA_MS,
     maxBuffer: 64 * 1024 * 1024,
   });
   if (r.error) throw new Error(`No se pudo ejecutar opa: ${r.error.message}. Revisa la instalación con npm run doctor`);

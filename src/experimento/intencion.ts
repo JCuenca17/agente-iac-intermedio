@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { enRaiz } from "../rutas.js";
+import { TIEMPO_LIMITE_OPA_MS } from "../tofu.js";
 
 export interface ResultadoIntencion {
   caso: string;
@@ -38,7 +39,7 @@ export function evaluarIntencion(caso: string, plan: unknown): ResultadoIntencio
   const consulta = `x := {"requisitos": ${paquete}.requisitos, "cumplidos": [k | some k in ${paquete}.cumple]}`;
   const r = spawnSync("opa", ["eval", "--stdin-input", "--format", "json", ...DIRS_INTENCION.flatMap((d) => ["-d", d]), consulta], {
     input: JSON.stringify(plan),
-    encoding: "utf8",
+    encoding: "utf8", timeout: TIEMPO_LIMITE_OPA_MS,
     maxBuffer: 256 * 1024 * 1024,
   });
   if (r.error) throw new Error(`No se pudo ejecutar opa: ${r.error.message}`);

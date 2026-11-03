@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { enRaiz } from "../rutas.js";
 import { validarConOpenTofu } from "../validador/c4-opentofu.js";
+import { TIEMPO_LIMITE_OPA_MS } from "../tofu.js";
 
 /**
  * Evalúa la política de intención de una tarea de IaC-Eval sobre un plan, igual que su
@@ -17,7 +18,7 @@ export function evaluarRegoIaCEval(politica: string, plan: unknown): { correcto:
     writeFileSync(archivo, politica);
     const args = ["eval", "--stdin-input", "--format", "json", "-d", archivo, "data"];
     if (!politica.includes("import rego.v1")) args.splice(1, 0, "--v0-compatible");
-    const r = spawnSync("opa", args, { input: JSON.stringify(plan), encoding: "utf8", maxBuffer: 256 * 1024 * 1024 });
+    const r = spawnSync("opa", args, { input: JSON.stringify(plan), encoding: "utf8", timeout: TIEMPO_LIMITE_OPA_MS, maxBuffer: 256 * 1024 * 1024 });
     if (r.error) throw new Error(`No se pudo ejecutar opa: ${r.error.message}`);
     if (r.status !== 0) return { correcto: false, error: (r.stderr || r.stdout).slice(0, 300) };
     const hojas: unknown[] = [];

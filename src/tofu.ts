@@ -4,6 +4,19 @@ import { enRaiz } from "./rutas.js";
 
 const CACHE_PLUGINS = enRaiz(".cache", "plugins");
 
+/**
+ * Tiempo límite de un comando de OpenTofu (TOFU_TIEMPO_LIMITE_S, por defecto 20 minutos).
+ * Si el emulador se cuelga, el comando se corta y cuenta como fallido en lugar de detener
+ * el experimento.
+ */
+export function tiempoLimiteTofuMs(): number {
+  const s = Number(process.env.TOFU_TIEMPO_LIMITE_S);
+  return (Number.isFinite(s) && s > 0 ? s : 1200) * 1000;
+}
+
+/** Tiempo límite de una evaluación de OPA (2 minutos). */
+export const TIEMPO_LIMITE_OPA_MS = 120_000;
+
 export interface SalidaTofu {
   codigo: number;
   salida: string;
@@ -57,9 +70,24 @@ export function ejecutarTofu(args: string[], dir: string): Promise<SalidaTofu> {
     const error: Buffer[] = [];
     p.stdout.on("data", (d: Buffer) => salida.push(d));
     p.stderr.on("data", (d: Buffer) => error.push(d));
-    p.on("error", (e) => rechazar(new Error(`No se pudo ejecutar tofu: ${e.message}. Revisa la instalación con npm run doctor`)));
-    p.on("close", (codigo) =>
-      resolver({ codigo: codigo ?? 1, salida: Buffer.concat(salida).toString("utf8"), error: Buffer.concat(error).toString("utf8") }),
-    );
+    const limite = tiempoLimiteTofuMs();
+    let vencido = false;
+    const reloj = setTimeout(() => {
+      vencido = true;
+      p.kill();
+    }, limite);
+    p.on("error", (e) => {
+      clearTimeout(reloj);
+      rechazar(new Error(`No se pudo ejecutar tofu: ${e.message}. Revisa la instalación con npm run doctor`));
+    });
+    p.on("close", (codigo) => {
+      clearTimeout(reloj);
+      const textoError = Buffer.concat(error).toString("utf8");
+      resolver({
+        codigo: vencido ? 124 : (codigo ?? 1),
+        salida: Buffer.concat(salida).toString("utf8"),
+        error: vencido ? `tofu ${args[0]} superó el tiempo límite de ${limite / 1000} s y se detuvo.\n${textoError}` : textoError,
+      });
+    });
   });
 }

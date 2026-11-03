@@ -44,10 +44,12 @@ async function esperarEmulador(endpoint: string): Promise<void> {
 function crearReinicio(config: ConfigHerramienta): () => Promise<void> {
   return async () => {
     if (config.emulador === "ministack") {
-      await fetch(`${config.awsEndpoint}/_ministack/reset`, { method: "POST" }).catch(() => undefined);
+      const r = await fetch(`${config.awsEndpoint}/_ministack/reset`, { method: "POST" });
+      if (!r.ok) throw new Error(`MiniStack no se reinició (HTTP ${r.status})`);
       return;
     }
-    spawnSync("docker", ["restart", config.flociContenedor], { encoding: "utf8" });
+    const r = spawnSync("docker", ["restart", config.flociContenedor], { encoding: "utf8" });
+    if (r.status !== 0) throw new Error(`docker restart ${config.flociContenedor} falló: ${(r.stderr || r.error?.message || "").trim()}`);
     await esperarEmulador(config.awsEndpoint);
   };
 }
@@ -76,13 +78,18 @@ async function main(): Promise<number> {
   const grandes = propios.filter((c) => c.startsWith("P"));
   const dirIaCEval = enRaiz("experimento", "iaceval");
   const tareasIaCEval = existsSync(dirIaCEval) ? readdirSync(dirIaCEval).filter((c) => /^IE\d+$/.test(c)).sort() : [];
-  const casos = values.casos
+  const lista = values.casos
     ? values.casos.split(",").map((c) => c.trim()).flatMap((c) => (c.toLowerCase() === "iaceval" ? tareasIaCEval : c.toLowerCase() === "grandes" ? grandes : [c.toUpperCase()]))
     : todos;
-  const configuraciones = (values.config ? values.config.split(",").map((c) => c.trim().toUpperCase()) : [...CONFIGURACIONES]) as Configuracion[];
+  // Sin duplicados: la misma combinación dos veces escribiría en la misma carpeta.
+  const casos = [...new Set(lista)];
+  const configuraciones = [
+    ...new Set(values.config ? values.config.split(",").map((c) => c.trim().toUpperCase()) : [...CONFIGURACIONES]),
+  ] as Configuracion[];
   for (const c of configuraciones) if (!(CONFIGURACIONES as readonly string[]).includes(c)) throw new Error(`Configuración desconocida: ${c}`);
   for (const c of casos) if (!propios.includes(c) && !tareasIaCEval.includes(c)) throw new Error(`Caso desconocido: ${c}`);
   const repeticiones = Number(values.repeticiones);
+  if (!Number.isInteger(repeticiones) || repeticiones < 1) throw new Error(`--repeticiones debe ser un entero mayor o igual que 1 (se recibió "${values.repeticiones}")`);
   const sello = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const salida = resolve(values.salida ?? join(enRaiz("resultados"), sello));
 
