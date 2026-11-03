@@ -14,7 +14,9 @@
     "doctor": "node scripts/doctor.mjs",
     "prueba-minima": "node scripts/prueba-minima.mjs",
     "esquema-proveedor": "node scripts/esquema-proveedor.mjs",
-    "test:integracion": "vitest run --config vitest.integracion.config.ts"
+    "test:integracion": "vitest run --config vitest.integracion.config.ts",
+    "preagente": "tsc",
+    "agente": "node dist/src/cli.js"
   },
   "license": "UNLICENSED",
   "devDependencies": {
@@ -25,5 +27,8 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0",
     "ajv": "^8.20.0"
+  },
+  "bin": {
+    "agente-iac": "dist/src/cli.js"
   }
 }

@@ -9,7 +9,7 @@ import { Registro } from "../trazas/registro.js";
 import { validarEstructura } from "../validador/c1-estructura.js";
 import { validarSemantica } from "../validador/c2-semantica.js";
 import { validarPoliticas } from "../validador/c3-politicas.js";
-import { prepararDirectorio, validarConOpenTofu, type ResultadoC4 } from "../validador/c4-opentofu.js";
+import { prepararDirectorio, validarConOpenTofu, type ResultadoC4, type ResumenPlan } from "../validador/c4-opentofu.js";
 import type { Capa, ErrorValidacion } from "../validador/tipos.js";
 
 export interface ContextoValidacion {
@@ -98,6 +98,7 @@ export interface ResultadoCiclo {
   artefacto?: Artefacto;
   traduccion?: ResultadoTraduccion;
   plan?: unknown;
+  resumenPlan?: ResumenPlan;
   /** Carpeta con el main.tf.json aceptado, lista para el despliegue. */
   dirFinal?: string;
   /** Errores de cada iteración (vacío en la que pasó). */
@@ -182,6 +183,7 @@ export async function ejecutarCiclo(requerimiento: string, o: OpcionesCiclo): Pr
           artefacto: gen.artefacto as Artefacto,
           traduccion: v.traduccion,
           plan: v.c4?.plan,
+          resumenPlan: v.c4?.resumen,
           dirFinal: dir,
         };
       }

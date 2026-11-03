@@ -54,6 +54,7 @@ npm run doctor              # revisa que todo esté listo
 
 | Comando | Qué hace |
 |---|---|
+| `npm run agente -- "<requerimiento>"` | Genera el diseño, lo valida, abre la revisión y despliega en el emulador (`--ayuda` para ver las opciones) |
 | `npm run doctor` | Revisa herramientas, configuración y emulador |
 | `npm run esquema-proveedor` | Genera el índice del esquema del proveedor AWS que usan el RAG y la capa C2 |
 | `npm run prueba-minima` | Despliega las 12 soluciones de referencia en el emulador (ver `prueba-minima/README.md`) |
