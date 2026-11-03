@@ -44,7 +44,7 @@ Doce requerimientos en tres niveles. Cada uno tiene una solución de referencia 
 
 ### 3.3 IaC-Eval
 
-Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público para esta tarea según S12. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política.
+Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público para esta tarea según S12. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política. Con 30 intentos por nivel quedaron 38 tareas: 10, 10, 6, 7, 3 y 2 en los niveles 1 a 6. Los niveles altos tienen menos porque usan servicios que el emulador no soporta o referencias que no cumplen su propia política (`experimento/iaceval/seleccion.json`).
 
 ## 4. Configuraciones
 
@@ -53,9 +53,11 @@ Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público pa
 | T | Herramienta completa | Sí | Sí | Hasta 3 | Sí |
 | B0 | Generación directa | No (el modelo escribe OpenTofu) | No | No | No |
 | B1 | Directa con retroalimentación | No | Solo validate y plan | Hasta 3 | No |
-| A1 | Sin validador | Sí | No | No | Sí |
+| A1 | Sin validador | Sí | No | Solo errores de formato | Sí |
 | A2 | Sin retroalimentación | Sí | Sí, un intento | No | Sí |
 | A3 | Sin consulta al esquema | Sí | Sí | Hasta 3 | No |
+
+En A1 el modelo vuelve a responder solo si su respuesta no se pudo leer como JSON: sin una respuesta legible no hay nada que traducir. Así A1 difiere de T únicamente en las capas C1-C4.
 
 B1 separa el efecto del artefacto intermedio del efecto de iterar con los errores de la herramienta, que ya usa el 41.7 % de los estudios. Todas las configuraciones reciben la misma versión del proveedor, los mismos requisitos de seguridad y la misma configuración del emulador. En el experimento la revisión humana se aprueba de forma automática.
 
@@ -65,8 +67,8 @@ B1 separa el efecto del artefacto intermedio del efecto de iterar con los errore
 |---|---|---|---|---|
 | Casos propios | 12 | 6 | 3 | 216 |
 | Proyectos grandes | 2 | T, B0, B1 | 3 | 18 |
-| IaC-Eval | hasta 60 | T, B0, B1 | 1 (como S12) | hasta 180 |
-| Total | | | | hasta 414 |
+| IaC-Eval | 38 | T, B0, B1 | 1 (como S12) | 114 |
+| Total | | | | 348 |
 
 ## 6. Métricas
 
@@ -90,7 +92,8 @@ Decisiones de medición (ADR-019), iguales para todas las configuraciones:
 ## 7. Análisis
 
 - Por configuración y nivel: proporción de M1 con intervalo de confianza del 95 % (Wilson); medias de M3, M4, iteraciones, tokens y costo.
-- Comparaciones pareadas por caso y repetición de T contra cada configuración: prueba de McNemar exacta para M1 y de Wilcoxon de rangos con signo exacta para M4 y el costo.
+- Comparaciones pareadas por caso y repetición de T contra cada configuración: prueba de McNemar exacta para M1 y de Wilcoxon de rangos con signo exacta para M4 y el costo. Como T se compara con cinco configuraciones, los valores p se ajustan con Holm.
+- Las corridas que terminan por una falla de infraestructura (la API o el emulador no responden) no cuentan como fallos del método: se repiten al reanudar, se informan aparte y su costo se suma al total.
 - Con 36 corridas por configuración, una diferencia pequeña puede no ser significativa. Por eso se reporta el tamaño de cada diferencia junto con el valor p, como hace la revisión.
 - Las cifras de S12 sobre IaC-Eval provienen de otros modelos y de AWS real; se presentan como contexto. La comparación que permite conclusiones es la interna (T frente a B0 y B1 con el mismo modelo y las mismas tareas).
 
@@ -99,7 +102,7 @@ Comandos: `npm run experimento` y `npm run resumen`.
 ## 8. Estudios complementarios sin costo de API
 
 - Réplica en MiniStack: se repite el experimento cambiando `EMULADOR` y `AWS_ENDPOINT`, para comprobar que los resultados no dependen de Floci.
-- Prueba del validador (`npm run banco-errores`): 40 artefactos con un solo error insertado a mano, 5 por tipo (estructura, atributo inexistente, atributo deprecado, referencia rota, dependencia circular, tipo inválido, violación de política y valor fuera de rango), a partir de los artefactos válidos de C01, C03 y C07. Se valida con las capas reales, sin modelo. Resultado (2026-11-03, MiniStack): 39 de 40 errores (98 %) se detectan antes del despliegue, todos en la capa esperada (C1: 5, C2: 25, C3: 5, C4: 4). El que no se detecta es `batch_size = 0` en el disparador de la cola: el proveedor no valida ese rango en `validate` ni en `plan`, de modo que solo fallaría al desplegar. Resultados en `experimento/banco-errores/`.
+- Prueba del validador (`npm run banco-errores`): 43 artefactos con un solo error insertado a mano, al menos 5 por tipo (estructura, atributo inexistente, atributo deprecado, referencia rota, dependencia circular, tipo inválido, violación de política y valor fuera de rango), a partir de los artefactos válidos de C01, C03 y C07. Las 8 violaciones de política cubren los siete requisitos de seguridad. Se valida con las capas reales, sin modelo. Resultado (2026-11-03, Floci): 42 de 43 errores (98 %) se detectan antes del despliegue, todos en la capa esperada (C1: 5, C2: 25, C3: 8, C4: 4). El que no se detecta es `batch_size = 0` en el disparador de la cola: el proveedor no valida ese rango en `validate` ni en `plan`, de modo que solo fallaría al desplegar. Resultados en `experimento/banco-errores/`.
 
 ## 9. Prueba piloto
 
@@ -115,7 +118,7 @@ El costo lo dominan los tokens de salida, que crecen con el caso. En el piloto e
 
 ## 10. Presupuesto
 
-Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para los casos propios, US$ 0.54 para IaC-Eval y US$ 0.27 para los proyectos grandes, en total cerca de US$ 1.70. Con un margen del doble queda por debajo de US$ 3.50. El experimento se ejecuta con la clave de API de quien lo corre y con `LIMITE_GASTO_EXPERIMENTO_USD` como tope. Tiempo estimado: unas 10 horas, con posibilidad de reanudar.
+Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para los casos propios, US$ 0.34 para IaC-Eval y US$ 0.27 para los proyectos grandes, en total cerca de US$ 1.50. Con un margen del doble queda por debajo de US$ 3. El experimento se ejecuta con la clave de API de quien lo corre y con `LIMITE_GASTO_EXPERIMENTO_USD` como tope. Tiempo estimado: unas 10 horas, con posibilidad de reanudar.
 
 ## 11. Amenazas a la validez
 
@@ -128,3 +131,4 @@ Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para l
 | Externa | El emulador no reproduce la consistencia eventual ni las cuotas de AWS (S08), y Floci y MiniStack son de 2026 | Dos emuladores; las conclusiones se limitan al entorno emulado |
 | Externa | Un solo modelo, de gama baja | Se declara; la réplica con Sonnet 5.5 queda como opción |
 | Conclusión | Muestras pequeñas por configuración | Intervalos de confianza y tamaño del efecto junto al valor p |
+| Conclusión | Las 3 repeticiones de un caso no son del todo independientes y T se compara con cinco configuraciones | Pares por caso y repetición, como en S08; valores p ajustados con Holm |

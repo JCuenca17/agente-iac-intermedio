@@ -59,6 +59,11 @@ async function main(): Promise<number> {
     return 2;
   }
 
+  if (!values["auto-aprobar"] && !process.stdin.isTTY) {
+    console.error("La revisión del diseño necesita una terminal interactiva. Sin ella, usa --auto-aprobar.");
+    return 2;
+  }
+
   cargarArchivoEnv(enRaiz(".env"));
   const config = cargarConfiguracion();
   const versiones = JSON.parse(readFileSync(enRaiz("versiones.json"), "utf8"));
@@ -89,8 +94,15 @@ async function main(): Promise<number> {
   let texto = requerimiento;
   let ciclo: ResultadoCiclo;
   let ronda = 1;
+  let rechazado = false;
+  // El gasto y el uso se acumulan entre rondas de revisión, y el límite vale para todas.
+  const total = { costoUsd: 0, llamadas: 0, uso: { entrada: 0, salida: 0, cacheEscritura: 0, cacheLectura: 0 } };
   for (;;) {
-    ciclo = await ejecutarCiclo(texto, { ...opcionesCiclo, dirTrabajo: join(salida, `ronda-${ronda}`) });
+    const restante = config.limiteGastoUsd - total.costoUsd;
+    ciclo = await ejecutarCiclo(texto, { ...opcionesCiclo, limiteGastoUsd: restante, dirTrabajo: join(salida, `ronda-${ronda}`) });
+    total.costoUsd += ciclo.costoUsd;
+    total.llamadas += ciclo.llamadas;
+    for (const k of Object.keys(total.uso) as (keyof typeof total.uso)[]) total.uso[k] += ciclo.uso[k];
     console.log(`Ciclo: ${ciclo.motivo} en ${ciclo.iteraciones} iteración(es), ${ciclo.llamadas} llamada(s), US$ ${ciclo.costoUsd.toFixed(4)}`);
     if (!ciclo.listo || !ciclo.artefacto) break;
 
@@ -128,37 +140,57 @@ async function main(): Promise<number> {
     registro.anotar("revision", { aprobado: false, comentarios });
     if (!comentarios) {
       console.log("Diseño rechazado. No se despliega nada.");
-      return 1;
+      rechazado = true;
+      break;
     }
-    texto = `${requerimiento}\n\nComentarios del revisor sobre la propuesta anterior:\n${comentarios}`;
+    if (total.costoUsd >= config.limiteGastoUsd) {
+      console.log("Se alcanzó el límite de gasto (LIMITE_GASTO_USD); no se hace otra ronda.");
+      rechazado = true;
+      break;
+    }
+    // El modelo empieza una conversación nueva: se le pasa la propuesta anterior para que
+    // los comentarios se puedan aplicar sobre ella.
+    texto = `${requerimiento}\n\nPropuesta anterior (artefacto):\n${JSON.stringify(ciclo.artefacto)}\n\nComentarios del revisor sobre la propuesta anterior:\n${comentarios}`;
     ronda++;
   }
 
   const resultado: Record<string, unknown> = {
     listo: ciclo.listo,
-    motivo: ciclo.motivo,
+    motivo: rechazado ? "rechazado" : ciclo.motivo,
+    rondas: ronda,
     iteraciones: ciclo.iteraciones,
-    llamadas: ciclo.llamadas,
-    costoUsd: ciclo.costoUsd,
-    uso: ciclo.uso,
+    llamadas: total.llamadas,
+    costoUsd: total.costoUsd,
+    uso: total.uso,
     erroresPorIteracion: ciclo.erroresPorIteracion,
   };
 
-  if (ciclo.listo && ciclo.dirFinal && !values["sin-desplegar"]) {
+  let desplegadoBien = true;
+  if (!rechazado && ciclo.listo && ciclo.dirFinal && !values["sin-desplegar"]) {
     console.log("\nDesplegando en el emulador...");
-    const d = await registro.medir("despliegue", () => desplegar(ciclo.dirFinal!));
-    registro.anotar("despliegue", { aplicado: d.aplicado, sinCambios: d.sinCambios, errores: d.errores, cambiosPendientes: d.cambiosPendientes, cosmeticosIgnorados: d.cosmeticosIgnorados });
-    resultado.despliegue = { aplicado: d.aplicado, sinCambios: d.sinCambios, errores: d.errores, cambiosPendientes: d.cambiosPendientes };
-    console.log(d.aplicado && d.sinCambios ? "Despliegue correcto: lo desplegado coincide con lo declarado." : `Despliegue con problemas: ${JSON.stringify(d.errores.length ? d.errores : d.cambiosPendientes)}`);
-    if (!values.conservar) {
-      const ok = await destruir(ciclo.dirFinal);
-      registro.anotar("destruccion", { ok });
+    try {
+      const d = await registro.medir("despliegue", () => desplegar(ciclo.dirFinal!));
+      registro.anotar("despliegue", { aplicado: d.aplicado, sinCambios: d.sinCambios, errores: d.errores, cambiosPendientes: d.cambiosPendientes, cosmeticosIgnorados: d.cosmeticosIgnorados });
+      resultado.despliegue = { aplicado: d.aplicado, sinCambios: d.sinCambios, errores: d.errores, cambiosPendientes: d.cambiosPendientes };
+      desplegadoBien = d.aplicado && d.sinCambios;
+      console.log(desplegadoBien ? "Despliegue correcto: lo desplegado coincide con lo declarado." : `Despliegue con problemas: ${JSON.stringify(d.errores.length ? d.errores : d.cambiosPendientes)}`);
+    } catch (e) {
+      desplegadoBien = false;
+      resultado.despliegue = { error: (e as Error).message };
+      console.log(`Despliegue con error: ${(e as Error).message}`);
+    } finally {
+      // Aunque el despliegue falle a medias, lo que se haya creado se destruye.
+      if (!values.conservar) {
+        const ok = await destruir(ciclo.dirFinal);
+        registro.anotar("destruccion", { ok });
+      }
     }
   }
 
   writeFileSync(join(salida, "resultado.json"), JSON.stringify(resultado, null, 2));
-  registro.anotar("corrida-fin", { listo: ciclo.listo });
-  return ciclo.listo ? 0 : 1;
+  const exito = !rechazado && ciclo.listo && desplegadoBien;
+  registro.anotar("corrida-fin", { listo: ciclo.listo, rechazado, exito });
+  return exito ? 0 : 1;
 }
 
 main().then(

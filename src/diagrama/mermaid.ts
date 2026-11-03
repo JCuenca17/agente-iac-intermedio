@@ -44,17 +44,23 @@ function servicio(tipo: string): string {
 }
 
 /** Mermaid no admite comillas dentro de una etiqueta entre comillas; se usan entidades. */
-function escapar(texto: string): string {
-  return texto.replaceAll('"', "#quot;").replaceAll("[", "#91;").replaceAll("]", "#93;");
+function escapar(valor: unknown): string {
+  return String(valor ?? "").replaceAll('"', "#quot;").replaceAll("[", "#91;").replaceAll("]", "#93;");
 }
 
 function idSubgrafo(nombre: string): string {
   return "svc_" + nombre.toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 }
 
+/**
+ * Id del nodo en Mermaid. Se antepone "r_" porque un recurso puede llamarse como una
+ * palabra reservada de Mermaid (end, graph, subgraph, class...); el id real va en la etiqueta.
+ */
+const idNodo = (id: string) => `r_${id}`;
+
 function nodo(r: Recurso): string {
   const etiqueta = `"<b>${escapar(r.id)}</b><br/><small>${escapar(r.tipo)}</small>"`;
-  return ALMACENAMIENTO.has(r.tipo) ? `${r.id}[(${etiqueta})]` : `${r.id}[${etiqueta}]`;
+  return ALMACENAMIENTO.has(r.tipo) ? `${idNodo(r.id)}[(${etiqueta})]` : `${idNodo(r.id)}[${etiqueta}]`;
 }
 
 /**
@@ -75,11 +81,12 @@ export function generarMermaid(artefacto: Artefacto): string {
     lineas.push("  end");
   }
 
-  for (const rel of artefacto.relaciones) {
-    lineas.push(`  ${rel.origen} -->|"${escapar(ETIQUETAS[rel.tipo])}"| ${rel.destino}`);
+  // Sin validador (A1) el artefacto puede venir sin relaciones o con un tipo desconocido.
+  for (const rel of artefacto.relaciones ?? []) {
+    lineas.push(`  ${idNodo(rel.origen)} -->|"${escapar(ETIQUETAS[rel.tipo] ?? rel.tipo)}"| ${idNodo(rel.destino)}`);
   }
   for (const r of artefacto.recursos) {
-    for (const id of r.depende_de ?? []) lineas.push(`  ${r.id} -.->|depende de| ${id}`);
+    for (const id of r.depende_de ?? []) lineas.push(`  ${idNodo(r.id)} -.->|depende de| ${idNodo(id)}`);
   }
 
   return lineas.join("\n") + "\n";

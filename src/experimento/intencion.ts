@@ -50,5 +50,7 @@ export function evaluarIntencion(caso: string, plan: unknown): ResultadoIntencio
   const requisitos = x.requisitos as Record<string, string>;
   const cumplidos = (x.cumplidos as string[]).filter((k) => k in requisitos).sort();
   const faltantes = Object.keys(requisitos).filter((k) => !cumplidos.includes(k)).sort();
-  return { caso, requisitos, cumplidos, faltantes, proporcion: cumplidos.length / Object.keys(requisitos).length };
+  const total = Object.keys(requisitos).length;
+  if (!total) throw new Error(`La lista de verificación de ${caso} no tiene requisitos`);
+  return { caso, requisitos, cumplidos, faltantes, proporcion: cumplidos.length / total };
 }

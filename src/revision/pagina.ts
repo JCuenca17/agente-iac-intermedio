@@ -14,12 +14,19 @@ export interface DatosRevision {
 
 const MERMAID_CDN = "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js";
 
-function escapar(texto: string): string {
-  return texto.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+function escapar(valor: unknown): string {
+  return String(valor ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
 
+/** Fila de un recurso, con sus atributos (cifrado, puertos, permisos...) a la vista. */
 function filaRecurso(r: Artefacto["recursos"][number]): string {
-  return `<tr><td><code>${escapar(r.id)}</code></td><td><code>${escapar(r.tipo)}</code></td><td>${escapar(r.proposito)}</td><td>${escapar(r.requisito ?? "")}</td></tr>`;
+  const atributos = `<details><summary>ver</summary><pre>${escapar(JSON.stringify(r.atributos ?? {}, null, 2))}</pre></details>`;
+  return `<tr><td><code>${escapar(r.id)}</code></td><td><code>${escapar(r.tipo)}</code></td><td>${escapar(r.proposito)}</td><td>${escapar(r.requisito)}</td><td>${atributos}</td></tr>`;
+}
+
+function listaRelaciones(a: Artefacto): string {
+  const items = (a.relaciones ?? []).map((x) => `<li><code>${escapar(x.origen)}</code> ${escapar(x.tipo)} <code>${escapar(x.destino)}</code></li>`).join("");
+  return items || "<li>Ninguna declarada.</li>";
 }
 
 function seccionValidacion(errores: ErrorValidacion[][]): string {
@@ -33,8 +40,9 @@ function seccionValidacion(errores: ErrorValidacion[][]): string {
 }
 
 /**
- * Página HTML autocontenida para la revisión humana: diagrama, recursos, supuestos,
- * reporte de validación y resumen del plan. El diagrama lo dibuja Mermaid en el navegador.
+ * Página HTML para la revisión humana: diagrama, recursos con sus atributos, relaciones,
+ * supuestos, reporte de validación y resumen del plan. El diagrama lo dibuja Mermaid en el
+ * navegador (se carga de un CDN; sin conexión se ve el texto del diagrama).
  */
 export function generarPaginaRevision(d: DatosRevision): string {
   const p = d.resumenPlan;
@@ -68,8 +76,11 @@ export function generarPaginaRevision(d: DatosRevision): string {
 <div class="diagrama"><pre class="mermaid">${escapar(d.mermaid)}</pre></div>
 
 <h2>Recursos (${d.artefacto.recursos.length})</h2>
-<table><thead><tr><th>Id</th><th>Tipo</th><th>Propósito</th><th>Requisito que atiende</th></tr></thead>
+<table><thead><tr><th>Id</th><th>Tipo</th><th>Propósito</th><th>Requisito que atiende</th><th>Atributos</th></tr></thead>
 <tbody>${d.artefacto.recursos.map(filaRecurso).join("")}</tbody></table>
+
+<h2>Relaciones</h2>
+<ul>${listaRelaciones(d.artefacto)}</ul>
 
 <h2>Supuestos del modelo</h2>
 <ul>${supuestos}</ul>

@@ -22,13 +22,13 @@ describe("generador del diagrama Mermaid", () => {
   });
 
   it("dibuja cada relación con su tipo como etiqueta legible", () => {
-    expect(diagrama).toContain('cola_trabajos -->|"escribe en"| cola_fallidos');
+    expect(diagrama).toContain('r_cola_trabajos -->|"escribe en"| r_cola_fallidos');
   });
 
   it("dibuja las dependencias explícitas con línea punteada", () => {
     const a = structuredClone(c03);
     a.recursos[1].depende_de = ["cola_fallidos"];
-    expect(generarMermaid(a)).toContain("cola_trabajos -.->|depende de| cola_fallidos");
+    expect(generarMermaid(a)).toContain("r_cola_trabajos -.->|depende de| r_cola_fallidos");
   });
 
   it("escapa comillas y corchetes en los textos", () => {
@@ -38,6 +38,24 @@ describe("generador del diagrama Mermaid", () => {
     a.relaciones[0].destino = "cola_x";
     const salida = generarMermaid(a);
     expect(salida).not.toMatch(/\["[^"]*"[^"]*"\]/);
+  });
+
+  it("un recurso llamado como una palabra reservada de Mermaid no rompe el diagrama", () => {
+    const a = structuredClone(c03);
+    a.recursos[0].id = "end";
+    a.relaciones[0].destino = "end";
+    const salida = generarMermaid(a);
+    expect(salida).toContain("r_end[");
+    expect(salida).not.toMatch(/^\s+end\[/m);
+  });
+
+  it("tolera un artefacto sin relaciones o con un tipo de relación desconocido", () => {
+    const sin = structuredClone(c03) as Partial<Artefacto> & Artefacto;
+    delete (sin as Partial<Artefacto>).relaciones;
+    expect(() => generarMermaid(sin)).not.toThrow();
+    const raro = structuredClone(c03);
+    (raro.relaciones[0] as { tipo: string }).tipo = "habla_con";
+    expect(generarMermaid(raro)).toContain('|"habla_con"|');
   });
 
   it("es determinista", () => {

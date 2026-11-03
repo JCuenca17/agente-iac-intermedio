@@ -121,6 +121,51 @@ const MUTACIONES: Mutacion[] = [
     descripcion: "Grupo de logs sin retención",
     mutar: (a) => a.recursos.push({ id: "logs_procesador", tipo: "aws_cloudwatch_log_group", proposito: "Logs de la función.", atributos: { name: "/aws/lambda/c07-procesador" } }),
   },
+  {
+    tipo: "violacion-politica",
+    base: "c07",
+    descripcion: "Grupo de seguridad con SSH abierto a internet",
+    mutar: (a) =>
+      a.recursos.push({
+        id: "sg_admin",
+        tipo: "aws_security_group",
+        proposito: "Acceso de administración.",
+        atributos: { name: "c07-admin", ingress: [{ from_port: 22, to_port: 22, protocol: "tcp", cidr_blocks: ["0.0.0.0/0"] }] },
+      }),
+  },
+  {
+    tipo: "violacion-politica",
+    base: "c07",
+    descripcion: "Tabla DynamoDB sin recuperación ante borrado",
+    mutar: (a) =>
+      a.recursos.push({
+        id: "tabla_resultados",
+        tipo: "aws_dynamodb_table",
+        proposito: "Resultados del procesamiento.",
+        atributos: { name: "c07-resultados", billing_mode: "PAY_PER_REQUEST", hash_key: "id", attribute: [{ name: "id", type: "S" }] },
+      }),
+  },
+  {
+    tipo: "violacion-politica",
+    base: "c07",
+    descripcion: "Base de datos RDS sin cifrar",
+    mutar: (a) =>
+      a.recursos.push({
+        id: "base_datos",
+        tipo: "aws_db_instance",
+        proposito: "Base de datos de la aplicación.",
+        atributos: {
+          identifier: "c07-bd",
+          engine: "postgres",
+          instance_class: "db.t3.micro",
+          allocated_storage: 20,
+          username: "app",
+          manage_master_user_password: true,
+          publicly_accessible: false,
+          skip_final_snapshot: true,
+        },
+      }),
+  },
   // C4: valores que solo rechaza OpenTofu
   { tipo: "fuera-de-rango", base: "c03", descripcion: "delay_seconds mayor que 900", mutar: (a) => (atributos(a, "cola_trabajos").delay_seconds = 99999) },
   { tipo: "fuera-de-rango", base: "c03", descripcion: "message_retention_seconds menor que 60", mutar: (a) => (atributos(a, "cola_fallidos").message_retention_seconds = 10) },

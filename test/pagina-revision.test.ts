@@ -46,3 +46,19 @@ describe("página de revisión humana", () => {
     expect(h).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
   });
 });
+
+describe("página de revisión: atributos, relaciones y artefactos incompletos", () => {
+  it("muestra los atributos de cada recurso y las relaciones", () => {
+    const html = generarPaginaRevision(base);
+    expect(html).toContain("sqs_managed_sse_enabled");
+    expect(html).toContain("<h2>Relaciones</h2>");
+    expect(html).toMatch(/<code>cola_trabajos<\/code> escribe_en <code>cola_fallidos<\/code>/);
+  });
+
+  it("no falla con un artefacto sin resumen ni propósito (A1, sin validador)", () => {
+    const a = structuredClone(c03);
+    delete (a as Partial<Artefacto>).resumen;
+    delete (a.recursos[0] as Partial<Artefacto["recursos"][number]>).proposito;
+    expect(() => generarPaginaRevision({ ...base, artefacto: a })).not.toThrow();
+  });
+});

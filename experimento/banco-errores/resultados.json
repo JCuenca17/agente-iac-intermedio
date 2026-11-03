@@ -351,6 +351,36 @@
       "enCapaEsperada": true
     },
     {
+      "id": "violacion-politica-6",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "sg-abierto"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-7",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "dynamodb-recuperacion"
+      ],
+      "enCapaEsperada": true
+    },
+    {
+      "id": "violacion-politica-8",
+      "tipo": "violacion-politica",
+      "capaEsperada": "C3",
+      "capaDetecta": "C3",
+      "reglas": [
+        "rds-cifrado"
+      ],
+      "enCapaEsperada": true
+    },
+    {
       "id": "fuera-de-rango-1",
       "tipo": "fuera-de-rango",
       "capaEsperada": "C4",
@@ -449,11 +479,11 @@
       }
     },
     "violacion-politica": {
-      "casos": 5,
-      "detectados": 5,
-      "enCapaEsperada": 5,
+      "casos": 8,
+      "detectados": 8,
+      "enCapaEsperada": 8,
       "porCapa": {
-        "C3": 5
+        "C3": 8
       }
     },
     "fuera-de-rango": {
@@ -466,8 +496,8 @@
     }
   },
   "total": {
-    "casos": 40,
-    "detectados": 39,
-    "enCapaEsperada": 39
+    "casos": 43,
+    "detectados": 42,
+    "enCapaEsperada": 42
   }
 }
