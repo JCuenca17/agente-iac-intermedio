@@ -85,6 +85,24 @@ export function traducir(artefacto: Artefacto, esquema: EsquemaProveedor, opcion
     return valor;
   };
 
+  // En JSON, `route`, `ingress` o `egress` son atributos con objetos que exigen todas sus claves,
+  // mientras que en HCL se escriben como bloques y las claves omitidas valen null.
+  const completarObjetos = (valor: Json, tipo: unknown): Json => {
+    if (!Array.isArray(tipo)) return valor;
+    const [forma, interno] = tipo;
+    if ((forma === "list" || forma === "set") && Array.isArray(valor)) {
+      return valor.map((v) => completarObjetos(v, interno));
+    }
+    if (forma === "object" && valor && typeof valor === "object" && !Array.isArray(valor)) {
+      const salida: Record<string, Json> = { ...valor };
+      for (const [clave, tipoClave] of Object.entries(interno as Record<string, unknown>)) {
+        salida[clave] = clave in valor ? completarObjetos(valor[clave], tipoClave) : null;
+      }
+      return salida;
+    }
+    return valor;
+  };
+
   const convertirBloque = (valores: Record<string, Json>, bloque: BloqueEsquema | undefined): Record<string, Json> => {
     const salida: Record<string, Json> = {};
     for (const [nombre, valor] of Object.entries(valores)) {
@@ -98,7 +116,7 @@ export function traducir(artefacto: Artefacto, esquema: EsquemaProveedor, opcion
           ? valor.map((v) => (v && typeof v === "object" ? convertirBloque(v, anidado) : convertirValor(v)))
           : convertirBloque(valor, anidado);
       } else {
-        salida[nombre] = convertirValor(valor);
+        salida[nombre] = completarObjetos(convertirValor(valor), atributo?.tipo);
       }
     }
     return salida;
