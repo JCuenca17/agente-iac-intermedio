@@ -80,6 +80,31 @@ describe("línea base: B0 y B1 (revisión de código)", () => {
     expect(existsSync(join(dir, "iter-1", "main.tf"))).toBe(false);
   });
 
+  it("B0 deja en la traza el código rechazado y el motivo, para poder auditarlo", async () => {
+    const malo = 'terraform {\n  required_version = ">= 1.0"\n}\n\n' + codigo;
+    const opciones = comunes(nuevoDir());
+    await ejecutarDirecta("una cola", { ...opciones, proveedor: new ProveedorFalso(["```hcl\n" + malo + "\n```"]), conRetroalimentacion: false });
+    const evento = opciones.registro.eventos.find((e) => e.evento === "construccion-rechazada");
+    expect(evento).toMatchObject({ iteracion: 1, codigo: malo + "\n" });
+    expect(evento?.errores).toEqual([expect.objectContaining({ ruta: "/main.tf:1", regla: "construccion-no-permitida" })]);
+  });
+
+  it("B1 también deja en la traza cada código rechazado", async () => {
+    const malo = 'resource "null_resource" "x" {}';
+    const opciones = comunes(nuevoDir());
+    const proveedor = new ProveedorFalso(["```hcl\n" + malo + "\n```", "```hcl\n" + codigo + "\n```"]);
+    await ejecutarDirecta("una cola", { ...opciones, proveedor, conRetroalimentacion: true, validar: async () => ({ valido: true, errores: [] }) });
+    const eventos = opciones.registro.eventos.filter((e) => e.evento === "construccion-rechazada");
+    expect(eventos).toHaveLength(1);
+    expect(eventos[0]).toMatchObject({ iteracion: 1, codigo: malo + "\n" });
+  });
+
+  it("no anota rechazos cuando el código es aceptable", async () => {
+    const opciones = comunes(nuevoDir());
+    await ejecutarDirecta("una cola", { ...opciones, proveedor: new ProveedorFalso(["```hcl\n" + codigo + "\n```"]), conRetroalimentacion: false });
+    expect(opciones.registro.eventos.some((e) => e.evento === "construccion-rechazada")).toBe(false);
+  });
+
   it("B1 devuelve los errores de OpenTofu al modelo y acepta la corrección", async () => {
     const proveedor = new ProveedorFalso(["```hcl\n" + codigo + "\n```"]);
     let n = 0;

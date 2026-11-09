@@ -107,6 +107,8 @@ export async function ejecutarDirecta(requerimiento: string, o: OpcionesDirecta)
     const previos: ErrorValidacion[] = problema
       ? [{ capa: "C0", ruta: "/", regla: "formato-respuesta", mensaje: problema }]
       : revisarHcl(codigo);
+    // El código rechazado no llega a escribirse: la traza es el único registro para auditarlo.
+    if (!problema && previos.length) o.registro.anotar("construccion-rechazada", { iteracion, errores: previos, codigo });
     if (!previos.length) prepararDirecto(dir, codigo, o);
 
     if (!o.conRetroalimentacion) {

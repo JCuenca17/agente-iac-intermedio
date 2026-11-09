@@ -72,6 +72,7 @@ export const validarPorCapas: Validador = async (artefacto, dir, ctx) => {
   }
   const prohibidas = revisarTfJson(traduccion.codigo as Parameters<typeof revisarTfJson>[0]);
   if (prohibidas.length) {
+    ctx.registro.anotar("construccion-rechazada", { iteracion: ctx.iteracion, errores: prohibidas });
     anotar("C4", prohibidas);
     return { valido: false, capaFallida: "C4", errores: prohibidas, traduccion };
   }
@@ -191,6 +192,7 @@ export async function ejecutarCiclo(requerimiento: string, o: OpcionesCiclo): Pr
         // Aun sin validador, nada que ejecute comandos o salga del emulador llega a OpenTofu.
         const prohibidas = revisarTfJson(traduccion.codigo as Parameters<typeof revisarTfJson>[0]);
         if (prohibidas.length) {
+          o.registro.anotar("construccion-rechazada", { iteracion, errores: prohibidas });
           erroresPorIteracion.push(prohibidas);
           o.registro.anotar("ciclo-fin", { motivo: "construccion-no-permitida", iteraciones: iteracion, costoUsd });
           return { ...base(), listo: false, motivo: "construccion-no-permitida", iteraciones: iteracion };
