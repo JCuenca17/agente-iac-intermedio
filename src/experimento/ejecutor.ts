@@ -1,6 +1,7 @@
-import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ejecutarCiclo, type OpcionesCiclo, type ResultadoCiclo } from "../ciclo/ciclo.js";
+import { generarMermaid } from "../diagrama/mermaid.js";
 import { desplegar, destruir, type ResultadoDespliegue } from "../despliegue/despliegue.js";
 import { ejecutarDirecta, type OpcionesDirecta, type ResultadoDirecta } from "../linea-base/directa.js";
 import type { ProveedorModelo, UsoTokens } from "../modelo/tipos.js";
@@ -246,6 +247,12 @@ async function medirCorrida(
           conRetroalimentacion: configuracion !== "A2",
           conRag: configuracion !== "A3",
         });
+
+  // El artefacto y su diagrama son lo que vería el revisor; se guardan para poder auditarlos.
+  if ("artefacto" in resultado && resultado.artefacto) {
+    writeFileSync(join(dir, "artefacto.json"), JSON.stringify(resultado.artefacto, null, 2));
+    writeFileSync(join(dir, "diagrama.mmd"), generarMermaid(resultado.artefacto));
+  }
 
   const { porCapa, reglas } = contarPorCapa(resultado.erroresPorIteracion);
   const fila: FilaResultado = {

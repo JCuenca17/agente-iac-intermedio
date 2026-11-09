@@ -102,6 +102,21 @@ describe("ejecutor del experimento", () => {
     expect(r).toMatchObject({ hechas: 3, detenidoPorGasto: true });
   });
 
+  it("guarda el artefacto y su diagrama en la carpeta de la corrida, para auditar lo que vería el revisor", async () => {
+    const d = falsas();
+    const artefacto = { version: "1.0", resumen: "r", recursos: [{ id: "cola", tipo: "aws_sqs_queue", proposito: "p", atributos: {} }], relaciones: [] };
+    d.ejecutarCiclo = async () => ({
+      listo: true, motivo: "valido", iteraciones: 1, dirFinal: "dir", erroresPorIteracion: [[]],
+      uso: usoCero, costoUsd: 0.01, llamadas: 1, consultasEsquema: 0, artefacto,
+    }) as never;
+    const o = opciones(d, { casos: ["C01"], configuraciones: ["T", "B0"] });
+    await ejecutarExperimento(o);
+    const t = join(o.salida, "corridas", "C01", "T", "rep-1");
+    expect(JSON.parse(readFileSync(join(t, "artefacto.json"), "utf8"))).toEqual(artefacto);
+    expect(readFileSync(join(t, "diagrama.mmd"), "utf8")).toContain("r_cola");
+    expect(() => readFileSync(join(o.salida, "corridas", "C01", "B0", "rep-1", "artefacto.json"))).toThrow();
+  });
+
   it("reinicia el emulador si la destrucción falla", async () => {
     const d = falsas({ destruye: false });
     await ejecutarExperimento(opciones(d, { casos: ["C01"], configuraciones: ["T"] }));
