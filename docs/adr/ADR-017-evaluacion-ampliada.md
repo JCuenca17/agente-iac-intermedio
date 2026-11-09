@@ -6,7 +6,7 @@
 
 ## Contexto
 
-Se pidió probar la herramienta con un proyecto grande y compararla con un trabajo existente. S12 afirma que IaC-Eval es el único benchmark público para esta tarea y publica resultados sobre él.
+Se pidió probar la herramienta con un proyecto grande y compararla con un trabajo existente. Según los autores de S12, IaC-Eval es el único benchmark para generar Terraform desde lenguaje natural, y S12 publica resultados sobre él.
 
 ## Opciones consideradas
 

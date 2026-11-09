@@ -97,6 +97,7 @@ Detalle por archivo de pruebas unitarias:
 | Los errores de C4 en archivos `.tf` traían el contexto con sintaxis HCL y no la dirección del recurso | Prueba de integración de B1 | Normalización del contexto |
 | Una regla Rego con negación de una comparación (`not x > 0`) no se cumplía cuando el atributo faltaba | Pruebas de políticas | Función auxiliar para la negación |
 | Algunas referencias de IaC-Eval no cumplen su propia política (por ejemplo, la tarea 100 pide el rol `demo_eks` y la referencia lo llama `example`) | Preparación de IaC-Eval | Esas tareas se descartan y se reportan |
+| El traductor escribía `route`, `ingress` y `egress` en `main.tf.json` solo con las claves del artefacto; en JSON esos objetos exigen todas sus claves (en HCL las omitidas valen null), y `tofu validate` rechazaba el código | Revisión de las trazas de R1 y R2 tras el experimento (2026-11-09) | El traductor completa con null las claves que faltan, según el esquema del proveedor (commit 3c545cf, `test/traductor-objetos.test.ts`). El experimento principal se ejecutó con el defecto; un lote aparte de T con la corrección se guardó en `resultados/exp1-t-corregida`, carpeta local que no se sube al repositorio |
 | `scripts/prueba-minima.mjs` tenía saltos de línea CRLF | Revisión del índice de git | `.gitattributes` con LF en todo el repositorio |
 
 ## 7. Revisión de código

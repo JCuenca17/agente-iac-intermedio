@@ -160,7 +160,7 @@ Si las iteraciones se agotan o se alcanza el límite de gasto, la corrida termin
 |---|---|---|
 | PC con Windows, macOS o Linux | Node 22 o superior, OpenTofu 1.13.1, OPA 1.22.0, Floci en Docker o MiniStack sin Docker | Desarrollo y ejecución local |
 | GitHub Codespaces | Imagen de Node 22 con Docker; `.devcontainer/` instala las herramientas verificando sus sumas y arranca Floci | Ejecución del experimento por quien paga la API, con su cuenta |
-| Emulador | Floci 2.4.0 (principal) o MiniStack 1.5.36 (réplica), en `http://localhost:4566` | Destino de todas las llamadas de OpenTofu |
+| Emulador | Floci 2.4.0 (principal) o MiniStack 1.5.36 (alternativo), en `http://localhost:4566` | Destino de todas las llamadas de OpenTofu |
 
 ## 8. Conceptos transversales
 
@@ -210,7 +210,7 @@ Si las iteraciones se agotan o se alcanza el límite de gasto, la corrida termin
 
 | Riesgo | Mitigación |
 |---|---|
-| Fidelidad del emulador: no reproduce consistencia eventual ni cuotas, y cada emulador tiene huecos (por ejemplo, MiniStack no guarda etiquetas de una regla de salida ni devuelve los grupos de destino del autoescalado) | Prueba mínima en dos emuladores; réplica del experimento; los resultados se declaran válidos para el entorno emulado |
+| Fidelidad del emulador: no reproduce consistencia eventual ni cuotas, y cada emulador tiene huecos (por ejemplo, MiniStack no guarda etiquetas de una regla de salida ni devuelve los grupos de destino del autoescalado) | Prueba mínima en dos emuladores; el experimento corrió solo en Floci y los resultados se declaran válidos para ese entorno emulado |
 | Floci y MiniStack son proyectos de 2026, sin uso en la literatura revisada | Versiones fijadas; se declara como amenaza a la validez |
 | El código que el modelo genera puede necesitar servicios no cubiertos | Aislamiento total (ADR-018); el error queda registrado como fallo de despliegue |
 | Las funciones Lambda usan un paquete fijo | Fuera de alcance; el experimento mide la infraestructura |

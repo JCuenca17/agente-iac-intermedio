@@ -16,7 +16,7 @@ La evaluación sigue la forma en que evalúan los estudios de la revisión: caso
 |---|---|
 | Modelo | Claude Haiku 5.5 (`claude-haiku-5-5`), esfuerzo por defecto |
 | Emulador principal | Floci 2.4.0 |
-| Emulador de réplica | MiniStack 1.5.36 |
+| Emulador alternativo (prueba mínima y piloto) | MiniStack 1.5.36 |
 | Infraestructura como código | OpenTofu 1.13.1, proveedor `hashicorp/aws` 6.71.0 |
 | Políticas | OPA 1.22.0 |
 | Estado | Cada corrida destruye lo que despliega; si la destrucción falla, el emulador se reinicia |
@@ -55,7 +55,7 @@ Diseñados por el autor antes de elegir los proyectos reales. Quedan como casos 
 
 ### 3.4 IaC-Eval
 
-Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), el único público para esta tarea según S12. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política. Con 30 intentos por nivel quedaron 38 tareas: 10, 10, 6, 7, 3 y 2 en los niveles 1 a 6. Los niveles altos tienen menos porque usan servicios que el emulador no soporta o referencias que no cumplen su propia política (`experimento/iaceval/seleccion.json`). También quedan fuera las tareas que necesitan otro proveedor además de AWS (por ejemplo `archive` o `random`) o alias de proveedor, porque la herramienta configura solo el proveedor AWS fijado.
+Muestra del benchmark IaC-Eval (Kon et al., NeurIPS 2024), que según los autores de S12 es el único benchmark para generar Terraform desde lenguaje natural. Se toman hasta 10 tareas por nivel de dificultad (6 niveles), al azar con semilla fija, entre las que usan solo AWS y cuya referencia funciona en el emulador (`npm run iaceval:preparar`). Se descartan las referencias que no cumplen su propia política. Con 30 intentos por nivel quedaron 38 tareas: 10, 10, 6, 7, 3 y 2 en los niveles 1 a 6. Los niveles altos tienen menos porque usan servicios que el emulador no soporta o referencias que no cumplen su propia política (`experimento/iaceval/seleccion.json`). También quedan fuera las tareas que necesitan otro proveedor además de AWS (por ejemplo `archive` o `random`) o alias de proveedor, porque la herramienta configura solo el proveedor AWS fijado.
 
 ## 4. Configuraciones
 
@@ -128,10 +128,10 @@ Cada fila de resultados guarda la fecha de la corrida y el identificador exacto 
 
 ## 8. Estudios complementarios sin costo de API
 
-- Réplica en MiniStack: se repite el experimento cambiando `EMULADOR` y `AWS_ENDPOINT`, para comprobar que los resultados no dependen de Floci.
+- Réplica en MiniStack: estaba prevista para comprobar que los resultados no dependen de Floci, cambiando `EMULADOR` y `AWS_ENDPOINT`. Se decidió no ejecutarla (2026-11-09). MiniStack se usó en la prueba mínima y en el piloto, y el experimento principal solo corrió en Floci.
 - Prueba del validador (`npm run banco-errores`): 43 artefactos con un solo error insertado a mano, al menos 5 por tipo (estructura, atributo inexistente, atributo deprecado, referencia rota, dependencia circular, tipo inválido, violación de política y valor fuera de rango), a partir de los artefactos válidos de C01, C03 y C07. Las 8 violaciones de política cubren los siete requisitos de seguridad. Se valida con las capas reales, sin modelo. Resultado (2026-11-03, Floci): 42 de 43 errores (98 %) se detectan antes del despliegue, todos en la capa esperada (C1: 5, C2: 25, C3: 8, C4: 4). El que no se detecta es `batch_size = 0` en el disparador de la cola: el proveedor no valida ese rango en `validate` ni en `plan`, de modo que solo fallaría al desplegar. Resultados en `experimento/banco-errores/`.
 
-- Análisis de sensibilidad con un segundo modelo (opcional, aún no programado): repetir T y B1 en los 12 casos propios, una vez, con otro modelo a través del proveedor `openai-compatible` (ADR-020), por ejemplo uno gratuito de OpenRouter. No responde una pregunta nueva: comprueba si la diferencia entre T y B1 se mantiene con otro modelo. Serían 24 corridas, sin costo con un modelo gratuito. Si no se hace, la dependencia del modelo queda declarada como amenaza a la validez externa.
+- Análisis de sensibilidad con un segundo modelo (opcional, no ejecutado): repetir T y B1 en los 12 casos propios, una vez, con otro modelo a través del proveedor `openai-compatible` (ADR-020), por ejemplo uno gratuito de OpenRouter. No responde una pregunta nueva: comprueba si la diferencia entre T y B1 se mantiene con otro modelo. Serían 24 corridas, sin costo con un modelo gratuito. Si no se hace, la dependencia del modelo queda declarada como amenaza a la validez externa.
 
 ## 9. Prueba piloto
 
@@ -157,7 +157,8 @@ Con los datos del piloto y el precio de lista de Haiku 5.5: unos US$ 0.86 para l
 | Interna | Respuestas del modelo no deterministas | 3 repeticiones; comparaciones pareadas |
 | Interna | Revisión humana automática en el experimento | Se declara; la revisión humana no forma parte de las preguntas |
 | Constructo | M4 depende de cómo se escribió cada lista | Las listas aceptan formas alternativas válidas y se documentan las decisiones (ADR-019) |
-| Externa | El emulador no reproduce la consistencia eventual ni las cuotas de AWS (S08), y Floci y MiniStack son de 2026 | Dos emuladores; las conclusiones se limitan al entorno emulado |
-| Externa | Un solo modelo, de gama baja | El proveedor del modelo es configurable (ADR-020), de modo que el estudio se puede replicar con otros modelos; el análisis de sensibilidad de la sección 8 lo comprobaría con un segundo modelo. Mientras no se haga, se declara |
+| Externa | El emulador no reproduce la consistencia eventual ni las cuotas de AWS (S08), y Floci y MiniStack son de 2026 | Prueba mínima en los dos emuladores; el experimento solo corrió en Floci, y las conclusiones se limitan a ese entorno emulado |
+| Externa | Un solo modelo, de gama baja | El proveedor del modelo es configurable (ADR-020), de modo que el estudio se puede replicar con otros modelos; el análisis de sensibilidad de la sección 8 no se ejecutó, por lo que se declara |
+| Interna | El lote de T con el traductor corregido se decidió después de ver los resultados | Se informa como análisis posterior, en una carpeta aparte, y no reemplaza al experimento principal |
 | Conclusión | Muestras pequeñas por configuración | Intervalos de confianza y tamaño del efecto junto al valor p |
 | Conclusión | Las 3 repeticiones de un caso no son del todo independientes y T se compara con cinco configuraciones | Pares por caso y repetición, como en S08; valores p ajustados con Holm |
