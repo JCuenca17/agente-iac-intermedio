@@ -30,16 +30,21 @@ function codigo(archivo) {
   return { recursos, aristas };
 }
 
-/** Recursos administrados en el estado (antes de destruir queda en el respaldo). */
+/**
+ * Recursos administrados justo después del apply. El destroy reescribe terraform.tfstate y
+ * deja el estado anterior en el respaldo; si el destroy quedó a medias, el estado actual solo
+ * tiene lo que no se pudo borrar. Por eso se toma el de más recursos.
+ */
 function desplegado(dir) {
+  let mayor = null;
   for (const nombre of ["terraform.tfstate", "terraform.tfstate.backup"]) {
     const archivo = join(dir, nombre);
     if (!existsSync(archivo)) continue;
     const estado = JSON.parse(readFileSync(archivo, "utf8"));
     const rs = (estado.resources ?? []).filter((r) => r.mode === "managed");
-    if (rs.length) return new Set(rs.map((r) => `${r.type}.${r.name}`));
+    if (rs.length && (!mayor || rs.length > mayor.size)) mayor = new Set(rs.map((r) => `${r.type}.${r.name}`));
   }
-  return null;
+  return mayor;
 }
 
 /** Nodos y flechas del diagrama, leídos del diagrama.mmd que se mostró. */
